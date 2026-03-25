@@ -1,11 +1,13 @@
 {
-  "name": "omnium-oms-skill",
-  "description": "Omnium OMS skill for Claude Code",
+  "name": "novacare-omnium",
+  "owner": {
+    "name": "Novacare"
+  },
   "plugins": [
     {
       "name": "omnium-oms",
       "description": "Complete reference for the Omnium OMS platform",
-      "path": "omnium-oms"
+      "source": "./plugins/omnium-oms"
     }
   ]
 }
