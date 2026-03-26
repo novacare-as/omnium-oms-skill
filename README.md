@@ -41,10 +41,12 @@ Add this skill to your Claude Code setup by placing it in your skills directory 
 
 ## Quick API reference
 
-- **Base URLs**: `https://api.omnium.no` (prod) / `https://apitest.omnium.no` (test)
-- **Auth**: `POST /api/token?clientId=...&clientSecret=...` → JWT (valid 10 days)
-- **Swagger**: `https://api.omnium.no/documentation`
-- **Search**: `POST /api/{resource}/Search` (max 10,000 results)
-- **Scroll**: `POST /api/{resource}/Scroll` (for large datasets)
-- **Bulk ops**: `AddMany`, `PatchMany`, `UpdateMany` (100–1000 items per batch)
-- **Delta queries**: `GET /api/{resource}/GetAll?changedSince=...`
+| **Endpoint**      | **Description**                                                          |
+|:------------------|:-------------------------------------------------------------------------|
+| **Base URLs**     | `https://api.omnium.no` (prod) / `https://apitest.omnium.no` (test)      |
+| **Auth**          | `POST /api/token?clientId=...&clientSecret=...` → JWT (valid 10 days)    |
+| **Swagger**       | `https://api.omnium.no/documentation`                                    |
+| **Search**        | `POST /api/{resource}/Search` (max 10,000 results)                       |
+| **Scroll**        | `POST /api/{resource}/Scroll` (for large datasets)                       |
+| **Bulk ops**      | `AddMany`, `PatchMany`, `UpdateMany` (100–1000 items per batch)          |
+| **Delta queries** | `GET /api/{resource}/GetAll?changedSince=...`                            |
