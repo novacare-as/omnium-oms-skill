@@ -158,6 +158,8 @@ These settings control how reorder suggestions are generated and filtered.
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | ReorderSuggestionsMinQuantityRoundUp | bool | false | When enabled, suggested reorder quantities are rounded up to the nearest minimum order quantity defined on the product or supplier. |
+| ReorderSuggestionsUseInStockSales | bool | false | When enabled, reorder suggestions are calculated from the sales per day the item was in stock instead of the average over all days of the sales period, so days the item was sold out do not lower the suggestion. Used only for items in stock for at least `ReorderSuggestionsMinDaysInStock` days; others keep the average. When off, the time in stock is shown but does not change the suggestion. See [time in stock](../configuration/scheduled-tasks/analytics/analytics-reorder-suggestions.md#time-in-stock). |
+| ReorderSuggestionsMinDaysInStock | int | 0 | Days in stock the sales period must have before the in-stock rate is used. 0 means 14 days. |
 | NonPurchasableAssortmentCodes | List<string> | null | Assortment codes that should be excluded from reorder suggestions. Products with any of these assortment codes will not appear in purchase order suggestions. Assortment codes are defined in product settings. |
 | SetEstimatedTimeOfArrivalFromPurchaseOrder | bool | false | When enabled, purchase order lines that have no `EstimatedTimeOfArrival` of their own fall back to the purchase order's `RequestedDeliveryDate` when Available-to-Promise (ATP) is calculated, so lines added after the delivery date was set (for example by a supplier or ERP integration) are still included as incoming stock in ATP. |
 
@@ -166,6 +168,8 @@ These settings control how reorder suggestions are generated and filtered.
 ```
 "PurchaseOrderSettings": {
   "ReorderSuggestionsMinQuantityRoundUp": true,
+  "ReorderSuggestionsUseInStockSales": true,
+  "ReorderSuggestionsMinDaysInStock": 14,
   "SetEstimatedTimeOfArrivalFromPurchaseOrder": true,
   "NonPurchasableAssortmentCodes": [
     "DISCONTINUED",
@@ -408,6 +412,8 @@ Below is a comprehensive example showing all purchase order settings configured 
     "DefaultAverageLeadTimeDays": 14,
 
     "ReorderSuggestionsMinQuantityRoundUp": true,
+    "ReorderSuggestionsUseInStockSales": true,
+    "ReorderSuggestionsMinDaysInStock": 14,
     "SetEstimatedTimeOfArrivalFromPurchaseOrder": true,
     "NonPurchasableAssortmentCodes": ["DISCONTINUED", "CONSIGNMENT"],
 

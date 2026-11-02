@@ -6,7 +6,87 @@ Source: https://docs.omnium.no/docs/Releasenotes/releasenotes-1-2026
 
 **Black week**: We will freeze deploy after November 17th and until December 8th to ensure that Black Friday/Week/Month will go as smooth as possible. This means that new features must be ready in dev by November 6th in order to make it to the test period.
 
-## Upcoming Release 2026-37
+## Upcoming Release 2026-38
+
+Release date: Nov 10, 2026
+
+### Main focus areas
+
+This release strengthens inventory and purchasing workflows, improves order and shipment handling, and expands payment, receipt and VAT capabilities. Product management becomes more flexible with enhanced custom views and search, while API and integration updates provide better event filtering, shipment updates and multi-market support.
+
+### Key changes and improvements
+
+#### Payments, Accounting & VAT
+
+*   Payment types can now be assigned their own ledger accounts, allowing payment schemes such as Visa to be booked separately. A new Generate accounts for payment types action suggests accounts based on payment types used during the last 90 days.
+*   Omnium can now generate a paid receipt for each delivered shipment, including delivered items, payments and VAT breakdowns. Add the Create receipt for shipment workflow step after Capture, and receipts can be made available through the invoice API.
+*   Stores can now use their own VAT rates without requiring tenant-level VAT rates. With tax groups enabled and a default code configured, stores use their own rates while other sales use the market VAT rates.
+*   Order lines using fixed-price promotions now always add up to the order total, preventing rounding differences that could cause receipt exports to fail.
+
+#### Order Management & Fulfillment
+
+*   Allocation rules can now assign the cart to the store shipping the goods. For Click & Collect, the order is assigned to the pickup store, even when the cart was started elsewhere.
+*   Return notifications can include the return's credit note as a PDF attachment. The Create credit note workflow step must run before the notification step in the same return status.
+*   A new Add properties to shipment workflow step allows custom shipment properties to be set during processing. The `{Now}` value can record when an event occurred, such as when a shipment became ready for pickup.
+*   Shipment PATCH endpoints now support setting or correcting the completed date without sending the entire shipment.
+*   Sitoo Click & Collect can now cancel an order in Omnium when a store rejects the pickup, optionally using a configured order status. An experimental setting can also cancel the order in Sitoo.
+*   Order, purchase order and product lists now support keyboard navigation with `Ctrl+Shift+Up` and `Ctrl+Shift+Down` to select rows, and Enter to open them.
+
+#### Inventory & Purchasing
+
+*   Inventory now supports priority stock: units a store should sell first, such as returned items outside its regular assortment. Returns can mark these units automatically, allocation can prioritize stores holding them, and the units remain available for Click & Collect outside the store's assortment.
+*   Warehouse priorities can now be reordered using drag and drop, with a Move to top action for quick adjustments.
+*   Reorder suggestions now include a `boost` property, allowing external analysis to increase or decrease suggested quantities.
+*   Purchase orders can now be created automatically as drafts based on reorder suggestions.
+
+#### Product Management & Customization
+
+*   New products can inherit default markets configured in the product creation custom view. Markets unavailable to the user are automatically excluded.
+*   Custom views can now display GUI extensions instead of the standard field grid, or include them as individual items. This is supported in product quick edit, carts, order lines and project steps.
+*   The product Sales tab now shows ordered and delivered quantities per order line, with cancelled quantities highlighted in red.
+*   Product search now supports partial, multi-word matching in any order, finding products as the customer types.
+*   Product pages now display property items beneath their respective properties, and product search can filter by a property's key group.
+
+#### Integrations & APIs
+
+*   Order payments in the public API now include a payment number. Integrations can use this shorter reference instead of the payment ID and update it through PATCH.
+*   Tripletex can now post to a separate company per market using an `EmployeeToken` configured on the market's connector. Orders, products and invoice payments use the corresponding company.
+*   Cart event subscriptions can now be filtered by order type and cart status. Cart events also respect the market filter.
+*   Front Systems inventory sync transactions now identify the scheduled task as the user and use the new `Integration` transaction type, making synchronized stock updates easier to distinguish from other inventory activity.
+
+#### Campaigns & Price Lists
+
+*   When a campaign is changed, products no longer included in it are removed from the campaign's price list, and the price list is updated with the campaign name.
+
+| Type | Issue No | Domain | Description |
+| --- | --- | --- | --- |
+| Feature | #DEV-25837 | Core | You can now book a payment type, such as a card scheme, on its own account in the chart of accounts, for example Nets|Visa. Payment types without their own account still book to the payment method's account. The new action Generate accounts for payment types suggests accounts from the payment types used in the last 90 days. |
+| Feature | #DEV-25834 | Core | Allocation rules can now give the cart the store that ships the goods. With click and collect, the order then belongs to the store where the customer collects it, even when the cart was started in another store. |
+| Feature | #DEV-25808 | Api | Payments on orders in the public API now include the payment number. Integrations can use this short number instead of the payment ID, and can set it with PATCH. |
+| Feature | #DEV-25804 | Order management | Return notifications can now attach the credit note of the return as a PDF. Select the Credit notes attachment on the return notification, and place Create credit note before the notification step in the same return status. |
+| Feature | #DEV-25802 | Product | You can now set default markets on the Markets field in a custom view for product creation, so new products start in those markets. Markets that the user has no access to are left out. |
+| Feature | #DEV-25799 | Core | Custom views can now show a GUI extension. Pick an extension on the custom view to show it in place of the field grid on product quick edit, cart, order line and project step pages, or add it as an item in the grid. |
+| Feature | #DEV-25793 | Product | The Sales tab on the product page now shows the delivered and ordered quantity of each order line, as on the order page. Canceled quantities are shown in red, so canceled lines are no longer mistaken for sales. |
+| Bugfix | #DEV-25782 | Core | When you change a campaign, products that no longer belong to it are removed from the campaign's price list. The price list also gets the name of the campaign. |
+| Bugfix | #DEV-25781 | Order management | Orders with a fixed price promotion, such as "3 for 59", could have order lines that added up to 1-2 øre more or less than the order total. Receipt exports such as Voyado then rejected the order. The order lines now always add up to the order total. On existing orders, one line amount can change by 1-2 øre at the next update, and the order total stays the same. |
+| Feature | #DEV-25774 | Core | You can now move through the order list, the purchase order list and the product list with the keyboard. Press Ctrl+Shift+Down or Ctrl+Shift+Up to highlight a row, and press Enter to open it. |
+| Feature | #DEV-25760 | Sitoo Connector | Sitoo click and collect: a new market setting lets a pickup rejected in the store cancel the order in Omnium, optionally to a status of your choice. An experimental setting can also cancel the order in Sitoo. |
+| Feature | #DEV-25759 | Core | Event subscriptions for carts can now be filtered on order type, so you only receive cart events for the order types you choose. |
+| Feature | #DEV-25757 | Core | You can now reorder the warehouse priority list under Stores with drag and drop. A new "Move to top" option in each row's menu moves a warehouse to the top of the list in one step. |
+| Feature | #DEV-25754 | Shipment | Shipment PATCH endpoints now accept a completed date. You can set or correct when a shipment was completed without sending the full shipment with PUT. |
+| Feature | #DEV-25727 | Core | Event subscriptions for carts can now filter on cart status. Cart events now also match the market filter. |
+| Feature | #DEV-25726 | Product | Product search now finds products while the customer is still typing. Each word can be the start of a word in the product name, in any order, so "dung crawler carl" finds "Dungeon Crawler Carl". |
+| Feature | #DEV-25722 | Core | VAT rates can now be set on stores only. Turn on tax groups, leave the tenant VAT rates empty and set a default code. Stores with their own VAT rates use them, and all other sales use the market VAT rate. |
+| Feature | #DEV-25706 | Product | The product page now shows the items of a property under the property, and the product search can filter on a property's key group. |
+| Feature | #DEV-25676 | Tripletex Connector | Tripletex can now post to a separate company per market. Set the EmployeeToken on the Tripletex connector of the market, and orders, products and invoice payments for that market use that company. |
+| Feature | #DEV-25658 | Orders | Inventory now supports priority stock: units a store should sell first, such as a return it took in for a product outside its assortment. Returns can mark these units automatically, allocation can be set up to prefer the store holding them, and they stay sellable for click and collect even outside the store's assortment. |
+| Feature | #DEV-25653 | Order management | A new workflow step, Add properties to shipment, lets you put your own properties on a shipment when the workflow runs. Use {Now} as a value to record the time the step ran, for example when a shipment became ready for pickup. |
+| Feature | #DEV-25650 | Front Systems Connector | Inventory transactions from the Front Systems inventory sync now show the scheduled task as the user and the new transaction type Integration, so stock updates from Front are easy to tell apart from sales and purchase orders. |
+| Feature | #DEV-25637 | Core | Omnium can now issue a paid receipt for each delivered shipment, with the delivered items, the payments and the VAT per rate. Add the workflow step Create receipt for shipment after Capture, and your webshop can show the receipts to customers through the invoice API. |
+| Feature | #DEV-22873 | Purchase orders | Adding boost property to reorder-suggestions. Can be used when performing more advanced analysis outside Omnium to amplify or reduce the generated reorder-suggestions in Omnium. |
+| Feature | #DEV-22872 | Purchase orders | Adding support for automatic purchase order drafts based on reorder-suggestions. |
+
+## Release 2026-37
 
 Release date: Nov 3, 2026
 

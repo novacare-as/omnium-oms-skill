@@ -45,6 +45,8 @@ Number types are used to distinguish between different entity types. Below are t
 *   `ProjectNumberOptions`
 *   `PickListNumberOptions`
 *   `ReceiptNumberOptions`
+*   `InvoiceNumberOptions`
+*   `CreditNoteNumberOptions`
 
 * * *
 

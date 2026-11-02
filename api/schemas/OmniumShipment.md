@@ -4,7 +4,7 @@ Representing a shipment
 
 **Fields:**
 
-- `discounts`: List<[`OmniumDiscount`](OmniumDiscount.md)>, nullable, max length 250 — Shipment discounts
+- `discounts`: List<[`OmniumDiscount`](OmniumDiscount.md)>, nullable, max length 1000 — Shipment discounts
 - `shipmentId`: string, nullable — Unique identification for shipment. Required for all shipments.
 - `shippingMethodId`: string, nullable — ID of shipping method
 - `shippingMethodName`: string, nullable — Name of shipping method for this shipment. Should correspond to a shipment type in Omnium. Typical values would be "Bring", "PickUpInStore" or whatever provider or type of shipment that is configured.

@@ -178,7 +178,7 @@ Returns the VAT rates (tax groups) the store sells under: the store's own VAT ra
 
 *   Only active rows are returned.
 *   Without `validOn`, every validity window of a code is returned. With `validOn`, only the rows valid on that day are returned.
-*   The list is empty when the tenant does not use tax groups.
+*   The list is empty when the tenant does not use tax groups. It is also empty for a store without rows of its own when the tenant has no VAT rates of its own.
 *   The account overrides of the rows are not returned.
 *   An unknown store returns `404`.
 
@@ -214,7 +214,7 @@ A store can have its own accounting accounts and its own VAT rates, which replac
 | Field | Type | Description |
 | --- | --- | --- |
 | `chartOfAccounts` | array | The store's own accounts. Each one replaces the tenant account it matches on category, discriminator, currency, and tax group. The fields are described in [Chart of Accounts](../Order/Ledger/ledger-chart-of-accounts.md); `category` is sent as the category name, for example `"Sales"`. See [Store Accounts](../Order/Ledger/ledger-store-accounts.md). |
-| `taxGroups` | array | The store's own VAT rates. A row replaces every tenant row with the same code, and the code must exist in the tenant VAT rates. The fields are described in [Tax Groups](../Order/Ledger/ledger-tax-groups.md#tax-group-fields). See [Store VAT rates](../Order/Ledger/ledger-tax-groups.md#store-vat-rates). |
+| `taxGroups` | array | The store's own VAT rates. A row replaces every tenant row with the same code, and the code must exist in the tenant VAT rates. When the tenant has no VAT rates of its own, the stores define the codes. The fields are described in [Tax Groups](../Order/Ledger/ledger-tax-groups.md#tax-group-fields). See [Store VAT rates](../Order/Ledger/ledger-tax-groups.md#store-vat-rates). |
 
 Besides the fields described on those pages, a VAT rate row has `overrideSalesAccountNumber` and `overrideOutputVatAccountNumber`, which are stored with the row but not used by postings — postings take their accounts from the chart of accounts — and an account entry has `properties`, its custom properties.
 
@@ -222,7 +222,7 @@ How the two lists behave in the API:
 
 *   **Reading** — they are returned when you get a single store and in the responses of `PUT /api/Stores` and `POST /api/Stores/Update`. Store lists and searches leave them out.
 *   **Writing** — on `POST /api/Stores`, `PUT /api/Stores`, `POST /api/Stores/Update`, and `POST /api/Stores/AddMany`, a list you leave out keeps the store's current list, and an empty list removes it. On `PATCH /api/Stores/PatchStore`, a list you send replaces the whole list. `POST /api/Stores/Enrich` fills a list only when the store has none.
-*   **Validation** — VAT rates you change that break a rule (for example a code the tenant does not have) return `400` with the reason. A list sent back unchanged is accepted. `POST /api/Stores/AddMany` checks every store before it saves any of them.
+*   **Validation** — VAT rates you change that break a rule return `400` with the reason. One example is a code the tenant does not have, when the tenant has VAT rates of its own. A list sent back unchanged is accepted. `POST /api/Stores/AddMany` checks every store before it saves any of them.
 
 * * *
 

@@ -29,6 +29,7 @@ The **Try Split Unreserved Order Lines** step is a highly configurable splitting
 | `AllocationScheme` | string | No | Algorithm for warehouse selection |
 | `IgnoreInventory` | boolean | No | Split without checking inventory |
 | `AllowLineSplitting` | boolean | No | Allow splitting quantities within a line |
+| `PrioritizePriorityInventory` | boolean | No | Try warehouses holding priority stock for the lines first. Ignored with `IgnoreInventory` |
 
 ## Behavior
 
@@ -40,6 +41,12 @@ The **Try Split Unreserved Order Lines** step is a highly configurable splitting
 4.  Creates new shipment(s) for matching lines
 5.  Moves lines to new shipments with optional status/method changes
 6.  Optionally updates order status if all shipments have the new status
+
+### Priority Stock
+
+With `PrioritizePriorityInventory = true`, warehouses holding [priority stock](../../../Inventory/priority-stock.md) that covers the lines are tried first, for example a store holding a returned unit it was asked to sell first. Among warehouses that cover as many lines from priority stock, the usual warehouse order applies.
+
+The step skips a warehouse when the product is outside its assortment (the product has a `storeIds` list that does not include the warehouse). A warehouse whose priority stock covers the full quantity of a line is not skipped for that reason, whether or not `PrioritizePriorityInventory` is set. With `AllowLineSplitting = true`, a warehouse outside the assortment can take the part of a line its priority stock covers, except with `AllocationScheme` `Full`. Both need inventory, so they do not apply with `IgnoreInventory = true`.
 
 ### Prerequisites
 

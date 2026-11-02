@@ -125,6 +125,7 @@ Each extension is assigned to an area that determines where it appears in the UI
 
 | Area | Display type | Description |
 | --- | --- | --- |
+| `customView` | Custom view | Shown only inside a custom view that selects it — see [Showing an extension through a custom view](gui-extensions.md#showing-an-extension-through-a-custom-view) |
 | `settings` | Inline | Settings page |
 
 * * *
@@ -315,6 +316,35 @@ This lets you show different extensions for different types of objects. For exam
 ```
 
 The "B2B Credit Check" extension only appears on orders tagged with "B2B". The "Gift Wrapping Options" extension only appears on orders tagged with "gift-order".
+
+* * *
+
+## Showing an extension through a custom view
+
+A custom view can show one GUI extension instead of its grid of fields, or as an item in the grid (see [As an item in the grid](gui-extensions.md#as-an-item-in-the-grid)). To replace the grid, the view names the extension in its `guiExtensionName` field, set with the **Extension** picker in the custom view editor under **Configuration > Custom views**. When the field is empty the view shows its grid as before.
+
+The view keeps its own area, markets, order types and hidden tabs, so the custom view decides where and for whom the extension appears. Any extension can be picked, whatever its area. Assign an extension to the `customView` area to keep it out of every other extension area: it then appears only in the custom views that select it.
+
+The extension is referenced by its `Name`. If the extension is renamed or removed in GUI settings, the custom view shows nothing; administrators see a note that the extension was not found.
+
+The extension replaces the grid in these places, with this event context:
+
+| Custom view context | Areas | `className` | `objectId` | `dataObject` |
+| --- | --- | --- | --- | --- |
+| Product | `ProductQuickEdit`, `ProductCreate` | `Product` | Product ID | The product |
+| Cart | `CartEdit` | `Cart` | Cart ID | The cart |
+| Order line | `EditOrderLine` | `OrderLine` | Line item ID | The order line |
+| Project | Workflow step dashboards | `Project` | Project ID | The project |
+
+In the `OrderLineEnrichment` and `CreateConfigurableProduct` areas the extension is ignored and the view keeps its grid.
+
+The iframe URL takes the usual [URL templates](gui-extensions.md#url-templates), filled from the `dataObject` in the table — for example `https://stock.example.com/?sku={{dataObject.id}}` on a product view, or `{{dataObject.lineItemId}}` on an order line view. The [postMessage](gui-extensions.md#postmessage-api) payload and the [webhook request](gui-extensions.md#request-format) carry the `objectId` and `className` from the table. [Tag-based filtering](gui-extensions.md#tag-based-filtering) is not applied to an extension shown through a custom view.
+
+### As an item in the grid
+
+An extension can also be one item in the grid, next to the fields. In the custom view editor, pick **GUI extension** in **Add property** and choose the extension in the item's header; a view can hold several extension items. The item is stored in the view's `dashboardItems` like the other tools, with the extension name in its item string (`custom-gui-extension:omnium__name{StockCheck}`).
+
+The extension fills the item, so its height is the height the item is given in the editor. Iframe, properties and webhook button work as for a whole-view extension, with the same event context and areas.
 
 * * *
 

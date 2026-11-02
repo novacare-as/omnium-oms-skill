@@ -73,6 +73,12 @@ Sales and output VAT lines are **split by VAT rate**. If a fulfillment day conta
 
 POS postings are built from the Z-report, which totals VAT per rate and sales per product group and rate, without tax groups. A product group that holds items at several rates, such as toys at 25% and sweets at 15%, gets one `Sales` line per rate. POS lines carry no tax-group code, and their accounts are [resolved by rate](ledger-chart-of-accounts.md#how-an-account-is-resolved).
 
+## How payments are split
+
+Payments get one `PaymentMethod` line per payment method, and refunds one `RefundPaymentMethod` line per method. On web-fulfillment postings, a method's payments taken at different stores get one line per store.
+
+When the chart of accounts has [entries per payment type](ledger-chart-of-accounts.md#accounts-per-payment-type) (`Nets|Visa`), each type with an entry gets a line of its own, described with the type in brackets (`Payment — Nets (Visa)`), and the method's line keeps the rest, so the lines still add up to the method's total. Without such entries the lines, and the [posting hash](ledger-postings.md#reposting-and-the-posting-hash), are the same as before.
+
 ## Gift cards
 
 Gift cards are handled as a **liability**, not as revenue or ordinary tender:

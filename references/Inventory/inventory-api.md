@@ -9,6 +9,7 @@ Products in Omnium are enriched with inventory items. The inventory item carries
 *   Physical inventory
 *   Reserved inventory
 *   Available inventory
+*   Priority inventory (units to sell first)
 *   Inventory location
 
 An inventory item identifier/key is created from the variant and warehouse code. The warehouse code is the ID of the store/warehouse where the inventory is located.
@@ -178,6 +179,17 @@ For more details, visit the [Delete inventory item documentation](https://api.om
 **Available to Promise** (ATP) refers to the available quantities of the requested product and its expected delivery due dates.
 
 For more details, visit the [ATP model documentation](https://api.omnium.no/documentation/index.html#/model-OmniumInventoryAtp).
+
+#### Priority Stock
+
+`priorityInventory` is the number of units in `inventory` that should be sold first, for example a return the store took in for a product it does not carry. It is never more than `inventory`, and any reduction of `inventory` uses up priority units first.
+
+*   Set it on existing items with `PATCH /api/Inventory` or `PATCH /api/Inventory/PatchMany`. The value is capped at the item's inventory. PATCH changes are not logged as inventory transactions.
+*   Adjust it with `priorityInventoryChange` in `POST /api/Inventory/ProcessInventoryTransactions`.
+*   Adding or updating whole items (`POST /api/Inventory`, `AddMany`, `Update`, `UpdateMany`, `UpdateManyWithMetadata`) only reads `priorityInventory` for items that do not exist yet. Existing items keep their stored count.
+*   Inventory transactions include `priorityInventoryChange` for changes that are logged.
+
+For details, see [Priority Stock](priority-stock.md).
 
 * * *
 

@@ -40,9 +40,10 @@ This task has no configurable properties.
 ### What It Does
 
 1.  Identifies products with inventory changes since the last run
-2.  Recalculates reorder suggestions only for affected products
-3.  Updates the suggestions index with new calculations
-4.  Reports the count of updated suggestions
+2.  Reads the inventory transactions of the sales period for the changed SKUs of each changed warehouse, to update the [time in stock](analytics-reorder-suggestions.md#time-in-stock)
+3.  Recalculates reorder suggestions only for affected products
+4.  Updates the suggestions index with new calculations
+5.  Reports the count of updated suggestions
 
 ### Prerequisites
 

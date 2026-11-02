@@ -17,6 +17,7 @@ Omnium can be main source of inventory for smaller customers. Monitoring and con
 *   [OmniStock](Inventory/omnistock.md) — Aggregate inventory across warehouses and stores for online product availability
 *   [Virtual Stock Locations](Inventory/virtual-stock-locations.md) — Partition physical warehouse inventory across virtual locations for different sales channels
 *   [Warehouse Locations](Inventory/warehouse-locations.md) — Track inventory at physical locations within warehouses for precise stock placement and picking
+*   [Priority Stock](Inventory/priority-stock.md) — Mark units allocation sells first, such as a return a store took in for a product it does not carry
 
 * * *
 

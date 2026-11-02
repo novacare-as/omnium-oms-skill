@@ -56,7 +56,7 @@ Physical store, Web shop, Warehouse, or other department of the company
 - `stockBuffer`: number (decimal), nullable — Stock buffer quantity subtracted from available inventory for this store. Null leaves the existing value unchanged (use OmniumStore PUT to clear back to market/global fallback).
 - `omniStockRules`: [`OmniumOmniStockRules`](OmniumOmniStockRules.md)
 - `chartOfAccounts`: List<[`OmniumChartOfAccountEntry`](OmniumChartOfAccountEntry.md)>, nullable — The store's own accounts. Null leaves them unchanged; a value replaces the whole list, and an empty list removes them.
-- `taxGroups`: List<[`OmniumTaxGroup`](OmniumTaxGroup.md)>, nullable — The store's own VAT rates. The codes must exist in the tenant VAT rates. Null leaves them unchanged; a value replaces the whole list, and an empty list removes them.
+- `taxGroups`: List<[`OmniumTaxGroup`](OmniumTaxGroup.md)>, nullable — The store's own VAT rates. The codes must exist in the tenant VAT rates, unless the tenant has no VAT rates of its own: the stores then define the codes, a line without a row keeps the market VAT rate, and when the tenant has a default code each store with rows needs a row for it. Null leaves them unchanged; a value replaces the whole list, and an empty list removes them.
 
 **Used directly by endpoints in:**
 

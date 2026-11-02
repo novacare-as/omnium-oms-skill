@@ -6,7 +6,7 @@ Order form, containing shipments, payments and line items for order
 
 - `shipments`: List<[`OmniumShipment`](OmniumShipment.md)>, nullable, max length 250 — All order shipments
 - `lineItems`: List<[`OmniumOrderLine`](OmniumOrderLine.md)>, nullable, max length 1000 — All order lines / products
-- `discounts`: List<[`OmniumDiscount`](OmniumDiscount.md)>, nullable, max length 250 — All discounts
+- `discounts`: List<[`OmniumDiscount`](OmniumDiscount.md)>, nullable, max length 1000 — All discounts
 - `payments`: List<[`OmniumPayment`](OmniumPayment.md)>, nullable, max length 250 — All order payments
 - `shippingDiscountTotal`: number (decimal) — Calculated:Total shipping discounts
 - `shippingSubTotal`: number (decimal) — Calculated: Shipping cost without discounts

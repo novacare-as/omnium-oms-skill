@@ -518,7 +518,7 @@ Omnium uses the first template that is set, in this order:
 3.  `InvoiceTemplate` in the default template settings for all markets.
 4.  The standard layout.
 
-A document with no market starts at step 3. The same template is used everywhere an invoice PDF is made: the order's Invoices tab, `GET api/Invoices/GetAsPdf/{id}`, the invoice notification and the shipment receipt attachment on order notifications.
+A document with no market starts at step 3. The same template is used everywhere an invoice PDF is made: the order's Invoices tab, `GET api/Invoices/GetAsPdf/{id}`, the invoice notification, the **Receipts** attachment on order notifications and the **Credit notes** attachment on return notifications.
 
 When the chosen file is missing, is not a `.json` file or has no `html` content, Omnium uses the standard layout and logs a warning that names the file and the document. A broken template never stops a PDF or an email.
 

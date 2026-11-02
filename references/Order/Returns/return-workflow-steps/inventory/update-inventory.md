@@ -17,7 +17,24 @@ The **Update Inventory** step adds returned items back to available inventory. I
 
 ## Configuration Properties
 
-This step has no configurable properties. Inventory updates are controlled by:
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| PriorityInventoryOutsideAssortment | bool | `false` | When `true`, restocked units of a product that is outside the receiving store's assortment are marked as [priority stock](../../../../Inventory/priority-stock.md), so allocation sells them first. |
+
+### Sample
+
+```json
+{
+  "Name": "UpdateInventory",
+  "Active": true,
+  "TranslateKey": "WorkflowStep_UpdateInventory",
+  "Properties": [
+    { "Key": "PriorityInventoryOutsideAssortment", "Value": "true" }
+  ]
+}
+```
+
+Whether a line is restocked at all is controlled by:
 
 *   Return type's `UpdateInventory` setting
 *   Individual return line item settings
@@ -32,7 +49,8 @@ This step has no configurable properties. Inventory updates are controlled by:
     *   Return type configuration (`UpdateInventory` property)
     *   Line-level override settings
 3.  Increases warehouse inventory for applicable items
-4.  Records inventory adjustment transactions
+4.  Marks the restocked quantity as [priority stock](../../../../Inventory/priority-stock.md) when the return type has `IsPriorityInventory` set to `true`, or when `PriorityInventoryOutsideAssortment` is `true` and the product is outside the receiving store's assortment
+5.  Records inventory adjustment transactions
 
 ### Prerequisites
 
@@ -65,6 +83,8 @@ This step has no configurable properties. Inventory updates are controlled by:
 
 **Wrong Item Sent** Item is returned because warehouse shipped wrong product. Return type "WrongItem" has `UpdateInventory: true` since item is still sellable.
 
+**Return Outside the Assortment** A customer returns a product bought from another store to a store that does not carry it. With `PriorityInventoryOutsideAssortment: true`, the unit is restocked in the receiving store as priority stock. The store can then sell it even though the product is outside its assortment, and allocation set up to prefer priority stock sends orders for the product to that store first. See [Priority Stock](../../../../Inventory/priority-stock.md#prefer-priority-stock-in-allocation). When units are marked as priority stock, the step's result message ends with the number of lines marked.
+
 ## Warehouse Selection
 
 Inventory is updated in the warehouse associated with the return. For split orders with `IsReturnSplitOrdersToMainWarehouse` enabled, returns go to the main warehouse.
@@ -83,3 +103,4 @@ Inventory is updated in the warehouse associated with the return. For split orde
 
 *   [Credit Return](../payment/credit-return.md) - Often runs together to complete return
 *   [Update Order Status](../status/update-order-status.md) - Update original order after inventory adjustment
+*   [Priority Stock](../../../../Inventory/priority-stock.md) - How priority units are counted and preferred by allocation

@@ -162,13 +162,15 @@ If any order line on the shipment is missing a customs code, no NVIT data is sen
 
 ### Provider support
 
+Please tell if you need support for NVIT for a provider that don't have it yet.
+
 | Provider | NVIT support |
 | --- | --- |
 | [Logistra](Shipments/logistra.md) | Yes |
-| [Bring](Shipments/bring.md) | Not yet |
-| [nShift Ship (Consignor)](Shipments/nshiftShip.md) | From release 2026-36 |
-| [PostNord](Shipments/postnord.md) | Not yet |
-| [Ingrid](Shipments/ingrid-plugin.md) | Not yet |
-| [nShift Delivery](Shipments/nshiftDelivery.md) | Not yet |
-| [GLS](Shipments/gls.md) | Not yet |
-| [Porterbuddy](Shipments/porterbuddy.md) | Not yet |
+| [Bring](Shipments/bring.md) | No |
+| [nShift Ship (Consignor)](Shipments/nshiftShip.md) | Yes |
+| [PostNord](Shipments/postnord.md) | No |
+| [Ingrid](Shipments/ingrid-plugin.md) | No |
+| [nShift Delivery](Shipments/nshiftDelivery.md) | No |
+| [GLS](Shipments/gls.md) | No |
+| [Porterbuddy](Shipments/porterbuddy.md) | No |

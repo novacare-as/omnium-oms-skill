@@ -111,7 +111,7 @@ Two fields are available:
 
 | Field | When to use |
 | --- | --- |
-| `TaxGroupCode` | Available when tax groups are enabled. Select a code from the tenant's chart. The chart entry's rate is applied automatically. |
+| `TaxGroupCode` | Available when tax groups are enabled. Select a code from the tenant's chart. When the chart is empty and the stores define the codes, type the code. A chart entry's rate is applied automatically. A typed code sets no rate on the product; only stores with a row for it apply theirs. |
 | `TaxRate` | A flat percentage (e.g. `25`). Used as a fallback when no group is set, or when tax groups are disabled. |
 
 Variants can override the parent product's tax fields. If a variant doesn't set its own value, the parent product's value applies.
@@ -122,7 +122,7 @@ When you push prices — either directly on the product or via a price list — 
 
 1.  The product/variant's `TaxGroupCode` (if tax groups are enabled and the code resolves).
 2.  The product/variant's `TaxRate`.
-3.  The tenant's default tax group (if tax groups are enabled).
+3.  The tenant's default tax group (if tax groups are enabled, the tenant has tax groups of its own, and a default is set).
 
 This means integrations can push price-only updates and let Omnium derive the correct tax category from the product master data.
 
@@ -187,15 +187,14 @@ Tax groups are configured under **Configuration → Settings → Advanced → Ac
 | Setting | Description |
 | --- | --- |
 | `TaxGroupsEnabled` | Master switch. When `false`, no tax group lookups occur and the tenant operates purely in rate-based mode. |
-| `DefaultTaxGroupCode` | The code applied to a product, price, or order line when no other code is set. Must reference an active entry in the chart. |
+| `DefaultTaxGroupCode` | The code applied to a product, price, or order line when no other code is set. Must reference an active entry in the chart when the chart has entries. Optional when the chart is empty. |
 | `TaxGroups` | The chart itself — a list of group entries. |
 
-When you turn on `TaxGroupsEnabled`:
+When you turn on `TaxGroupsEnabled` with entries in the chart:
 
-*   The chart must contain at least one entry.
 *   `DefaultTaxGroupCode` must reference an entry whose validity window covers today.
 
-If either condition fails, the tenant settings won't save.
+If it does not, the tenant settings won't save. A tenant can also turn on `TaxGroupsEnabled` with an empty chart. Then only stores with their own VAT rates use tax groups — see [Store VAT rates without tenant VAT rates](../Order/Ledger/ledger-tax-groups.md#store-vat-rates-without-tenant-vat-rates).
 
 ### Chart Entry Fields
 

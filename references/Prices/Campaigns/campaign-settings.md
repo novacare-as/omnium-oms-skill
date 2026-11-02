@@ -139,7 +139,28 @@ Saving is refused when a channel has no key or two channels share a key.
 
 ## Permissions
 
-Changing these settings requires administrator access to **Configuration → Settings**. On the campaign page, margins, costs and the alerts that read them are shown only to users with read access to cost prices; the other figures are shown to everyone with access to the campaigns. An edit of a locked campaign's item that changes its planned volume, price or costs is accepted only from Omnium staff and users with the tenant's **Administrators** role.
+Changing these settings requires administrator access to **Configuration → Settings**.
+
+Who sees and may act in each stage and tab of the campaign feature is set per role, in **Administration → Roles → Edit role → Functions** (and per function in **Administration → Authorization → Functions**). The area rights on the campaign and price list pages come first: Create, Read, Update and Delete on **Campaigns** decide who may create, read, change and delete a campaign, and Update on **Price lists** who may change its items. The functions below refine them. Every function a tenant has not changed keeps the rights of the page it sits under, so nothing changes until a role is toggled.
+
+| Function | What it gates |
+| --- | --- |
+| Campaign calendar | The **Status** tab, and the campaign lanes of the promotion calendar. |
+| Campaign planning | The **Planning** tab, and taking items out of the plan or putting them back. |
+| Campaign follow-up | The **Follow-up** tab. |
+| Lock campaign | Moving a campaign into the locked status, which is also the approval of its plan. |
+| Activate campaign, Complete campaign, Archive campaign | Moving a campaign into the active, completed and archived status by hand. A status without a flag takes only the Update right. |
+| Reopen campaign plan | Moving a campaign out of a status that freezes the plan into one that does not. |
+| Change a locked campaign plan | Changing a frozen plan: items, linked promotions, dates and step dates. Off for every role until granted; Omnium staff, the tenant's Administrators role and roles with Administer on the campaign page hold it. Every change takes a reason, which is logged on the campaign. |
+| Edit all campaigns | With **Campaign editing** set to assigned campaigns: editing every campaign and changing who is responsible or assigned. Off until granted. |
+| Global campaigns, Local campaigns | With **Store-scoped campaigns** on: creating and editing chain-wide campaigns, and campaigns for the user's own stores and markets. |
+| Change costs on price list items, Change planned volumes on price list items | The cost fields and the planned volumes of a price list item, on every price list. A save that changes a field the user lacks the function for is refused, naming the fields. |
+
+The plan of a campaign is frozen while it is in the locked status, and in every status marked **Freezes planning** on the campaign statuses card. A status marked **Manual transition only** is never entered by the scheduler; a user with the matching function moves the campaign on or after the step date.
+
+Two settings on the **Campaign planning** card scope the campaigns themselves. **Campaign editing** limits changes to the campaigns a user is responsible for or assigned to. **Store-scoped campaigns** shows a user without access to all stores only the chain-wide campaigns and the campaigns naming one of their stores or markets. Both are off by default.
+
+Margins, costs and the alerts that read them are shown only to users with read access to cost prices; the other figures are shown to everyone with access to the campaigns. Users who only have read access to Promotions see campaigns within the **Campaign read access months** window.
 
 ## Related documentation
 

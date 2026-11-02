@@ -22,6 +22,7 @@ This section provides an overview of how to model products and handle variations
 *   [Assets](Product/product-assets.md) — Product images, documents, and media with automatic resizing and CDN delivery
 *   [Components](Product/product-components.md) — Packages, bundles, and kits combining multiple products
 *   [Gift Cards](Product/giftcards.md) — Technical configuration and API usage for buying and paying with gift cards
+*   [Container Deposits](Product/container-deposits.md) — Deposit (pant) lines that follow the product through carts, orders, returns and reports
 *   [Identifiers](Product/product-identifiers.md) — Understanding Id, ProductId, SkuId, ParentId, and VariantParentId
 
 * * *

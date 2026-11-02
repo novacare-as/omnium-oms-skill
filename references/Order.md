@@ -15,6 +15,7 @@ Each order follows a lifecycle defined by its **order type**, moving through sta
 *   [API Reference](Order/api-reference.md) — Import, update, search, and manage orders via the API
 *   [Invoices API](Order/invoices-api.md) — Read the invoices, receipts and credit notes of an order, and download them as PDF
 *   [Configuration](Order/order-config.md) — Order types, statuses, workflow configuration, and settings
+*   [Sample Order Types](Order/order-type-samples.md) — Sample order type configurations for click and collect, an online order with home delivery or pickup in store from a warehouse or a store, and endless aisle sales
 *   [Order Lifecycle](Order/order-lifecycle.md) — How orders flow from creation to completion, with statuses and transitions
 *   [Order Locking](Order/order-locking.md) — Concurrent order updates, the optional per-order lock, and the 409 ResourceLocked response
 *   [Click & Collect (BOPIS)](Order/order-click-and-collect.md) — Buy online, pick up in store — setup, workflows, and integration

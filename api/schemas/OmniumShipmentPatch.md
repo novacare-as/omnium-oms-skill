@@ -4,7 +4,7 @@ Representing a shipment
 
 **Fields:**
 
-- `discounts`: List<[`OmniumDiscount`](OmniumDiscount.md)>, nullable, max length 250 — Shipment discounts
+- `discounts`: List<[`OmniumDiscount`](OmniumDiscount.md)>, nullable, max length 1000 — Shipment discounts
 - `shipmentId`: string, nullable — Unique identification for shipment
 - `shippingMethodId`: string, nullable — ID of shipping method
 - `shippingMethodName`: string, nullable — Name of shipping method

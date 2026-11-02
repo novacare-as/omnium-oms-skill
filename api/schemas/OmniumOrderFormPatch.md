@@ -6,7 +6,7 @@ Order form, containing shipments, payments and line items for order
 
 - `shipments`: List<[`OmniumShipmentPatch`](OmniumShipmentPatch.md)>, nullable, max length 250 — All order shipments
 - `lineItems`: List<[`OmniumOrderLinePatch`](OmniumOrderLinePatch.md)>, nullable, max length 1000 — All order lines / products
-- `discounts`: List<[`OmniumDiscount`](OmniumDiscount.md)>, nullable, max length 250 — All discounts
+- `discounts`: List<[`OmniumDiscount`](OmniumDiscount.md)>, nullable, max length 1000 — All discounts
 - `discountsMergeMode`: [`OmniumPatchMergeMode`](OmniumPatchMergeMode.md)
 - `payments`: List<[`OmniumPaymentPatch`](OmniumPaymentPatch.md)>, nullable, max length 250 — All order payments
 - `paymentsMergeMode`: [`OmniumPatchMergeMode`](OmniumPatchMergeMode.md)

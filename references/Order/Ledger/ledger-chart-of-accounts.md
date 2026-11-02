@@ -34,11 +34,29 @@ The **Accounts** view shows account number, name, category, discriminator, VAT r
 The **discriminator** is what distinguishes two entries that share the same category:
 
 *   For **`Sales`**, **`OutputVat`**, **`Shipping`**, and **`RentalSales`**, the discriminator is the **VAT rate as a fraction**, with a dot as decimal separator and without trailing zeros — `0.25` for 25 %, `0.15` for 15 %, `0.1` for 10 %, `0.11` for 11.11 %, `0` for 0 %. This is how a 25 % sale and a 15 % sale book to different revenue and VAT accounts.
-*   For **`PaymentMethod`** and **`RefundPaymentMethod`**, the discriminator is the **payment method name** — the name configured on the payment method for web orders (for example `klarna_kco`), or the payment method recorded by the register for POS. Matching is case-sensitive.
+*   For **`PaymentMethod`** and **`RefundPaymentMethod`**, the discriminator is the **payment method name** — the name configured on the payment method for web orders (for example `klarna_kco`), or the payment method recorded by the register for POS. Matching is case-sensitive. To book one payment type of a method on its own account, write the method name, a vertical bar and the type: `Nets|Visa` — see [Accounts per payment type](ledger-chart-of-accounts.md#accounts-per-payment-type).
 *   For **`GiftCardLiability`**, the discriminator is `GiftCard`.
 *   For **`DepositLiability`**, use `Deposit`, or leave it blank.
 
 Discriminators are compared as exact text, so `25`, `0,25`, and `0.10` never match a rate. An entry with **no discriminator** acts as the catch-all for its category.
+
+### Accounts per payment type
+
+One payment method can carry several payment types — a card terminal reports the card scheme (BankAxept, Visa, Mastercard), and some providers report their own types (for example invoice or card). To book a type on its own account, add a `PaymentMethod` entry, and usually a `RefundPaymentMethod` entry, whose discriminator is the payment method name, a vertical bar and the type: `Nets|Visa`. Keep the entry for the method itself (`Nets`): every type without an entry of its own still books there.
+
+| Chart entries | A day of Nets payments: BankAxept 6 000, Visa 3 000, Mastercard 800, no type 200 |
+| --- | --- |
+| `1920 Nets` | `1920` Payment — Nets: 10 000 |
+| `1920 Nets` and `1921 Nets|Visa` | `1920` Payment — Nets: 7 000 · `1921` Payment — Nets (Visa): 3 000 |
+
+*   The method part is case-sensitive, like every discriminator. The type part is not, and known card scheme spellings count as one: `Nets|VISA`, `Nets|visa`, and `Nets|Visa` are the same entry, as are `Nets|Amex` and `Nets|American Express`.
+*   The type of a POS payment is the card type the payment terminal reported. Z-reports have stored it since Release 2026-34; an older Z-report books all of a method to the method's entry, also when its posting is regenerated.
+*   The type of an order payment is its **payment type**; when that is empty, the card issuer the In-Store app stored on the payment; and when that is empty too, the payment type of another payment with the same transaction and payment method, such as the authorization a refund belongs to.
+*   A type with a `PaymentMethod` entry but no `RefundPaymentMethod` entry refunds to the method's `RefundPaymentMethod` entry. Validation points this out as `Info`.
+*   Gift cards are not split by type.
+*   The type entries apply to postings and to the **Export bookkeeping file** and **Payment Ledger** custom reports alike.
+
+A chart without type entries books exactly as before, so adding the first one is the only step needed. Use [**Generate accounts for payment types**](ledger-chart-of-accounts.md#building-the-chart) to add them from the types your payments actually carry.
 
 ## Categories and when they are used
 
@@ -48,8 +66,8 @@ Discriminators are compared as exact text, so `25`, `0,25`, and `0.10` never mat
 | `RentalSales` | Rental revenue is booked. Without a `RentalSales` entry, rental revenue books to `Sales`. | VAT rate, or blank |
 | `OutputVat` | VAT is collected or reversed | VAT rate, or blank with a tax group code |
 | `Shipping` | Shipping is charged or refunded | VAT rate |
-| `PaymentMethod` | A payment is received | Payment method name |
-| `RefundPaymentMethod` | Money is paid back. There is no fallback to the `PaymentMethod` entry. | Payment method name |
+| `PaymentMethod` | A payment is received | Payment method name, or method and [payment type](ledger-chart-of-accounts.md#accounts-per-payment-type) (`Nets|Visa`) |
+| `RefundPaymentMethod` | Money is paid back. There is no fallback to the `PaymentMethod` entry. | Payment method name, or method and [payment type](ledger-chart-of-accounts.md#accounts-per-payment-type) (`Nets|Visa`) |
 | `GiftCardLiability` | Gift cards are sold in the In-Store app (from the Z-report), or used or refunded as payment. A payment method named `GiftCard` books here instead of to `PaymentMethod`. | `GiftCard` |
 | `DepositLiability` | Rental deposits are taken or refunded | `Deposit`, or blank |
 | `Receivable` | A web-fulfillment posting is auto-balanced because sales exceed payments | Blank |
@@ -68,6 +86,8 @@ When Omnium needs an account for a line, it filters the chart to **active entrie
 4.  **Category catch-all** — the first entry for that category with no discriminator and no currency.
 
 Within each step, the entry higher in the list wins. `Receivable` and `OverShort` are looked up separately: the first active entry of that category with no discriminator and either no currency or the posting currency.
+
+A payment or refund with a [payment type](ledger-chart-of-accounts.md#accounts-per-payment-type) first looks for an entry for that type — `Nets|Visa` with the posting currency, then `Nets|Visa` with no currency — before the steps above. A type entry therefore wins over a currency-specific entry for the method.
 
 If none of these match, the line is still written to the posting, with an empty account number and no warning. The exceptions:
 
@@ -88,6 +108,7 @@ The **Chart of accounts** card offers these actions:
 | **Add account** | Adds an empty entry. |
 | **Insert accounts from → Insert Norwegian / Swedish / Danish account chart** | Appends the country preset. Entries whose category, discriminator, currency, and tax group already exist are skipped, and a summary shows how many were added and skipped. |
 | **Insert accounts from → Generate accounts from payment methods** | Adds a `PaymentMethod` and a `RefundPaymentMethod` entry for each configured payment method that does not have one, with the payment method name as discriminator and an empty account number for you to fill in. |
+| **Insert accounts from → Generate accounts for payment types** | Opens a dialog listing, per configured payment method, the [payment types](ledger-chart-of-accounts.md#accounts-per-payment-type) its POS and order payments carried in the last 90 days, with counts. For a card terminal it also lists the other known card schemes. Types that already have both entries are marked. **Other payment type** adds a type the list does not show. **Add accounts** adds a `PaymentMethod` and a `RefundPaymentMethod` entry (`Nets|Visa`) per selected type, with an empty account number. |
 | Delete icon | Removes the entry. |
 
 The presets follow common national charts (NS 4102, BAS, Standardkontoplan). Verify every account number against your own accounting system before going live.

@@ -40,10 +40,33 @@ This task has no configurable properties.
 ### What It Does
 
 1.  Analyzes historical sales data across all products
-2.  Calculates reorder points based on sales velocity
-3.  Compares current inventory levels against calculated minimums
-4.  Generates reorder suggestions for products below threshold
-5.  Indexes all suggestions for access via API and UI
+2.  Reads the inventory transactions of each batch of SKUs in every warehouse for the sales period, and works out how many days of the period each SKU was in stock (see [Time in stock](analytics-reorder-suggestions.md#time-in-stock))
+3.  Calculates reorder points based on sales velocity
+4.  Compares current inventory levels against calculated minimums
+5.  Generates reorder suggestions for products below threshold
+6.  Indexes all suggestions for access via API and UI
+
+### Time in stock
+
+Every suggestion carries how its SKU was stocked in the warehouse during the sales period. The figures come from the inventory transactions, so nothing extra is written when stock changes.
+
+| Field | Meaning |
+| --- | --- |
+| `DaysInStock` | Days of the sales period with stock above 0 at some point in the day. The day an item sells out counts as in stock, so its sales are not lost. |
+| `DaysOutOfStock` | Days of the sales period with no stock above 0. Together with `DaysInStock` it adds up to the days of the period up to now. |
+| `StockOutCount` | Times the stock went from above 0 to 0 or below in the period. |
+| `LastStockOutDate` | When the stock last went to 0 or below in the period. |
+| `LastSellThroughDays` | Days in stock of the lot that sold out last, from its restock to the sell-out. A lot that was in stock when the period started is counted from the start of the period. |
+| `InStockSince` | When the current stock last went from 0 to above 0, or the start of the period when it was in stock all period. |
+| `SoldOutInPeriod` | True when the item sold out in the period, or was out of stock for some days and in stock for others. An item not in stock on any day of the period is not counted. |
+| `InStockAverageDailyUnitSales` | Total sales divided by `DaysInStock`. 0 when the item was not in stock in the period. |
+| `DemandDailyUnitSales` | The daily sales the suggestion is calculated from, before boost. |
+
+Out of stock means a physical level of 0 or below; reservations are not counted. Days follow the tenant's time zone. Transactions that only change the reservation are skipped, and transactions without a transaction type are included. Only the transactions of the sales period are read; for a SKU with none, the first transaction after the period gives the level the period had.
+
+The figures are empty when the warehouse has neither an inventory item nor inventory transactions for the SKU. When the transactions cannot be read, a suggestion keeps the figures it has from the last run that read them.
+
+By default the figures are shown only. When the purchase order setting `ReorderSuggestionsUseInStockSales` is on, `DemandDailyUnitSales` is the sales per day in stock for SKUs that were in stock for at least `ReorderSuggestionsMinDaysInStock` days (14 when not set), so days an item was sold out do not lower its suggestion. Otherwise it is `AverageDailyUnitSales`. See [Purchase order configuration](../../../PurchaseOrders/purchase-order-config.md#reorder-suggestions).
 
 ### Prerequisites
 
@@ -55,6 +78,7 @@ This task has no configurable properties.
 
 *   Rebuilds the entire reorder suggestions index
 *   Previous suggestions are replaced with newly calculated ones
+*   Reads the inventory transactions of the sales period once per batch of SKUs, with only the fields the calculation uses
 *   Resource-intensive operation that may impact system performance
 
 * * *

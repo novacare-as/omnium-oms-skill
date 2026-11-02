@@ -71,6 +71,10 @@ When using prepareId, configure a single shipping option with:
 
 *   **Shipping Method**: `Unifaun_deliveryCheckout`
 
+Your webshop sends `Unifaun_deliveryCheckout` as the shipping method name on the shipment, together with the `UnifaunPrepareId` property. When Omnium books the shipment, it books the shipment prepared in nShift, so the service and pickup point are the ones the customer chose in the widget.
+
+Nobody selects this option in the Omnium UI. Set **HideInOms** on it to hide it from the shipment option list.
+
 ### Option 2: Direct Booking
 
 Configure individual shipping options for each delivery method:
@@ -125,29 +129,91 @@ For direct printing, configure the printer ID:
 
 ## Delivery Checkout / Delivery Options
 
-### Custom Fields
+### Search for delivery options in the Omnium UI
 
-Configure custom fields for delivery checkout queries using the **DeliveryCheckoutCustomFields** property. Use pipe-delimited `key:value` pairs:
+When the shipping provider uses the `unifaun-provider` Vue template, you can search for nShift delivery options on a cart or an order in the Omnium UI. Omnium queries your nShift delivery checkout with the currency of the cart or order, the postal code and country you search with, and the custom fields described below. nShift returns the options whose rules match these values. If no rule matches, the search returns no options and no error.
 
-| Field | Description |
+When you select an option, Omnium uses the market's shipment option whose shipping method ID matches the nShift service ID, or whose shipping method name matches the nShift option name. If no shipment option matches, the shipment gets the shipping method `Unifaun_deliveryCheckout`.
+
+Omnium queries the delivery checkout only from this search. When your webshop shows the nShift widget, the webshop or widget sends its own values to nShift, and the settings in this section do not apply.
+
+### Custom fields
+
+To let your nShift delivery checkout rules use values from the cart or order, add the property `DeliveryCheckoutCustomFields` to the shipping provider. Omnium calculates each value and adds it to the delivery checkout query.
+
+The value is a list of `parameter:field` pairs separated by `|`:
+
+*   `parameter` is the name of the field in your nShift delivery checkout. Omnium sends it as the query parameter name.
+*   `field` is one of the fields in the table below.
+
+```
+weight:TotalWeight|isb2b:IsB2B|maxlength:MaxLength
+```
+
+With this value, a 3 kg order from a private customer, whose longest parcel is 60 cm, adds `&weight=3&isb2b=false&maxlength=60` to the query.
+
+| Field | Value sent |
 | --- | --- |
-| `MaxVolume` | Maximum package volume (m³) |
-| `TotalWeight` | Total shipment weight (kg) |
-| `MaxLength` | Maximum length (cm) |
-| `MaxWidth` | Maximum width (cm) |
-| `MaxHeight` | Maximum height (cm) |
-| `DangerousGoods` | Boolean flag for dangerous goods |
-| `IsB2B` | Boolean flag for B2B orders |
-| `TotalPrice` | Order total price |
-| `PickUpInStoreNotPossible` | Boolean for pickup availability |
-| `AcquisitionGroup` | Product acquisition group parameters |
-| `FreightClass` | Minimum freight class from products |
+| `TotalWeight` | Total weight of all colli, in kilograms |
+| `MaxVolume` | Volume of the largest colli, in cubic metres (m³) |
+| `MaxLength` | Length of the longest colli, in centimetres |
+| `MaxWidth` | Width of the widest colli, in centimetres |
+| `MaxHeight` | Height of the tallest colli, in centimetres |
+| `DangerousGoods` | `true` when any product contains dangerous goods. See [Dangerous Goods Support](nshiftDelivery.md#dangerous-goods-support) |
+| `IsB2B` | `true` when the customer type is B2B |
+| `TotalPrice` | The order total |
+| `PickUpInStoreNotPossible` | `true` when any product has the property `CanPickupInStore` with a value other than `true` |
+| `AcquisitionGroup` | Six parameters with fixed names. See [Acquisition group parameters](nshiftDelivery.md#acquisition-group-parameters) |
+| `FreightClass` | The lowest numeric freight class among the products (`freightClass`) and the order lines (property `FreightClass`). Empty when none is set |
 
-### Additional Query Parameters
+Follow these rules when you write the value:
 
-Add custom query parameters to delivery checkout requests using the order property:
+*   Field names are case-sensitive. Omnium ignores a field it does not recognise.
+*   Omnium does not remove spaces, so do not put spaces around `:` or `|`.
+*   Every pair needs a `:`, and each parameter name can appear only once. Otherwise the search fails.
+*   Omnium adds the custom fields only when the cart or order has order lines.
 
-*   **Key**: `UnifaunDeliveryOptions_AdditionalQueryStringParameters`
+Omnium always sends `TotalWeight` in kilograms. If the rules in your nShift delivery checkout expect grams, a 3 kg order is sent as `3` and does not match a rule such as "weight over 1000". Write the rules in kilograms, or send the weight yourself with [additional query parameters](nshiftDelivery.md#additional-query-parameters).
+
+### Where the weight and dimensions come from
+
+Omnium calculates the weight and dimension fields from the `colli` list on each product in the cart or order. It uses the variant's colli when the variant has any, and otherwise the product's. Each colli counts once per ordered quantity. A product without colli adds nothing, and the fields are `0` when no product has colli.
+
+| Colli field | Unit |
+| --- | --- |
+| `weight` | gram |
+| `length`, `width`, `height` | centimetre |
+| `volume` | dm³ |
+
+### Acquisition group parameters
+
+The `AcquisitionGroup` field ignores the parameter name in its pair, so any name works (for example `AcquisitionGroup:AcquisitionGroup`). It reads the property `AcquisitionGroup` on each product and adds six parameters. Each is `true` when at least one product has the matching value (case-insensitive), otherwise `false`.
+
+| Parameter | Product property value |
+| --- | --- |
+| `DC` | `DC` |
+| `DirBuKu` | `Dir bu/ku` |
+| `DirButik` | `Dir butik` |
+| `DirDC` | `Dir/DC` |
+| `DirHUBEH` | `Dir/HUBEH` |
+| `DirKund` | `Dir kund` |
+
+### Additional query parameters
+
+To send parameters that Omnium does not calculate, set the property `UnifaunDeliveryOptions_AdditionalQueryStringParameters` on the cart or order. Omnium appends the value to the delivery checkout query exactly as written, so write it as a URL-encoded query string:
+
+```json
+{
+  "properties": [
+    {
+      "key": "UnifaunDeliveryOptions_AdditionalQueryStringParameters",
+      "value": "weight=3000&isb2b=false"
+    }
+  ]
+}
+```
+
+When this property has a value, Omnium sends it **instead of** the `DeliveryCheckoutCustomFields` values. Include every parameter your nShift rules need. Like the custom fields, it is sent only when the cart or order has order lines.
 
 * * *
 

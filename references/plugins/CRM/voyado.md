@@ -69,14 +69,29 @@ Sync of customers from Voyado to Omnium is performed asynchronously by polling t
 
 ### Property Mapping
 
-When syncing customers **from Voyado to Omnium**, you can map additional Voyado contact attributes onto Omnium customer properties using the **Property mapping** table in the Voyado connector settings. Each row maps one Voyado field to one Omnium property:
+You can map additional Voyado contact attributes to Omnium customer properties using the **Property mapping** table in the Voyado connector settings. Each row maps one Voyado field to one Omnium property, and the mapping is used in both directions:
+
+*   **Voyado to Omnium**: the contact sync reads the Voyado field and sets the Omnium property.
+*   **Omnium to Voyado**: the customer export sends the Omnium property in the Voyado field. Empty values are not sent, so Voyado keeps its own value.
 
 | Column | Meaning |
 | --- | --- |
-| **Omnium property** (left) | The property to set on the Omnium customer. If the name matches a built-in field on the customer, that field is set directly; otherwise the value is stored as a custom property. |
+| **Omnium property** (left) | The property on the Omnium customer. If the name matches a built-in field on the customer, that field is set directly; otherwise the value is stored as a custom property. |
 | **Voyado field** (right) | The contact attribute to read the value from. Field names are matched case-insensitively. |
 
 If a mapped field is **missing** from the Voyado contact, the corresponding Omnium property is left untouched. An **explicit `null`** value from Voyado is honored and clears the property in Omnium.
+
+Omnium stores every mapped value as text. Values that are not text in Voyado are converted:
+
+| Voyado value | Value in Omnium |
+| --- | --- |
+| Boolean, for example an interest field | `true` or `false` |
+| Number | The number, with `.` as the decimal separator |
+| Date and time | ISO 8601, for example `2026-10-20T11:09:29.0000000Z` |
+| Store reference, for example `currentStore` | The `externalId` of the store, which is the Omnium store id |
+| List, or an object without `externalId` | Not mapped. The Omnium property is left untouched. |
+
+For example, the mapping `PrimaryStore` → `currentStore` stores the id of the customer's current store, such as `S032`, on the `PrimaryStore` property.
 
 #### Member level mapping
 
@@ -628,6 +643,10 @@ The SFTP voucher export does not include the Voyado voucher id, so vouchers impo
 5.  This will add the voucher as an authorized payment on the order as well as updating the voucher status to Applied (thus preventing multiple uses of the same voucher in Omnium).
 6.  When completing an order, the capture payment workflow step will set the voucher payment to “captured” and update the voucher status to “Redeemed”
 7.  The voucher in Voyado will be marked redeemed once the receipt is exported to Voyado. This happens on the workflow step “Export Order” that is usually executed on the last order status.
+
+## Orders with several shipments
+
+The capture can split a voucher between the shipments of an order. Omnium redeems the voucher on the first capture, and the next shipments capture the rest of the voucher.
 
 ## Vouchers redeemed outside Omnium
 

@@ -41,6 +41,10 @@ This step has no configurable properties. Notification templates, recipients, an
 *   Records notification in return history
 *   May update notification delivery status
 
+### Attach the Credit Note
+
+Select the **Credit notes** attachment on the return notification to send the credit note PDF of the return with the email. The credit note must exist when this step runs, so place [Create Credit Note](../payment/create-credit-note.md) before Notification, in the same return status or in a status the return passes through earlier. Do not turn on **Run after order is saved** for Create Credit Note unless Notification has it too. An email for a return without a credit note has no credit note attached.
+
 ## Business Cases
 
 ### When to Use
@@ -82,3 +86,4 @@ This step has no configurable properties. Notification templates, recipients, an
 
 *   [Ensure RMA](../enrichment/ensure-rma.md) - Generate RMA before notification
 *   [Create Return Shipment Booking](../shipments/create-return-shipment-booking.md) - Generate label before sending
+*   [Create Credit Note](../payment/create-credit-note.md) - Issue the credit note before sending

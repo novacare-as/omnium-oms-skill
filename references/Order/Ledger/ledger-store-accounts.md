@@ -69,7 +69,7 @@ Besides the chart, payment-method, and tax-group checks described in [Configurat
 | Overrides the tenant account | Info | The entry replaces a tenant entry for this store. |
 | Matches the tenant account it overrides | Info | The entry has the same account number as the tenant entry; you can usually delete it. |
 | Inactive and hides the tenant account | Info | The entry switches off the tenant entry for this store. |
-| References a tax group the tenant does not have | Warning | The entry's tax group code is not in the tenant's VAT rates. |
+| References a tax group neither the store nor the tenant has | Warning | The entry's tax group code is in neither the store's own VAT rates nor the tenant's. |
 | Accounts carry custom properties | Warning | Entries have custom properties. |
 | Chart size | Warning / Error | The store's entries exceed 128 KB (warning) or 512 KB (error). |
 | Store VAT rates | Error | One of the store's own VAT rates breaks a rule that the save checks when the rates change — see [Saving a store with its own VAT rates](ledger-tax-groups.md#saving-a-store-with-its-own-vat-rates). Shown in the area `StoreTaxGroups`. |

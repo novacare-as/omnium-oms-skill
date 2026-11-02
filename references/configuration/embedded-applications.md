@@ -137,6 +137,7 @@ Areas rendered inline or in a sidebar send the object under `dataObject` and no 
 | `DeliveriesManageContextMenu` | `objectId`, `className`, `dataObject` holding `delivery`, `purchaseOrderLines`, `purchaseOrderId` |
 | `PurchaseOrderManage`, `PurchaseOrderContextMenu` | `objectId`, `className`, `dataObject` holding a nested `dataObject`, `purchaseOrder` and `purchaseOrderId` |
 | Context and action menu areas on a detail page | `objectId`, `className`, `dataObject` |
+| An extension shown through a [custom view](gui-extensions.md#showing-an-extension-through-a-custom-view) | `objectId`, `className`, `dataObject` (product, cart, order line or project) |
 
 Omnium sends no message at all when there is no object in context. This applies to the context menu areas on list pages (`orders`, `carts`, `products`, `stores`, `privateCustomers`, `businessCustomers`, `priceLists`), to `businessCustomersButtonRow`, and to the dashboard GUI extension gadget. An extension in one of those areas has to take everything it needs from the URL.
 

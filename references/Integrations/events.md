@@ -946,6 +946,9 @@ Event operation IDs follow a structured numbering system:
 *   `398100` - ApiCategoryAdd
 *   `398102` - ApiCategoryDeleted
 *   `398104` - ApiCategoryBatchAdd
+*   `398106` - ApiCategoryPatch
+*   `398108` - ApiCategoryBatchPatch
+*   `398110` - CategoryBatchAddFromScheduledTask
 
 ### Batch operations (510x)
 
