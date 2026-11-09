@@ -1,0 +1,137 @@
+# OmniumProduct
+
+**Fields:**
+
+- `isSku`: boolean — True if product is stock keeping unit / product that can be sold. Should always be set to true for products without variants and false for products with variants.
+- `parentId`: string, nullable — The ParentId should only be set for products that has a third product level, which is above product and variant. For instance, if you have a product 'Awesome Sweater' that comes in 5 colors which each has 3 sizes, you should store this as five products with three variants each. You could then populate 'ParentId' in order to group the five products together.
+- `variants`: List<[`OmniumProductVariant`](OmniumProductVariant.md)>, nullable, max length 200 — List of variants
+- `isLocalProduct`: boolean, nullable — Only relevant when IsLocalProductsEnabled is enabled in productSettings. When enabled, both 'IsLocalProduct' must be activated and the user must have access to a selected store in order to edit the product
+- `id`: string, nullable — Required for products: Product unique ID. If your product catalog has multiple languages, the ID should be set with the following convention {ProductId}_{Language} ('12345_en'). For variants, the ID will be populated from SkuID, and should not be set manually. Valid format: Only letters (a-z, A-Z), digits (0-9), hyphens (-), and underscores (\_). Regex pattern: ^[a-zA-Z0-9\-_]+$
+- `skuId`: string, nullable — Product unique SKU (but equal for all language versions). This should only be set for variants, or if the product itself is sellable and is stored with 'IsSku=true' and has no variants.
+- `ean`: string, nullable, **deprecated** — EAN code
+- `gtins`: List<string>, nullable — GTIN codes
+- `productId`: string, nullable — Unique product Id, without language conventions. Variants on a product should have the same value for ProductId as the product has.
+- `name`: string, nullable — Product name
+- `productGroup`: [`OmniumProductGroup`](OmniumProductGroup.md)
+- `startDate`: string (date-time), **deprecated** — Product activation date. Product is not active if date is in the future. Obsolete - Use Published property instead
+- `endDate`: string (date-time), **deprecated** — Product activation end date. Product is not active if date is in the past. Obsolete - Use StopPublished property instead
+- `created`: string (date-time) — Date product is created
+- `modified`: string (date-time) — Date product is modified
+- `published`: string (date-time), nullable — Date product is published. Set automatically when an active product is saved without one. Can be null.
+- `stopPublished`: string (date-time), nullable — Product activation end date. Can be null
+- `discontinued`: string (date-time), nullable — Product discontinuation date. If discontinued date has passed, it should not be reordered from supplier
+- `isActive`: boolean — True if product is active. False if it should be hidden from customers.
+- `catalog`: string, nullable — Label to categorize or group products. In Omnium this is used to show statistics grouped by this label. (This property is unrelated to the category tree.)
+- `mainCategoryId`: string, nullable — This is the main category for the product, and should be one of the CategoryIds in Categories. If Catalog is not used, this category's name will be used as grouping in statistics. If the main category is missing from the category list, it will automatically be added.
+- `mainCategoryName`: string, nullable — Calculated field: If MainCategoryId is given, and exists as a category in Omnium, this property will be overwritten by the name of that category.
+- `categories`: List<[`OmniumProductCategory`](OmniumProductCategory.md)>, nullable, max length 500 — Product categories. If category enrichment is turned on, only CategoryId are required when adding or updating products. The other information will be populated from the already existing category with the same id.
+- `mainImageUrl`: string, nullable — Product main image url. If not set, this will be populated from the product assets, using the asset which has 'IsMainImage="true"' set. If none are set, the first asset in the list is selected.
+- `assets`: List<[`OmniumAsset`](OmniumAsset.md)>, nullable, max length 250 — Product media files
+- `seoInformation`: List<[`OmniumSeoInfo`](OmniumSeoInfo.md)>, nullable, **deprecated**, max length 250 — Product information for search engine optimization Obsolete - Use SeoInfo instead
+- `seoInfo`: [`OmniumSeoInfo`](OmniumSeoInfo.md)
+- `entryType`: string, nullable, **deprecated** — Product entry type
+- `isBundle`: boolean — True if product is a bundle of other products (unlike package, price is sum of components)
+- `isKit`: boolean — True if product is a pre-assembled kit made of other products (unlike package and bundle, kits have inventory)
+- `isPackage`: boolean — True if product is package of other products (unlike bundle, price is specified for package)
+- `preventPackageSplit`: boolean, nullable — Controls whether this package/bundle's components may be allocated to different warehouses. True: components always ship together. False: components may be split, though components linked via ShipTogetherWithComponentId still stay together. Null: the allocation flow's default applies.
+- `isWriteProtected`: boolean — True if product is write protected by user. PIM integrations should not override product information.
+- `errors`: List<[`OmniumEntityError`](OmniumEntityError.md)>, nullable, max length 250 — A list of errors (or warnings) for the product. Typically this is used in integrations where there was a problem export products. The errors are searchable and displayed in Omnium's UI
+- `isInStock`: boolean — Calculated: This is populated automatically by default based on inventory and updated by a scheduled task which updates the products every 30 minutes.
+- `availableInventory`: number (decimal) — Calculated: Number of items available in stock. If this is a product with variants, it will be a sum of all variants. This is populated automatically by default based on inventory and updated by a scheduled task which updates the products every 30 minutes.
+- `inventory`: List<[`OmniumProductInventory`](OmniumProductInventory.md)>, nullable — Calculated: This is populated automatically by default based on inventory and updated by a scheduled task which updates the products every 30 minutes. The inventory list contains inventory information for each warehouse(store) defined in Omnium
+- `inventoryStatus`: string, nullable — Status of current inventory, based on AvailableInventory. Could be 'OutOfStock', 'LowInStock' or 'HighInStock'
+- `omniStock`: List<string>, nullable, max length 1000 — Calculated: List of store IDs where this product is available online (has stock and meets business rules for online sales)
+- `omniStockLevels`: List<[`OmniumOmniStockLevel`](OmniumOmniStockLevel.md)>, nullable, max length 1000 — Calculated: Stock levels per store, used for online availability.
+- `warehouseInventories`: List<[`OmniumWarehouseInventory`](OmniumWarehouseInventory.md)>, nullable, **deprecated**, max length 250 — Warehouse inventories Obsolete - Use Inventory api endpoint instead
+- `catalogNodes`: List<string>, nullable, max length 250 — Catalog nodes/categories. Simple list of strings of category names. Consider using the Categories property instead as this also contains IDs and category metadata.
+- `minQuantity`: number (decimal), **deprecated** — Minimum inventory quantity (point of reordering)
+- `maxQuantity`: number (decimal), **deprecated** — Max inventory quantity (what should be in stock after new supply)
+- `weight`: number (double), nullable — Product weight in kilograms (kg)
+- `taxCategory`: string, nullable, **deprecated** — Product tax category
+- `taxGroupCode`: string, nullable — References a TaxGroup.Code in the tenant's chart of tax groups. When null, the tenant's DefaultTaxGroupCode applies (if feature is enabled). Has no effect when AccountingSettings.TaxGroupsEnabled = false.
+- `taxRate`: number (decimal), nullable — Per-product VAT rate used as a fallback when tax groups are not configured. Applied to any price that has no TaxRate of its own at save time. Tax-group resolution takes precedence when enabled.
+- `siblings`: List<string>, nullable, **deprecated**, max length 250 — List of sibling product IDs Obsolete - Use RelatedProducts instead
+- `associatedProducts`: List<string>, nullable, **deprecated**, max length 250 — Associated product IDs Obsolete - Use RelatedProducts instead
+- `price`: [`OmniumPrice`](OmniumPrice.md)
+- `prices`: List<[`OmniumPrice`](OmniumPrice.md)>, nullable, max length 3000 — List of all product prices - all currencies, campaigns, customer prices etc
+- `properties`: List<[`OmniumPropertyItem`](OmniumPropertyItem.md)>, nullable, max length 500 — List of properties. Key value pairs with any non strongly typed properties.
+- `tags`: List<string>, nullable, max length 250 — List of tags.
+- `marketIds`: List<string>, nullable, max length 500 — List of available market IDs. If not set, the product will be available for all markets.
+- `storeIds`: List<string>, nullable, max length 1000 — List of available store IDs. If not set, the product will be available for all stores.
+- `marketGroupIds`: List<string>, nullable, max length 1000 — List of available market group IDs
+- `language`: string, nullable — Product language code. This should match 'ProductContentLanguage' on a stored market in Omnium. Typically the values would be 'en' (english) or 'no' (norwegian).
+- `location`: string, nullable — The location of the product in the warehouse.
+- `color`: string, nullable — Product color
+- `brand`: string, nullable — Product brand
+- `size`: string, nullable — Product size
+- `shortDescription`: string, nullable — Short product description
+- `description`: string, nullable — Product description
+- `specification`: string, nullable — Product Specification
+- `averageRating`: number (double) — Calculated - Average rating for this product
+- `ratingCount`: integer (int32) — Calculated - Number of ratings for this product
+- `isNotRatable`: boolean, nullable — Set to true if this product should be excluded from rating emails/forms
+- `excludeFromPromotions`: boolean, nullable — Set to true if this product should be excluded from promotions
+- `salesStartDate`: string (date-time), nullable — Embargo date: product cannot be sold before this date
+- `fixedPriceCode`: string, nullable — Price protection category (e.g. book law)
+- `fixedPriceEndDate`: string (date-time), nullable — Discounts are blocked until this date
+- `discountBlocked`: boolean, nullable — Permanent discount prohibition
+- `isExcludedFromAnalytics`: boolean — Set to true if this product should be excluded from analytics (e.g., gift cards that would inflate sales figures)
+- `supplierName`: string, nullable — Name of main product supplier
+- `supplierId`: string, nullable — Main supplier ID
+- `supplierColor`: string, nullable — Color from supplier
+- `supplierPackagingUnit`: string, nullable — Unit for supplier sku
+- `supplierPackagingQuantity`: number (decimal), nullable — Supplier packaging quantity (D-Pack)
+- `allowSupplierPackageBreak`: boolean, nullable — Indicates if supplier packages can be split to order quantities smaller than the full package size.
+- `additionalSuppliers`: List<[`OmniumProductSupplier`](OmniumProductSupplier.md)>, nullable — List of additional suppliers
+- `leadTime`: integer (int32), nullable — Lead time in days
+- `supplierLeadTime`: integer (int32), nullable — Supplier lead time in days
+- `supplierSkuId`: string, nullable — External product ID from supplier, used when creating purchase orders
+- `freightClass`: string, nullable — Freight class
+- `sizeType`: string, nullable — Product size type
+- `unit`: string, nullable — Product unit, used for describing what unit the quantities are in
+- `units`: List<[`OmniumProductUnit`](OmniumProductUnit.md)>, nullable, max length 250 — List of additional units
+- `colli`: List<[`OmniumProductColli`](OmniumProductColli.md)>, nullable, max length 250 — List of colli, used for shipment
+- `relatedProducts`: List<[`OmniumRelatedProduct`](OmniumRelatedProduct.md)>, nullable, max length 250 — Related products
+- `season`: string, nullable — Product season
+- `badges`: List<[`OmniumProductBadge`](OmniumProductBadge.md)>, nullable, max length 250 — List of product badges or labels to display on product
+- `sortIndex`: integer (int32), read-only — Calculated sort index
+- `sortIndexBoost`: integer (int32) — Sort index set by API / GUI
+- `sortIndexBase`: integer (int32) — Calculated sort index base set by Omnium services
+- `isBackorder`: boolean — If true, the product have no reorder level, and will usually not be in stock
+- `isPriceLocked`: boolean — When true, the price on order lines created from this product will be locked and not recalculated.
+- `isOpenPrice`: boolean — When true, the price is entered in the POS when the product is added to a cart. Used for products sold without a fixed price. The price on the order line is locked and not recalculated, and the order line is excluded from promotions.
+- `costCalculationMethod`: [`OmniumCostCalculationMethod`](OmniumCostCalculationMethod.md)
+- `grossProfitPercent`: number (decimal), nullable — Gross profit in percent of the price excl. tax. Used to calculate the order line cost when CostCalculationMethod is GrossProfitPercent. Example: with a price of 100 excl. tax and 40, the cost is 60.
+- `isMainProductVariant`: boolean — If true, this variant should represent the product in flattened variant lists. This can also be used if you have a product catalog with multiple products with the same parent ID set, and you only wish to show one of the products in product searches. You could then set this to 'false' on the products you wish to exclude from searches, and filter on the value.
+- `isSerializableProduct`: boolean — If true, the product is serializable, and order line should contain serial number when completed
+- `isRental`: boolean — If true, the product is available for rental
+- `rentalSourceProductId`: string, nullable — The SKU ID of the original product this rental product was created from
+- `alternativeProductName`: string, nullable — Alternative product name
+- `popularityStandardSortIndex`: [`OmniumCustomSortIndex`](OmniumCustomSortIndex.md)
+- `popularitySortIndices`: List<[`OmniumCustomSortIndex`](OmniumCustomSortIndex.md)>, nullable, max length 250 — Calculated: List of market specific popularity indices
+- `cost`: number (decimal) — Product net cost
+- `costCurrency`: string, nullable — Currency code. E.g. USD, EUR, NOK
+- `costInDefaultCurrency`: number (decimal), nullable — Cost in default currency
+- `components`: List<[`OmniumProductComponent`](OmniumProductComponent.md)>, nullable, max length 250 — Product components (used when product is a package)
+- `productOptions`: List<[`OmniumProductOption`](OmniumProductOption.md)>, nullable, max length 250 — Available product options for the product
+- `productType`: string, nullable — Optional: Specifies if this product is of a specific kind. An example of this is the type "ProductOption" A Product Option is a sold as an additional item or service to an other product, and is not sold by itself. Inscriptions or other types of customization could be this sort of option. It could also be a service, such as assembling, or it could be an additional item which would not make sense so sell on it's own
+- `promotionIds`: List<string>, nullable, max length 250 — Promotions associated with the product
+- `externalIds`: List<[`OmniumExternalId`](OmniumExternalId.md)>, nullable, max length 250 — List of external product IDs. Could be ids in eCommerce platform etc
+- `locationOverstock`: List<string>, nullable, max length 250 — Overstock locations (extra inventory locations)
+- `isVirtual`: boolean, nullable — Virtual products will not affect inventory.
+- `gender`: string, nullable — Gender
+- `countryOfOrigin`: string, nullable — Country of origin
+- `customsCode`: string, nullable — Customs code for the product
+- `lowestPriceHistory`: List<[`OmniumPriceReference`](OmniumPriceReference.md)>, nullable, max length 250 — Price history: the lowest price for each market and unit. In each market the entry without a unit comes first, and the other units follow by price.
+- `assortmentCodes`: List<[`OmniumAssortmentCode`](OmniumAssortmentCode.md)>, nullable, max length 250 — Assortment codes for the product
+- `expectedDeliveryDate`: string (date-time), nullable — Date when the product is expected back in stock. Calculated by purchase order services, or set externally.
+- `status`: string, nullable — Status is set by Omnium. "Published" is default. When delete a product in GUI. Status will be updated to "Deleted"
+- `completionStatus`: [`OmniumCompletionStatus`](OmniumCompletionStatus.md)
+
+**Used directly by endpoints in:**
+
+- [Products | Batch Updates](../endpoints/products/batch-updates.md)
+- [Products | Get](../endpoints/products/get.md)
+- [Products | Rentals](../endpoints/products/rentals.md)
+- [Products | Update](../endpoints/products/update.md)
+- [Products | Variants](../endpoints/products/variants.md)

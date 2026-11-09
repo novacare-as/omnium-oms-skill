@@ -1,0 +1,24 @@
+{
+  "name": "omnium-oms-skill",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "sync": "npm run sync:docs && npm run sync:api",
+    "sync:docs": "node scripts/sync-docs.ts",
+    "sync:api": "node scripts/sync-api.ts",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "cheerio": "1.2.0",
+    "turndown": "7.2.4",
+    "turndown-plugin-gfm": "1.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "@types/turndown": "5.0.6",
+    "typescript": "5.9.3"
+  }
+}

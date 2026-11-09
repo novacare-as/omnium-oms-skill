@@ -1,0 +1,99 @@
+# OmniumVariantPatch
+
+SkuId is required. If not set, the patch request will be skipped
+
+**Fields:**
+
+- `id`: string, nullable — Product unique ID
+- `productId`: string, nullable — Product ID
+- `skuId`: string, nullable — Product unique ID
+- `ean`: string, nullable, **deprecated** — EAN code
+- `gtins`: List<string>, nullable — GTIN codes
+- `name`: string, nullable — Product name
+- `published`: string (date-time), nullable — Date product is published
+- `stopPublished`: string (date-time), nullable — Product activation end date. Can be null
+- `discontinued`: string (date-time), nullable — Product discontinuation date. If discontinued date has passed, it should not be reordered from supplier
+- `isActive`: boolean, nullable — True if product is active. False if it should be hidden from customers.
+- `catalog`: string, nullable — Catalog name
+- `mainImageUrl`: string, nullable — Product image url
+- `assets`: List<[`OmniumAsset`](OmniumAsset.md)>, nullable, max length 250 — Product media files
+- `keepExistingAssets`: boolean, nullable — Set to 'false' if you want to update the whole 'Assets' list. If true, new assets will be added to the existing list of assets. 'True' by default.
+- `seoInfo`: [`OmniumSeoInfo`](OmniumSeoInfo.md)
+- `entryType`: string, nullable — Product entry type
+- `expectedDeliveryDate`: string (date-time), nullable — Expected delivery date
+- `isSku`: boolean, nullable — True if product is stock keeping unit / product or variant that can be sold
+- `isBundle`: boolean, nullable — True if product is a bundle of other products (unlike package, price is sum of components)
+- `isPackage`: boolean, nullable — True if product is package of other products (unlike bundle, price is specified for package)
+- `preventPackageSplit`: boolean, nullable — Controls whether this package/bundle's components may be allocated to different warehouses. True: components always ship together. False: components may be split, though components linked via ShipTogetherWithComponentId still stay together. Null: the allocation flow's default applies.
+- `isKit`: boolean, nullable — True if product is a kit (product composed of other products, assembled at fulfillment)
+- `isWriteProtected`: boolean, nullable — True if product is write protected by user. PIM integrations should not override product information.
+- `isInStock`: boolean, nullable — True if product is in stock
+- `catalogNodes`: List<string>, nullable, max length 250 — Catalog nodes (if multiple)
+- `minQuantity`: number (decimal), nullable — Minimum inventory quantity (point of reordering)
+- `maxQuantity`: number (decimal), nullable — Max inventory quantity (what should be in stock after new supply)
+- `weight`: number (double), nullable — Product weight
+- `taxCategory`: string, nullable — Product tax category
+- `taxGroupCode`: string, nullable — References a TaxGroup.Code in the tenant's chart of tax groups. When null, the tenant's DefaultTaxGroupCode applies (if feature is enabled). Has no effect when AccountingSettings.TaxGroupsEnabled = false.
+- `taxRate`: number (decimal), nullable — Per-product VAT rate used as a fallback when tax groups are not configured. Applied to any price that has no TaxRate of its own at save time. Tax-group resolution takes precedence when enabled.
+- `associatedProducts`: List<string>, nullable, max length 250 — Associated product IDs
+- `prices`: List<[`OmniumPrice`](OmniumPrice.md)>, nullable, max length 250 — List of all product prices - all currencies, campaigns, customer prices etc
+- `pricesMergeMode`: [`OmniumPatchMergeMode`](OmniumPatchMergeMode.md)
+- `properties`: List<[`OmniumPropertyItem`](OmniumPropertyItem.md)>, nullable, max length 250 — List of properties. Key value pairs with any non strongly typed properties.
+- `propertiesRemovalConditions`: List<[`OmniumPropertyItem`](OmniumPropertyItem.md)>, nullable, max length 250 — Specifies conditions for removing existing properties before proceeding with the patch operation. Each item in this list is a property specification with multiple attributes that must all match an existing property for it to be removed. For instance, a condition { "KeyGroup": "KeyGroupToRemove", "ValueType": "List" } will remove properties only if both KeyGroup == "KeyGroupToRemove" and ValueType == "List". Multiple items in this list are evaluated with "OR" logic, so any matching condition will trigger removal.
+- `keepExistingCustomProperties`: boolean, nullable — Set to 'false' if you want to update the whole 'properties' list. If true, new properties will be added to the existing list of properties. 'True' by default.
+- `dontOverwriteExistingPropertyValues`: boolean, nullable — Set to 'true' if you want to skip updating properties that already exists and has a value. If you want to add values to a list/multiselect property, make sure this option is set to 'true' along with valueType: 'List' or 'DropDown'. Otherwise the list property will be overwritten.
+- `marketIds`: List<string>, nullable, max length 250 — List of available market IDs
+- `productOptions`: List<[`OmniumProductOption`](OmniumProductOption.md)>, nullable, max length 250 — Available product options for the product
+- `storeIds`: List<string>, nullable, max length 1000 — List of available store IDs
+- `marketGroupIds`: List<string>, nullable, max length 250 — List of available market group IDs
+- `language`: string, nullable — Product language
+- `location`: string, nullable — The location of the product in the warehouse.
+- `color`: string, nullable — Product color
+- `brand`: string, nullable — Product brand
+- `size`: string, nullable — Product size
+- `shortDescription`: string, nullable — Short product description
+- `description`: string, nullable — Product description
+- `specification`: string, nullable — Product Specification
+- `supplierName`: string, nullable — Name of main product supplier
+- `supplierId`: string, nullable — Main supplier ID
+- `supplierSkuId`: string, nullable — External product ID from supplier, used when creating purchase orders
+- `supplierColor`: string, nullable — Color from supplier
+- `supplierPackagingUnit`: string, nullable — Supplier packaging quantity
+- `supplierPackagingQuantity`: number (decimal), nullable — Supplier packaging quantity
+- `allowSupplierPackageBreak`: boolean, nullable — Indicates if supplier packages can be split to order quantities smaller than the full package size.
+- `additionalSuppliers`: List<[`OmniumProductSupplier`](OmniumProductSupplier.md)>, nullable — List of additional product suppliers
+- `sizeType`: string, nullable — Product size type
+- `unit`: string, nullable — Product unit, used for describing what unit the quantities are in
+- `units`: List<[`OmniumProductUnit`](OmniumProductUnit.md)>, nullable, max length 250 — List of additional units
+- `colli`: List<[`OmniumProductColli`](OmniumProductColli.md)>, nullable, max length 250 — List of colli, used for shipment
+- `relatedProducts`: List<[`OmniumRelatedProduct`](OmniumRelatedProduct.md)>, nullable, max length 250 — Related products
+- `season`: string, nullable — Product season
+- `badges`: List<[`OmniumProductBadge`](OmniumProductBadge.md)>, nullable, max length 250 — List of product badges or labels to display on product
+- `sortIndexBoost`: integer (int32), nullable — Sort index set by API / GUI
+- `isBackorder`: boolean, nullable — If true, the product have no reorder level, and will usually not be in stock
+- `isPriceLocked`: boolean, nullable — When true, the price on order lines created from this product will be locked and not recalculated.
+- `isOpenPrice`: boolean, nullable — When true, the price is entered in the POS when the product is added to a cart. The price on the order line is locked, and the line is excluded from promotions
+- `costCalculationMethod`: [`OmniumCostCalculationMethod`](OmniumCostCalculationMethod.md)
+- `grossProfitPercent`: number (decimal), nullable — Gross profit in percent of the price excl. tax, used when CostCalculationMethod is GrossProfitPercent
+- `isMainProductVariant`: boolean, nullable — If true, this variant should represent the product in flattened variant lists
+- `isSerializableProduct`: boolean, nullable — If true, the product is serializable, and order line should contain serial number when completed
+- `alternativeProductName`: string, nullable — Alternative product name
+- `cost`: number (decimal), nullable — Product net cost
+- `costCurrency`: string, nullable — Currency code. E.g. USD, EUR, NOK
+- `components`: List<[`OmniumProductComponent`](OmniumProductComponent.md)>, nullable, max length 250 — Product components (used when product is a package)
+- `productType`: string, nullable — Type of product
+- `tags`: List<string>, nullable, max length 250 — List of tag IDs
+- `externalIds`: List<[`OmniumExternalId`](OmniumExternalId.md)>, nullable, max length 250 — List of external product IDs. Could be ids in eCommerce platform etc
+- `isNotRatable`: boolean, nullable — Set to true if this product should be excluded from rating emails/forms
+- `excludeFromPromotions`: boolean, nullable — Set to true if this product should be excluded from promotions
+- `salesStartDate`: string (date-time), nullable — Embargo date: product cannot be sold before this date
+- `fixedPriceCode`: string, nullable — Price protection category (e.g. book law)
+- `fixedPriceEndDate`: string (date-time), nullable — Discounts are blocked until this date
+- `discountBlocked`: boolean, nullable — Permanent discount prohibition
+- `gender`: string, nullable — Gender
+- `countryOfOrigin`: string, nullable — Country of origin
+- `isVirtual`: boolean, nullable — Virtual products will not affect inventory.
+- `assortmentCodes`: List<[`OmniumAssortmentCode`](OmniumAssortmentCode.md)>, nullable, max length 250 — Assortment codes for the product
+- `fieldsToForceNull`: List<string>, nullable — Force nullable product fields to null. Use the property path, e.g. "SeoInfo.Description".
+- `freightClass`: string, nullable — Freight class
+- `customsCode`: string, nullable — Customs code for the product

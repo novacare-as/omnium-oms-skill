@@ -1,0 +1,68 @@
+name: Sync Omnium docs and API reference
+
+on:
+  schedule:
+    - cron: "17 4 * * *" # daily, 04:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-omnium
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run typecheck
+
+      - name: Regenerate references/ from docs.omnium.no
+        run: npm run sync:docs
+
+      - name: Regenerate api/ from the OpenAPI spec
+        run: npm run sync:api
+
+      - name: Summarize changes
+        id: changes
+        run: |
+          git add -A references api SKILL.md
+          {
+            echo "summary<<EOF"
+            git diff --cached --stat -- references api SKILL.md | tail -n 40
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      # Opens a single PR on a fixed branch so doc changes get a quick review
+      # before they reach the skill. While it is open, later runs force-push to
+      # the same branch and update it; if the docs end up matching the base
+      # branch again, the branch is deleted and the PR closes.
+      - uses: peter-evans/create-pull-request@v8
+        with:
+          branch: automation/sync-omnium
+          delete-branch: true
+          add-paths: |
+            references
+            api
+            SKILL.md
+          commit-message: "Sync references/ and api/ from Omnium"
+          title: "Sync references/ and api/ from Omnium"
+          body: |
+            Automated refresh of `references/` (from https://docs.omnium.no, by `scripts/sync-docs.ts`), `api/` (from the OpenAPI spec, by `scripts/sync-api.ts`) and the generated routing tables in `SKILL.md`.
+
+            ```
+            ${{ steps.changes.outputs.summary }}
+            ```
+          labels: omnium-sync

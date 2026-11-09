@@ -1,0 +1,599 @@
+# Schema index
+
+Generated from the Omnium OpenAPI spec by `scripts/sync-api.ts` — do not edit by hand.
+Every schema with its description. Search this file for a name or keyword, then open the schema file.
+
+- [GenerateSAFTReportRequest](GenerateSAFTReportRequest.md)
+- [KitPromotionRewardType](KitPromotionRewardType.md) — Defines the type of reward [Percentage = 0, Fixed amount = 1, Fixed price = 2]
+- [LineItemIdMapping](LineItemIdMapping.md) — Mapping from old line item ID to new line item ID
+- [OmniumAccountCategory](OmniumAccountCategory.md) — Category classifying what kind of accounting entry a ledger line represents.
+- [OmniumAccountingLedgerLine](OmniumAccountingLedgerLine.md) — A single line on an accounting posting (one debit/credit entry for one account).
+- [OmniumAccountingLedgerLineOmniumSearchResult](OmniumAccountingLedgerLineOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumAccountingLedgerLineSearchRequest](OmniumAccountingLedgerLineSearchRequest.md) — Search request for accounting ledger lines.
+- [OmniumAccountingPosting](OmniumAccountingPosting.md) — An accounting posting (voucher header) summarising a balanced set of ledger lines. Built either from a POS Z-report close or from a daily web-fulfillment batch.
+- [OmniumAccountingPostingOmniumSearchResult](OmniumAccountingPostingOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumAccountingPostingSearchRequest](OmniumAccountingPostingSearchRequest.md) — Search request for accounting postings.
+- [OmniumAddProductOptionRequestValue](OmniumAddProductOptionRequestValue.md) — Model used when creating product options
+- [OmniumAddProductOptionsRequest](OmniumAddProductOptionsRequest.md) — For adding one or more product options to a product in cart
+- [OmniumAddRentalProductToCartRequest](OmniumAddRentalProductToCartRequest.md) — Request for adding a rental product as a line item to a cart
+- [OmniumAddress](OmniumAddress.md) — Address class
+- [OmniumAddressSearchRequest](OmniumAddressSearchRequest.md) — Search request object for OmniumAddress
+- [OmniumAllocationInventoryOverride](OmniumAllocationInventoryOverride.md) — Availability for one SKU at one warehouse, supplied by the caller.
+- [OmniumAllocationPlan](OmniumAllocationPlan.md) — One way to serve the whole order: which warehouse sends which lines.
+- [OmniumAllocationPlannedLine](OmniumAllocationPlannedLine.md) — One order line placed at a warehouse.
+- [OmniumAllocationPlannedShipment](OmniumAllocationPlannedShipment.md) — One shipment in a plan: a warehouse and the lines it sends.
+- [OmniumAllocationRankedPlan](OmniumAllocationRankedPlan.md) — A plan's standing under one profile.
+- [OmniumAllocationRanking](OmniumAllocationRanking.md) — The plans in order under one profile, best first.
+- [OmniumAllocationResult](OmniumAllocationResult.md) — What the engine decided. The plans are shared by every ranking; a profile contributes an order over them rather than a different set, so one call can answer several policies at once.
+- [OmniumAllocationSimulationRequest](OmniumAllocationSimulationRequest.md) — Asks Omnium's allocation engine where an order or basket should ship from. Nothing is written: a simulation never changes the order, the cart or inventory.
+- [OmniumAllocationTraceEntry](OmniumAllocationTraceEntry.md) — One step in the engine's reasoning.
+- [OmniumAllocationUnallocatableLine](OmniumAllocationUnallocatableLine.md) — A line no warehouse could serve, and why.
+- [OmniumAnalyticsAddress](OmniumAnalyticsAddress.md)
+- [OmniumAnalyticsContactPerson](OmniumAnalyticsContactPerson.md)
+- [OmniumAnalyticsCustomer](OmniumAnalyticsCustomer.md)
+- [OmniumAnalyticsOrder](OmniumAnalyticsOrder.md)
+- [OmniumAnalyticsOrderLine](OmniumAnalyticsOrderLine.md)
+- [OmniumAnalyticsOrderLineGrouped](OmniumAnalyticsOrderLineGrouped.md) — Quantities for order aggregations
+- [OmniumAnalyticsOrderLineGroupedOmniumSearchResult](OmniumAnalyticsOrderLineGroupedOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumAnalyticsOrderLineGroupedSearchResponse](OmniumAnalyticsOrderLineGroupedSearchResponse.md) — Response model for analytics search and aggregation data
+- [OmniumAnalyticsOrderLineInfo](OmniumAnalyticsOrderLineInfo.md)
+- [OmniumAnalyticsOrderLineOmniumSearchResult](OmniumAnalyticsOrderLineOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumAnalyticsOrderLineSearchRequest](OmniumAnalyticsOrderLineSearchRequest.md) — Search analytics orders (analytics must be activated in configuration to yield results)
+- [OmniumAnalyticsPayment](OmniumAnalyticsPayment.md)
+- [OmniumAnalyticsProduct](OmniumAnalyticsProduct.md)
+- [OmniumAnalyticsPromotion](OmniumAnalyticsPromotion.md)
+- [OmniumAnalyticsPropertyItem](OmniumAnalyticsPropertyItem.md) — Custom property item for order
+- [OmniumAnalyticsReturnOrder](OmniumAnalyticsReturnOrder.md)
+- [OmniumAnalyticsShipment](OmniumAnalyticsShipment.md)
+- [OmniumAnalyticsStore](OmniumAnalyticsStore.md)
+- [OmniumAnalyticsSupplier](OmniumAnalyticsSupplier.md)
+- [OmniumAspectRatio](OmniumAspectRatio.md)
+- [OmniumAsset](OmniumAsset.md)
+- [OmniumAssortmentCode](OmniumAssortmentCode.md) — Assortment code
+- [OmniumBusinessCustomer](OmniumBusinessCustomer.md) — Business customer (Company)
+- [OmniumBusinessCustomerCredit](OmniumBusinessCustomerCredit.md)
+- [OmniumBusinessCustomerOmniumSearchResult](OmniumBusinessCustomerOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumBusinessCustomerPatch](OmniumBusinessCustomerPatch.md) — Business customer patch request
+- [OmniumCampaign](OmniumCampaign.md) — Represents a campaign in the public API.
+- [OmniumCampaignOmniumSearchResult](OmniumCampaignOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumCampaignRequest](OmniumCampaignRequest.md) — Request model for creating or updating a campaign.
+- [OmniumCampaignSearchRequest](OmniumCampaignSearchRequest.md) — Represents a search request for campaigns in the system.
+- [OmniumCampaignStatusUpdate](OmniumCampaignStatusUpdate.md) — Request model for updating a campaign's status.
+- [OmniumCancelPurchaseOrderLinesRequest](OmniumCancelPurchaseOrderLinesRequest.md) — Request to cancel multiple lines on a single purchase order in one call.
+- [OmniumCart](OmniumCart.md) — The cart class is the main class used for handling both carts and offers given to a customer. Could be online carts, or offers from physical stores
+- [OmniumCartCheckoutRequest](OmniumCartCheckoutRequest.md) — Request model for checking out a cart (converting it to an order). Optionally applies a cart patch (which can also add/replace payments or shipments) in the same operation.
+- [OmniumCartCheckoutResult](OmniumCartCheckoutResult.md) — Result of a cart checkout operation. Contains validation information and, on success, the created order.
+- [OmniumCartCommentRequest](OmniumCartCommentRequest.md) — Request model for adding a comment to a cart
+- [OmniumCartExportRequest](OmniumCartExportRequest.md) — Request model for exporting carts to a connector
+- [OmniumCartOmniumResult](OmniumCartOmniumResult.md) — Generic query result
+- [OmniumCartOmniumSearchResult](OmniumCartOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumCartOmniumValidationResult](OmniumCartOmniumValidationResult.md)
+- [OmniumCartPatchUpdateResult](OmniumCartPatchUpdateResult.md) — Result of a cart patch operation.
+- [OmniumCartResponseModel](OmniumCartResponseModel.md) — Cart response with validation
+- [OmniumCartSearchRequest](OmniumCartSearchRequest.md) — Cart search request
+- [OmniumCartTemplate](OmniumCartTemplate.md) — A cart templates contains a cart and meta data
+- [OmniumCartTemplateCreateCartRequest](OmniumCartTemplateCreateCartRequest.md) — Cart template creation request
+- [OmniumCartTemplateOmniumSearchResult](OmniumCartTemplateOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumCartTemplateSearchRequestModel](OmniumCartTemplateSearchRequestModel.md) — Cart templates search request
+- [OmniumCartUpdateRequest](OmniumCartUpdateRequest.md)
+- [OmniumCartValidationRequest](OmniumCartValidationRequest.md) — Request model for validating a cart with optional validator selection
+- [OmniumCase](OmniumCase.md) — Class containing information for cases, e.g. a support case or customer inquiry
+- [OmniumCaseOmniumSearchResult](OmniumCaseOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumCaseParticipant](OmniumCaseParticipant.md) — Participant in a case
+- [OmniumCasePatch](OmniumCasePatch.md) — Patch model for partial case updates. Only non-null values will be applied.
+- [OmniumCaseSearchRequest](OmniumCaseSearchRequest.md) — Search request for cases
+- [OmniumCaseStatusLogItem](OmniumCaseStatusLogItem.md) — Represents a single step in a case's status timeline, including the timestamp of the status change and the duration since the previous step.
+- [OmniumCashManagement](OmniumCashManagement.md) — Represents cash management details for a cash register, tracking expected vs. actual cash amounts.
+- [OmniumCategoryAndBrandFilter](OmniumCategoryAndBrandFilter.md)
+- [OmniumChangeCustomerId](OmniumChangeCustomerId.md)
+- [OmniumChangeProjectTypeRequest](OmniumChangeProjectTypeRequest.md) — Request for changing the project type of a project, or for refreshing a project from the project type it already has
+- [OmniumCharge](OmniumCharge.md) — Omnium order charge object
+- [OmniumChart](OmniumChart.md) — Class for displaying generic charts from Omnium
+- [OmniumChartData](OmniumChartData.md) — Class containing generic Omnium Charts with labels and data sets
+- [OmniumChartDataset](OmniumChartDataset.md) — Chart data set
+- [OmniumChartOfAccountEntry](OmniumChartOfAccountEntry.md) — An account in a chart of accounts: the account that postings of one category book to.
+- [OmniumClaim](OmniumClaim.md) — Class containing connection between a claim project and a return
+- [OmniumComment](OmniumComment.md) — Object used for adding and getting comments on all models
+- [OmniumCommentMention](OmniumCommentMention.md) — An Omnium user tagged with @ in a comment
+- [OmniumCommentPatch](OmniumCommentPatch.md) — Object used for patching specific comment values
+- [OmniumCommentSearchRequest](OmniumCommentSearchRequest.md)
+- [OmniumCommentType](OmniumCommentType.md) — Type of comment
+- [OmniumCompletionRateFilter](OmniumCompletionRateFilter.md) — Filter options for product completion rate
+- [OmniumCompletionStatus](OmniumCompletionStatus.md) — Completion status for a product, tracking whether required fields are filled in.
+- [OmniumComponentOption](OmniumComponentOption.md) — Represents a selectable option for a package component.
+- [OmniumConditionalPricingSettings](OmniumConditionalPricingSettings.md) — Configuration settings for conditional pricing behavior in MultiBuy promotions
+- [OmniumConditionOperator](OmniumConditionOperator.md) — Defines how multiple promotion conditions are combined
+- [OmniumConsent](OmniumConsent.md) — Used for storing GDPR constens. All customers can have multiple consents of any kind.
+- [OmniumConsentHistory](OmniumConsentHistory.md) — Store historic consents
+- [OmniumConsentType](OmniumConsentType.md) — Represents a consent type configuration for customer consent management
+- [OmniumContactPerson](OmniumContactPerson.md) — Person class. Used for contact persons in businesses.
+- [OmniumCoordinate](OmniumCoordinate.md)
+- [OmniumCostCalculationMethod](OmniumCostCalculationMethod.md) — How the cost of an order line for the product is found
+- [OmniumCostPrice](OmniumCostPrice.md) — Product cost price
+- [OmniumCostPriceDeleteRequest](OmniumCostPriceDeleteRequest.md)
+- [OmniumCostPriceOmniumResult](OmniumCostPriceOmniumResult.md) — Generic query result
+- [OmniumCostPriceSearchRequest](OmniumCostPriceSearchRequest.md) — Contains all parameters for doing a cost price search.
+- [OmniumCostPriceUpdateRequest](OmniumCostPriceUpdateRequest.md)
+- [OmniumCreditPaymentRequest](OmniumCreditPaymentRequest.md) — Request for crediting (refunding) a payment on an order through the payment provider.
+- [OmniumCreditPaymentResult](OmniumCreditPaymentResult.md) — Result of crediting (refunding) a payment through the payment provider.
+- [OmniumCurrencyConversions](OmniumCurrencyConversions.md) — Represents foreign currency conversion details for registers handling multiple currencies.
+- [OmniumCustomerClubConsents](OmniumCustomerClubConsents.md) — Consents for customer club
+- [OmniumCustomerClubInterests](OmniumCustomerClubInterests.md) — List of Interest the user can subscribe to
+- [OmniumCustomerClubMember](OmniumCustomerClubMember.md) — Class for customer club member
+- [OmniumCustomerClubMemberOmniumResult](OmniumCustomerClubMemberOmniumResult.md) — Generic query result
+- [OmniumCustomerClubMemberPatchRequest](OmniumCustomerClubMemberPatchRequest.md) — Used to update a customerClub member, with consents and interests
+- [OmniumCustomerClubMemberSearchRequest](OmniumCustomerClubMemberSearchRequest.md) — Customer club member search request
+- [OmniumCustomerClubMemberTier](OmniumCustomerClubMemberTier.md)
+- [OmniumCustomerClubMemberTierSummary](OmniumCustomerClubMemberTierSummary.md)
+- [OmniumCustomerClubPointsSummary](OmniumCustomerClubPointsSummary.md) — Summary for customer club member. Balance, used points, reserved points etc
+- [OmniumCustomerClubValidPoints](OmniumCustomerClubValidPoints.md) — Class with information about valid points, and expire date
+- [OmniumCustomerCommentRequest](OmniumCustomerCommentRequest.md) — Request model for adding a comment to a customer
+- [OmniumCustomerConsents](OmniumCustomerConsents.md) — A single entry in a batch consent request: the customer to update and the consents to add for that customer.
+- [OmniumCustomerGroup](OmniumCustomerGroup.md) — Customer group
+- [OmniumCustomerGroupOmniumSearchResult](OmniumCustomerGroupOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumCustomerGroupReference](OmniumCustomerGroupReference.md) — Customer group reference
+- [OmniumCustomerGroupSearchRequest](OmniumCustomerGroupSearchRequest.md) — Customer group search request
+- [OmniumCustomerRelation](OmniumCustomerRelation.md) — Customer reference for defining customers relations
+- [OmniumCustomerSearchRequest](OmniumCustomerSearchRequest.md) — Customer search request
+- [OmniumCustomerSettings](OmniumCustomerSettings.md)
+- [OmniumCustomerUpdateResult](OmniumCustomerUpdateResult.md) — Result of a customer patch/update operation, summarising how many records were processed and the outcome of each.
+- [OmniumCustomSortIndex](OmniumCustomSortIndex.md) — Custom sort index for sorting on custom values such as popularity
+- [OmniumDatePlanner](OmniumDatePlanner.md)
+- [OmniumDatePlannerItem](OmniumDatePlannerItem.md)
+- [OmniumDecreaseReservedInventoryRequest](OmniumDecreaseReservedInventoryRequest.md) — Model for decreasing reserved inventory on an inventory item. Only the reserved inventory level is changed - physical inventory is left untouched. Reserved inventory will not go below zero.
+- [OmniumDefaultDimensions](OmniumDefaultDimensions.md) — Default package dimensions
+- [OmniumDefaultPackage](OmniumDefaultPackage.md) — Default package info sent to provider. Used if no specific info is added on cart/order
+- [OmniumDefaultPropertyItem](OmniumDefaultPropertyItem.md)
+- [OmniumDeleteRentalProductsRequest](OmniumDeleteRentalProductsRequest.md) — Request for deleting rental products
+- [OmniumDelivery](OmniumDelivery.md) — Delivery model for purchase orders
+- [OmniumDeliveryaddress](OmniumDeliveryaddress.md)
+- [OmniumDeliveryGoodsReceptionLine](OmniumDeliveryGoodsReceptionLine.md) — Representing a line item for goods reception of purchase order deliveries
+- [OmniumDeliveryOmniumSearchResult](OmniumDeliveryOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumDeliveryPatch](OmniumDeliveryPatch.md)
+- [OmniumDeliverySearchRequest](OmniumDeliverySearchRequest.md) — Search model for deliveries
+- [OmniumDiscount](OmniumDiscount.md) — Represents a discount that can be applied to an order, line items, or shipping. Add discounts to orderForm.discounts for order-level or line-item discounts, or to shipment.discounts for shipping discounts.
+- [OmniumDiscountCoupon](OmniumDiscountCoupon.md) — Discount Coupon
+- [OmniumDiscountKitComponentGroup](OmniumDiscountKitComponentGroup.md) — A component group of a kit discount: the products that can fill one part of the kit.
+- [OmniumDiscountKitReward](OmniumDiscountKitReward.md) — Configuration for kit promotions on a discount (e.g., "Buy tights and a half zip together for 599"). Used when the discount's RewardType is "Kit". The kit is priced when every required component group is present on the order lines in SkuIds. Example "tights + half zip for 599 SEK": RewardType="FixedPrice", PromotionAmounts=[{ amount: 599, currency: "SEK" }], and one required component group per product.
+- [OmniumDiscountReason](OmniumDiscountReason.md) — Audit information for a manually applied discount: which configured reason code was chosen, an optional free-text comment, and who applied it. Applies to order line, mass order line, and order-level manual discounts.
+- [OmniumDiscountRefund](OmniumDiscountRefund.md) — Represents a discount applied to return/refund transactions.
+- [OmniumDiscountSale](OmniumDiscountSale.md) — Represents a discount applied to sales transactions.
+- [OmniumEmailAttachment](OmniumEmailAttachment.md) — Attachment to emailmessage. There are two separate ways of using this model - Url or Base64EncodedContent. 1. Url - If you your attachment is already located in omnium specify the resource url of the attachment. 2. Base64EncodedContent - You can add the attachment as a Base64Encoded string. (Max length is set to  100 000)
+- [OmniumEmailMessage](OmniumEmailMessage.md) — Class for sending email
+- [OmniumEmployee](OmniumEmployee.md) — Class for storing employees
+- [OmniumEntityError](OmniumEntityError.md) — Generic entity error
+- [OmniumEpcSerialRange](OmniumEpcSerialRange.md) — Inclusive range of numeric tag serial numbers. Either bound may be omitted for an open-ended range.
+- [OmniumEpcTag](OmniumEpcTag.md) — A single physical RFID tag, identified by its EPC. Tags carry loose references to products (skuId/GTIN), deliveries and orders - inventory quantities never depend on them.
+- [OmniumEpcTagCountBucket](OmniumEpcTagCountBucket.md) — One distinct value and the number of tags carrying it.
+- [OmniumEpcTagCountGroup](OmniumEpcTagCountGroup.md) — Counts for one GroupBy field.
+- [OmniumEpcTagCountRequest](OmniumEpcTagCountRequest.md) — Counts the EPC tags matching a filter, grouped by one or more fields. Only counts are returned, no tags - use it for reconciliation tables and facets.
+- [OmniumEpcTagCountResult](OmniumEpcTagCountResult.md) — Result of an EPC tag count.
+- [OmniumEpcTagObservation](OmniumEpcTagObservation.md) — The latest observation of a tag: when and where it was last seen, and by what.
+- [OmniumEpcTagOmniumResult](OmniumEpcTagOmniumResult.md) — Generic query result
+- [OmniumEpcTagPatch](OmniumEpcTagPatch.md) — EPC tag patch model for partial updates. Only the values present in the request are updated. Derived fields (scheme, GTIN-14, company prefix) are managed by Omnium and not patchable.
+- [OmniumEpcTagRefreshRequest](OmniumEpcTagRefreshRequest.md) — Selects which EPC tags a product-info refresh should re-resolve. The refresh runs in the background: it fills missing skuIds and re-syncs brand/product name from the products currently in Omnium (e.g. after source tags arrived before their products, or after a brand rename). Send an empty object to sweep all tags missing product info.
+- [OmniumEpcTagSearchRequest](OmniumEpcTagSearchRequest.md) — Search filters for EPC tags. All filters are optional and combined with AND.
+- [OmniumEpcTagUpdateResult](OmniumEpcTagUpdateResult.md) — Result of an EPC tag patch operation
+- [OmniumEpcTagVerification](OmniumEpcTagVerification.md) — Outcome of a physical verification (spot check) of a tag: whether the tagged item was found and confirmed as the store's own stock, when, where and by which device.
+- [OmniumEventDataAttachment](OmniumEventDataAttachment.md)
+- [OmniumEventLogCompareRequest](OmniumEventLogCompareRequest.md)
+- [OmniumEventLogItem](OmniumEventLogItem.md)
+- [OmniumEventLogItemOmniumResult](OmniumEventLogItemOmniumResult.md) — Generic query result
+- [OmniumEventLogModelType](OmniumEventLogModelType.md) — Event Log Model Types
+- [OmniumEventLogSearch](OmniumEventLogSearch.md)
+- [OmniumEventLogSearchRequest](OmniumEventLogSearchRequest.md) — Search request for event log items
+- [OmniumEventLogType](OmniumEventLogType.md) — Event log type
+- [OmniumEventSubscription](OmniumEventSubscription.md) — A subscription that forwards Omnium events to an external destination - a webhook endpoint, a queue or a message bus. Equivalent to what the Event Subscriptions page in the Omnium UI manages.
+- [OmniumEventSubscriptionClassOption](OmniumEventSubscriptionClassOption.md) — One selectable object type and the filter values that only apply when that type is selected.
+- [OmniumEventSubscriptionFilterOption](OmniumEventSubscriptionFilterOption.md) — One selectable filter value.
+- [OmniumEventSubscriptionFilterOptions](OmniumEventSubscriptionFilterOptions.md) — The filter values this tenant accepts on Omnium.Public.Events.Models.OmniumEventSubscriptionFilters. Read this before building a subscription so filters reference names that actually exist for the tenant.
+- [OmniumEventSubscriptionFilters](OmniumEventSubscriptionFilters.md) — Narrows which events a subscription receives. Each list is independent and is only applied when it has values, so an omitted list places no restriction on that dimension. Call GET /api/EventSubscriptions/Filters for the values this tenant accepts.
+- [OmniumEventSubscriptionTestResult](OmniumEventSubscriptionTestResult.md) — Outcome of delivering a single test event to a subscription's destination.
+- [OmniumExchangeOrderOptions](OmniumExchangeOrderOptions.md) — Options for creating an exchange order from a return
+- [OmniumExcludedProductFieldOptions](OmniumExcludedProductFieldOptions.md) — Options for excluding fields
+- [OmniumExportLogItem](OmniumExportLogItem.md) — A single log entry produced during an export operation.
+- [OmniumExportResult](OmniumExportResult.md) — Result of an export operation for a single entity.
+- [OmniumExternalId](OmniumExternalId.md) — IDs from a subsystem
+- [OmniumExternalPriceResponse](OmniumExternalPriceResponse.md) — The response to return when using an external price service
+- [OmniumFacet](OmniumFacet.md) — Facet
+- [OmniumFacetViewModel](OmniumFacetViewModel.md) — View model for facets
+- [OmniumFieldSelection](OmniumFieldSelection.md) — Controls which fields are included or excluded in the response. The Include/Exclude lists work with any entity type. Entity-specific shorthand flags can be added in derived classes.
+- [OmniumFileDownloadRequest](OmniumFileDownloadRequest.md)
+- [OmniumGetMultipleResponse](OmniumGetMultipleResponse.md) — The response contains found orders and the IDs of orders not found (if any).
+- [OmniumGetRentalProductsBySourceRequest](OmniumGetRentalProductsBySourceRequest.md) — Request for getting rental products from source products
+- [OmniumGetTopSellingProductsRecommendationsRequest](OmniumGetTopSellingProductsRecommendationsRequest.md)
+- [OmniumGiftCard](OmniumGiftCard.md) — Class for Gift card payment
+- [OmniumGiftCardOmniumResult](OmniumGiftCardOmniumResult.md) — Generic query result
+- [OmniumGiftCardOmniumSearchResult](OmniumGiftCardOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumGiftCardSearchRequest](OmniumGiftCardSearchRequest.md)
+- [OmniumGiftCardTransaction](OmniumGiftCardTransaction.md) — Transactions on gift cards
+- [OmniumGiftCardType](OmniumGiftCardType.md)
+- [OmniumIncludedFieldsOptions](OmniumIncludedFieldsOptions.md) — Options for including fields
+- [OmniumIncreaseReservedInventoryRequest](OmniumIncreaseReservedInventoryRequest.md) — Model for increasing reserved inventory on an inventory item. Only the reserved inventory level is changed - physical inventory is left untouched.
+- [OmniumInheritablePropertyItem](OmniumInheritablePropertyItem.md)
+- [OmniumInsightsLoyaltyMemberDailyResponse](OmniumInsightsLoyaltyMemberDailyResponse.md) — Daily new-member registrations for the Insights API. Store granularity uses the first entry of Customer.StoreIds; customers with an empty StoreIds list emit StoreId = null and are filtered out when a storeId query parameter is provided.
+- [OmniumInsightsLoyaltyOrderDailyResponse](OmniumInsightsLoyaltyOrderDailyResponse.md) — Daily order statistics split by customer-club membership for the Insights API. Member status is captured at the time the order line was indexed, not as of today. MemberOrders + NonMemberOrders equals TotalOrders from the Orders endpoint.
+- [OmniumInsightsOrderDailyResponse](OmniumInsightsOrderDailyResponse.md) — Daily order statistics for the Insights API, grouped by store. One row per (date, store) bucket with non-zero activity.
+- [OmniumInsightsOrderStatusCount](OmniumInsightsOrderStatusCount.md) — Order count grouped by a single Order.Status value, for use within an order insights bucket.
+- [OmniumInsightsProductDailyResponse](OmniumInsightsProductDailyResponse.md) — Daily product sales for the Insights API. One row per (date, store, top-level category, SKU). Up to 20 SKUs are returned per category bucket, sorted by revenue.
+- [OmniumInsightsProjectActivityDailyResponse](OmniumInsightsProjectActivityDailyResponse.md) — Daily project activity for the Insights API. One row per (date, store, project type) with at least one transition (new, completed, or cancelled) on that day.
+- [OmniumInsightsProjectInProgressResponse](OmniumInsightsProjectInProgressResponse.md) — Current snapshot of projects in progress for the Insights API. One row per (store, project type). This is NOT a daily series — it reflects the state at query time for projects created within the requested [fromDate, toDate] window.
+- [OmniumInsightsPromotionDailyResponse](OmniumInsightsPromotionDailyResponse.md) — Daily promotion redemption statistics for the Insights API. One row per (date, store, promotion). RevenueFromPromoted overlaps across promotions on multi-promotion lines — the sum across promotions can exceed total revenue. See DiscountValue and DiscountValueCoverage for attribution caveats.
+- [OmniumInsightsRequest](OmniumInsightsRequest.md) — Common request parameters for Insights API endpoints. Used to filter daily aggregated data by date range and optionally by store.
+- [OmniumInsightsReturnDailyResponse](OmniumInsightsReturnDailyResponse.md) — Daily return statistics for the Insights API. Rows are bucketed by OrderLine.ReturnDate (when the line was returned), not by the original order date. StoreId is the original order's store, not the return warehouse.
+- [OmniumInventoryAtp](OmniumInventoryAtp.md) — Available to promise - Available quantities of the requested product, and delivery due dates.
+- [OmniumInventoryAtpUpdate](OmniumInventoryAtpUpdate.md) — Model for updating ATP (Available-to-Promise) values on an inventory item
+- [OmniumInventoryBatch](OmniumInventoryBatch.md) — Represents a batch of inventory in the context of the FIFO principle, containing specific costs and currency details that were valid at the time of purchase.
+- [OmniumInventoryItem](OmniumInventoryItem.md) — Inventory item for a specific SKU
+- [OmniumInventoryItemOmniumResult](OmniumInventoryItemOmniumResult.md) — Generic query result
+- [OmniumInventoryItemPatch](OmniumInventoryItemPatch.md) — Inventory item patch model for partial updates. Only the values present in the request are updated. Quantities (Inventory / ReservedInventory) are intentionally not patchable here - use the dedicated delta (ProcessInventoryTransactions) or total (UpdateMany) endpoints for those.
+- [OmniumInventoryItemUpdateResult](OmniumInventoryItemUpdateResult.md) — Result of an inventory item patch operation
+- [OmniumInventorySearchRequest](OmniumInventorySearchRequest.md) — Contains all parameters for doing an inventory search. At least one parameter must be set
+- [OmniumInventoryTransaction](OmniumInventoryTransaction.md) — Represents an inventory transaction in the public API
+- [OmniumInventoryTransactionOmniumResult](OmniumInventoryTransactionOmniumResult.md) — Generic query result
+- [OmniumInventoryTransactionSearchRequest](OmniumInventoryTransactionSearchRequest.md) — Contains all parameters for doing an inventory transaction search
+- [OmniumInventoryUpdate](OmniumInventoryUpdate.md) — Model for modifying an inventory item in Omnium
+- [OmniumInventoryUpdateManyRequest](OmniumInventoryUpdateManyRequest.md) — Request model for updating a range of inventory items with an optional reason and reason code
+- [OmniumInvoice](OmniumInvoice.md) — Invoices
+- [OmniumInvoiceOmniumInvoiceTotalsOmniumSearchResultWithTotals](OmniumInvoiceOmniumInvoiceTotalsOmniumSearchResultWithTotals.md) — Generic class for receiving search results with facets and totals
+- [OmniumInvoiceOmniumSearchResult](OmniumInvoiceOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumInvoiceSearchRequest](OmniumInvoiceSearchRequest.md)
+- [OmniumInvoiceTotals](OmniumInvoiceTotals.md) — Response model for
+- [OmniumLineItemPropertiesPatch](OmniumLineItemPropertiesPatch.md) — Used for patch update properties on a orderline
+- [OmniumLineItemRequestModel](OmniumLineItemRequestModel.md) — Model for adding many line items to cart
+- [OmniumLineItemReturn](OmniumLineItemReturn.md) — Request object for adding return line items
+- [OmniumLineItemUpdate](OmniumLineItemUpdate.md) — Request model for updating line items
+- [OmniumLineItemUpdateRequest](OmniumLineItemUpdateRequest.md) — Model for adding many line items to cart
+- [OmniumLocationInventory](OmniumLocationInventory.md) — Represents inventory at a specific location within a warehouse
+- [OmniumLocationTransferRequest](OmniumLocationTransferRequest.md) — Request model for transferring inventory between locations within a warehouse, or assigning unlocated stock to a location
+- [OmniumMarket](OmniumMarket.md) — Market
+- [OmniumMarketGroup](OmniumMarketGroup.md) — Market group
+- [OmniumMergePurchaseOrderRequest](OmniumMergePurchaseOrderRequest.md)
+- [OmniumOmniStockLevel](OmniumOmniStockLevel.md) — Calculated stock level for a product in a specific store, used for online availability.
+- [OmniumOmniStockRules](OmniumOmniStockRules.md) — Rules that decide which of a store's products are exposed as OmniStock (stock made available to online channels), and what the store may be used for when stock is sourced from it. A product is exposed only when it passes every rule that is set; rules that are null or empty are ignored.
+- [OmniumOpeninghour](OmniumOpeninghour.md)
+- [OmniumOpeningHours](OmniumOpeningHours.md) — Class for storing store opening hours
+- [OmniumOpeningHoursInterval](OmniumOpeningHoursInterval.md) — A period the store is open, e.g. 13:00-17:00
+- [OmniumOpeningHoursPatch](OmniumOpeningHoursPatch.md) — Class for storing store opening hours
+- [OmniumOrder](OmniumOrder.md) — Omnium order object
+- [OmniumOrderActionExecutionResult](OmniumOrderActionExecutionResult.md) — Result from single workflow action
+- [OmniumOrderAddress](OmniumOrderAddress.md) — Order address
+- [OmniumOrderCommentRequest](OmniumOrderCommentRequest.md) — Request model for adding a comment to an order
+- [OmniumOrderExportModel](OmniumOrderExportModel.md) — Used for webhooks and export
+- [OmniumOrderExportRequest](OmniumOrderExportRequest.md) — Request model for exporting orders to a connector
+- [OmniumOrderForm](OmniumOrderForm.md) — Order form, containing shipments, payments and line items for order
+- [OmniumOrderFormPatch](OmniumOrderFormPatch.md) — Order form, containing shipments, payments and line items for order
+- [OmniumOrderGroup](OmniumOrderGroup.md) — Used for grouping order lines
+- [OmniumOrderLine](OmniumOrderLine.md) — Order line
+- [OmniumOrderLineBonusPoints](OmniumOrderLineBonusPoints.md) — Bonus point information for one order line
+- [OmniumOrderLineDiscount](OmniumOrderLineDiscount.md) — Represents a discount applied specifically to an order line item. This is used when retrieving orders to show which discounts were applied to each line item. For line-item discounts from FixedPrice or MultiBuys promotions, the discount amounts are distributed across the involved order lines.
+- [OmniumOrderLineIdRequest](OmniumOrderLineIdRequest.md) — Request object for order ID and corresponding line items
+- [OmniumOrderLineOrderDiscount](OmniumOrderLineOrderDiscount.md) — An order line's share of one specific order level discount. Calculated and read-only: Omnium splits the line's OrderDiscountAmount over the order level discounts on every calculation, so anything sent in is ignored. The shares on a line sum to the line's OrderDiscountAmount; summing one discount's shares across all lines may differ from that discount's DiscountAmount by cents, because rounding is reconciled per line.
+- [OmniumOrderLinePatch](OmniumOrderLinePatch.md) — Order line patch
+- [OmniumOrderLineSettings](OmniumOrderLineSettings.md)
+- [OmniumOrderLineUpdateResult](OmniumOrderLineUpdateResult.md)
+- [OmniumOrderOmniumResult](OmniumOrderOmniumResult.md) — Generic query result
+- [OmniumOrderOmniumSearchResult](OmniumOrderOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumOrderOmniumVersion](OmniumOrderOmniumVersion.md)
+- [OmniumOrderOmniumWorkflowActionRequest](OmniumOrderOmniumWorkflowActionRequest.md) — Represents a request to perform a workflow action in the Omnium system. This generic class allows for flexibility by supporting various models, such as orders, purchase orders, or products, in different workflows.
+- [OmniumOrderPatch](OmniumOrderPatch.md) — Omnium order patch object
+- [OmniumOrderPatchUpdateResult](OmniumOrderPatchUpdateResult.md)
+- [OmniumOrderSearchRequest](OmniumOrderSearchRequest.md) — Order search request
+- [OmniumOrderSettings](OmniumOrderSettings.md)
+- [OmniumOrderStatus](OmniumOrderStatus.md)
+- [OmniumOrderStatusLogItem](OmniumOrderStatusLogItem.md) — Represents a single step in an order's status timeline, including the timestamp of the status change and the duration since the previous step.
+- [OmniumOrderType](OmniumOrderType.md)
+- [OmniumOrderWorkflowExecutionPatchResult](OmniumOrderWorkflowExecutionPatchResult.md) — Order workflow execution result
+- [OmniumOrderWorkflowExecutionResult](OmniumOrderWorkflowExecutionResult.md) — Order workflow execution result
+- [OmniumOrderWorkflowStep](OmniumOrderWorkflowStep.md)
+- [OmniumOrderWorkflowStepCondition](OmniumOrderWorkflowStepCondition.md)
+- [OmniumPatchLineItemIdsRequest](OmniumPatchLineItemIdsRequest.md) — Request model for patching line item IDs across order, shipments, and return forms
+- [OmniumPatchLineItemIdsResult](OmniumPatchLineItemIdsResult.md) — Result model for patching line item IDs
+- [OmniumPatchMergeMode](OmniumPatchMergeMode.md) — Controls how a list on an Omnium.Public.Orders.Models.Patch.OmniumOrderPatch (e.g. Payments, Shipments) is merged into the target.
+- [OmniumPayment](OmniumPayment.md) — Represents a payment transaction on an order or cart. Each payment record represents a single transaction with a payment provider. An order can have multiple payments (e.g., partial payment with gift card + credit card). Payment flow: 1. Customer completes checkout in your storefront 2. Frontend initiates payment with the provider (Klarna, Vipps, etc.) 3. Provider returns transaction details (TransactionId, Amount, Status) 4. Frontend calls Omnium API to register the payment on the cart 5. Cart is placed as an order 6. Omnium can later capture, refund, or void the payment through the provider Multiple payments: When an order has multiple payments (e.g., gift card + Klarna), they are processed in the order they appear in the payments list.
+- [OmniumPaymentFilters](OmniumPaymentFilters.md) — Payment transaction filters - Specified filters for selecting one or more payments
+- [OmniumPaymentOption](OmniumPaymentOption.md) — Class for diffenret payment options
+- [OmniumPaymentOrderLineReference](OmniumPaymentOrderLineReference.md) — References an order line item associated with a payment. Used to correlate credit/refund payments with specific line items on return orders.
+- [OmniumPaymentPatch](OmniumPaymentPatch.md) — Payment transaction
+- [OmniumPaymentRefund](OmniumPaymentRefund.md) — Represents a payment method used for refund transactions.
+- [OmniumPaymentReportSearchRequest](OmniumPaymentReportSearchRequest.md) — Search request object for payment transactions
+- [OmniumPaymentSummary](OmniumPaymentSummary.md) — Payment summary report
+- [OmniumPaymentSummaryOmniumSearchResult](OmniumPaymentSummaryOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumPaymentSummaryTaxRate](OmniumPaymentSummaryTaxRate.md) — Payment summary for tax rate
+- [OmniumPaymentTransaction](OmniumPaymentTransaction.md) — Payment transaction
+- [OmniumPaymentTransactionOmniumSearchResult](OmniumPaymentTransactionOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumPendingNotification](OmniumPendingNotification.md) — Pending notification that should be picked up by the notification scheduler
+- [OmniumPickList](OmniumPickList.md) — A pick list for retrieving items from the warehouse.
+- [OmniumPickListOmniumSearchResult](OmniumPickListOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumPickListOrderItem](OmniumPickListOrderItem.md)
+- [OmniumPickListPatch](OmniumPickListPatch.md)
+- [OmniumPickListSearchRequest](OmniumPickListSearchRequest.md) — PickList search request.
+- [OmniumPickUpPoint](OmniumPickUpPoint.md)
+- [OmniumPickUpPointAddress](OmniumPickUpPointAddress.md)
+- [OmniumPickUpPointOpeningHour](OmniumPickUpPointOpeningHour.md)
+- [OmniumPostingSource](OmniumPostingSource.md) — Discriminator for the source that produced an accounting posting.
+- [OmniumPotentialDiscountHint](OmniumPotentialDiscountHint.md) — A hint describing a promotion that does not currently apply to the cart but would if additional conditions were met (more items, higher order amount, club member, coupon, etc.).
+- [OmniumPotentialDiscountHintType](OmniumPotentialDiscountHintType.md) — Type of potential-discount hint returned by GetPotentialDiscounts.
+- [OmniumPractice](OmniumPractice.md) — Represents practice or training transactions that should not be included in actual financial totals. Note: This is not a standard POS concept and may be specific to certain systems like Sitoo.
+- [OmniumPrice](OmniumPrice.md) — Calculated: Current price (lowest available price) - property is read only, will be set by Omnium when returned to sales channels
+- [OmniumPriceDeleteRequest](OmniumPriceDeleteRequest.md) — Request for deleting prices
+- [OmniumPriceDeleteResult](OmniumPriceDeleteResult.md) — Returned (with 200) by a price delete when at least one request was sent without a ProductId, so Omnium resolved the product from the SKU on each price. A delete where every request carries a ProductId returns 204 No Content.
+- [OmniumPriceList](OmniumPriceList.md) — Represents a price list in the OMS.
+- [OmniumPriceListItem](OmniumPriceListItem.md) — Represents an individual item in a price list within the OMS
+- [OmniumPriceListItemOmniumResult](OmniumPriceListItemOmniumResult.md) — Generic query result
+- [OmniumPriceListItemPatch](OmniumPriceListItemPatch.md) — Partial update model for a price list item. Only non-null fields will be applied.
+- [OmniumPriceListItemPatchUpdateResult](OmniumPriceListItemPatchUpdateResult.md)
+- [OmniumPriceListItemProduct](OmniumPriceListItemProduct.md)
+- [OmniumPriceListItemSearchRequest](OmniumPriceListItemSearchRequest.md) — Price list item search request.
+- [OmniumPriceListOmniumSearchResult](OmniumPriceListOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumPriceListSearchRequest](OmniumPriceListSearchRequest.md) — Price list search request
+- [OmniumPriceListTypeEnum](OmniumPriceListTypeEnum.md) — The price list can be used to populate only prices, only cost prices or both. The default value is Price.
+- [OmniumPriceOmniumResult](OmniumPriceOmniumResult.md) — Generic query result
+- [OmniumPriceReference](OmniumPriceReference.md)
+- [OmniumPriceSearchRequest](OmniumPriceSearchRequest.md) — Contains all parameters for doing a price search. At least one parameter must be set
+- [OmniumPriceTypeEnum](OmniumPriceTypeEnum.md)
+- [OmniumPriceUpdateRequest](OmniumPriceUpdateRequest.md) — Price update request
+- [OmniumPriceUpdateResult](OmniumPriceUpdateResult.md) — Result of a price update. Only relevant when prices are sent without a ProductId, since Omnium then has to resolve the product from the SKU on each price and can report the SKUs it did not recognise.
+- [OmniumPrivateCustomer](OmniumPrivateCustomer.md) — Private customer
+- [OmniumPrivateCustomerInfo](OmniumPrivateCustomerInfo.md) — GDPR response object, containing user personal info (order, customer and project information)
+- [OmniumPrivateCustomerOmniumResult](OmniumPrivateCustomerOmniumResult.md) — Generic query result
+- [OmniumPrivateCustomerOmniumSearchResult](OmniumPrivateCustomerOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumPrivateCustomerOmniumVersion](OmniumPrivateCustomerOmniumVersion.md)
+- [OmniumPrivateCustomerPatch](OmniumPrivateCustomerPatch.md) — Private customer patch request
+- [OmniumPrivateCustomerViewModel](OmniumPrivateCustomerViewModel.md) — Info about customer and customer club membership
+- [OmniumProduct](OmniumProduct.md)
+- [OmniumProductAlert](OmniumProductAlert.md) — Class for product alert, for sending notifications to users when a product is back in stock
+- [OmniumProductAlertOmniumSearchResult](OmniumProductAlertOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumProductAlertRequest](OmniumProductAlertRequest.md)
+- [OmniumProductAlertSearchRequest](OmniumProductAlertSearchRequest.md)
+- [OmniumProductBadge](OmniumProductBadge.md) — Product badge or label to display on product
+- [OmniumProductCategory](OmniumProductCategory.md) — Product category
+- [OmniumProductCategoryOmniumResult](OmniumProductCategoryOmniumResult.md) — Generic query result
+- [OmniumProductCategoryOmniumSearchResult](OmniumProductCategoryOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumProductCategoryPatch](OmniumProductCategoryPatch.md) — Product category patch model for partial updates
+- [OmniumProductCategoryRelationsRequest](OmniumProductCategoryRelationsRequest.md) — Request object for adding multiple categories to multiple products
+- [OmniumProductCategorySearchRequest](OmniumProductCategorySearchRequest.md) — Search request object for products
+- [OmniumProductCategoryTreeViewModel](OmniumProductCategoryTreeViewModel.md) — View model for product category tree
+- [OmniumProductCategoryUpdateResult](OmniumProductCategoryUpdateResult.md) — Result of a product category patch operation
+- [OmniumProductColli](OmniumProductColli.md) — Shipment colli
+- [OmniumProductComponent](OmniumProductComponent.md) — Product package component
+- [OmniumProductCondition](OmniumProductCondition.md) — One condition of a rule-based promotion: an attribute, an operator and the values it compares with.
+- [OmniumProductConditionGroup](OmniumProductConditionGroup.md) — An AND/OR group of product conditions in a rule-based promotion. Read a group as "all of these" (And), "any of these" (Or), "none of these" (Or with negate) or "not all of these" (And with negate).
+- [OmniumProductConditionLogicalOperator](OmniumProductConditionLogicalOperator.md) — How a condition group combines its parts.
+- [OmniumProductConditionOperator](OmniumProductConditionOperator.md) — How a product condition compares its attribute. The negative operators also hold for a product without the attribute.
+- [OmniumProductContentLanguage](OmniumProductContentLanguage.md)
+- [OmniumProductFacet](OmniumProductFacet.md)
+- [OmniumProductFieldSelection](OmniumProductFieldSelection.md) — Product-specific field selection with shorthand flags for common product field exclusions. Extends the generic OmniumFieldSelection with product-specific convenience flags.
+- [OmniumProductGroup](OmniumProductGroup.md) — Product group
+- [OmniumProductGroupings](OmniumProductGroupings.md) — Represents sales grouped by product category or group.
+- [OmniumProductGroupRefund](OmniumProductGroupRefund.md) — Represents refunds/returns grouped by product category.
+- [OmniumProductInventory](OmniumProductInventory.md)
+- [OmniumProductListItemViewModel](OmniumProductListItemViewModel.md) — View model for product list item
+- [OmniumProductListItemViewModelOmniumSearchResult](OmniumProductListItemViewModelOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumProductListItemViewModelRecommendation](OmniumProductListItemViewModelRecommendation.md)
+- [OmniumProductOmniumQueryResult](OmniumProductOmniumQueryResult.md) — Generic result from a paginated Query endpoint. Contains plain entity objects. Works with any entity type: OmniumProduct, OmniumOrder, OmniumCustomer, OmniumCart, etc. For scroll-capable endpoints, see Omnium.Public.Search.Query.OmniumScrollableQueryResult`1.
+- [OmniumProductOmniumResult](OmniumProductOmniumResult.md) — Generic query result
+- [OmniumProductOmniumScrollableQueryResult](OmniumProductOmniumScrollableQueryResult.md) — Result from a scroll-capable Query endpoint. Adds a scroll continuation token to the standard Omnium.Public.Search.Query.OmniumQueryResult`1.
+- [OmniumProductOmniumSearchResult](OmniumProductOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumProductOption](OmniumProductOption.md) — Additional options for a product
+- [OmniumProductOptionsViewModel](OmniumProductOptionsViewModel.md) — Product options view model, containing both product options and the reference product models
+- [OmniumProductOptionValue](OmniumProductOptionValue.md) — The product option value is a pointer to a product in Omnium with the IsProductOption property set to 'true'
+- [OmniumProductOptionValueViewModel](OmniumProductOptionValueViewModel.md) — The product option value is a pointer to a product in Omnium with the IsProductOption property set to 'true'. The view model also contains a price, which is populated by the reference sku.
+- [OmniumProductOptionViewModel](OmniumProductOptionViewModel.md) — Single product options view model
+- [OmniumProductPatch](OmniumProductPatch.md) — Product patch
+- [OmniumProductPriceContext](OmniumProductPriceContext.md) — Optional price scope for the product Query endpoints. Controls which prices are returned and how they are sorted — it never affects which products are returned (use the top-level {MarketIds}/{StoreIds}/{ProductCategoryIds} etc. for availability). Every field is optional and overrides the matching top-level field for pricing only; anything left null falls back to the top-level value. So the common case needs no price context at all — setting top-level {MarketIds} already scopes both availability and prices to that market. Reach for this object only when pricing should differ from availability, e.g. "products available in market A, priced for store group G" or "products in SWE, priced as NOR". A price is kept when, for every dimension, it either matches the requested value or is unscoped on that dimension (no store group, no store, …). Dimensions are combined with AND, so you get market-relevant and store-group-relevant prices, but never a store-group price belonging to a different market.
+- [OmniumProductPromotionIdSearchResult](OmniumProductPromotionIdSearchResult.md) — Active promotions search result
+- [OmniumProductPromotionIdSearchResultOmniumSearchResult](OmniumProductPromotionIdSearchResultOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumProductQueryRequest](OmniumProductQueryRequest.md) — Request model for the paginated product Query endpoint (POST /api/products/Query). Inherits all product filter fields from Omnium.Public.Products.Query.OmniumProductQueryRequestBase; adds pagination controls. For bulk extraction (full-catalog syncs, exports, reindexing), use Omnium.Public.Products.Query.OmniumProductScrollQueryRequest with the scroll endpoint instead.
+- [OmniumProductSales](OmniumProductSales.md) — Class used for product sales Statistics
+- [OmniumProductsAndVariantsUpdateResult](OmniumProductsAndVariantsUpdateResult.md) — Result for path update of product and variants
+- [OmniumProductScrollQueryRequest](OmniumProductScrollQueryRequest.md) — Request model for the scroll product Query endpoint (POST /api/products/Query/Scroll). Inherits all product filter fields from Omnium.Public.Products.Query.OmniumProductQueryRequestBase; adds scroll batch sizing. Use this for bulk extraction — full-catalog syncs to other systems (PIM, ERP, marketplace), data exports, search-index reindexing pipelines. For UI-style paginated queries, use Omnium.Public.Products.Query.OmniumProductQueryRequest with the regular Query endpoint instead.
+- [OmniumProductSearchBoostedProperty](OmniumProductSearchBoostedProperty.md)
+- [OmniumProductSearchRequest](OmniumProductSearchRequest.md) — Search request object for products
+- [OmniumProductSearchSettings](OmniumProductSearchSettings.md)
+- [OmniumProductSettings](OmniumProductSettings.md)
+- [OmniumProductStatisticsSearchRequest](OmniumProductStatisticsSearchRequest.md) — Search request object for products
+- [OmniumProductStatusUpdate](OmniumProductStatusUpdate.md) — Status update for a single product in a project
+- [OmniumProductSupplier](OmniumProductSupplier.md)
+- [OmniumProductTypeItem](OmniumProductTypeItem.md)
+- [OmniumProductUnit](OmniumProductUnit.md) — Model for additional product units with conversion factor
+- [OmniumProductUpdateResult](OmniumProductUpdateResult.md)
+- [OmniumProductVariant](OmniumProductVariant.md) — Product variant
+- [OmniumProductVariantOmniumSearchResult](OmniumProductVariantOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumProject](OmniumProject.md) — Class containing information for projects, e.g. a claim from a customer, or a service provided to an end customer
+- [OmniumProjectCancelRequest](OmniumProjectCancelRequest.md)
+- [OmniumProjectChangeOrder](OmniumProjectChangeOrder.md) — Project change order
+- [OmniumProjectCheckListItem](OmniumProjectCheckListItem.md) — Project type check list item for tasks to be performed on each project
+- [OmniumProjectCustomer](OmniumProjectCustomer.md) — Project customer (private or business)
+- [OmniumProjectDailyReport](OmniumProjectDailyReport.md) — Daily project summary
+- [OmniumProjectFormEntry](OmniumProjectFormEntry.md) — Key / values for additional project information
+- [OmniumProjectFormEntryAdvancedSearch](OmniumProjectFormEntryAdvancedSearch.md)
+- [OmniumProjectLog](OmniumProjectLog.md) — Project log items (added by Omnium upon project updates)
+- [OmniumProjectLogOmniumSearchResult](OmniumProjectLogOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumProjectLogSearchRequest](OmniumProjectLogSearchRequest.md)
+- [OmniumProjectOmniumSearchResult](OmniumProjectOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumProjectOmniumVersion](OmniumProjectOmniumVersion.md)
+- [OmniumProjectPart](OmniumProjectPart.md) — Project part
+- [OmniumProjectPartner](OmniumProjectPartner.md)
+- [OmniumProjectPatch](OmniumProjectPatch.md) — Class containing information for projects, e.g. a claim from a customer, or a service provided to an end customer
+- [OmniumProjectProductReference](OmniumProjectProductReference.md) — Used for listing products associated to a project
+- [OmniumProjectSearchRequest](OmniumProjectSearchRequest.md)
+- [OmniumProjectStore](OmniumProjectStore.md) — Store referenced by project
+- [OmniumProjectTask](OmniumProjectTask.md) — Project task item
+- [OmniumProjectTransaction](OmniumProjectTransaction.md) — Project revenue or cost transaction
+- [OmniumProjectTransactionSummary](OmniumProjectTransactionSummary.md) — Project transaction summaries
+- [OmniumProjectType](OmniumProjectType.md) — A type of project, with definitions of workflow steps. Used as template when Omnium is creating new projects.
+- [OmniumProjectTypePatch](OmniumProjectTypePatch.md) — Patch object for project types
+- [OmniumProjectTypeReport](OmniumProjectTypeReport.md) — Project type report
+- [OmniumProjectTypeReportRequest](OmniumProjectTypeReportRequest.md) — Request for generating project type stats
+- [OmniumProjectUpdateRequest](OmniumProjectUpdateRequest.md) — Class used for updating projects
+- [OmniumProjectWorkflowStep](OmniumProjectWorkflowStep.md) — A single step of the project workflow
+- [OmniumPromotion](OmniumPromotion.md)
+- [OmniumPromotionAdvancedReward](OmniumPromotionAdvancedReward.md)
+- [OmniumPromotionAmount](OmniumPromotionAmount.md)
+- [OmniumPromotionAmountStep](OmniumPromotionAmountStep.md)
+- [OmniumPromotionCoupon](OmniumPromotionCoupon.md) — Represents a coupon for a promotion
+- [OmniumPromotionFixedPriceReward](OmniumPromotionFixedPriceReward.md) — Configuration for fixed price promotions (e.g., "4 items for 99.90"). Used when the discount's RewardType is "FixedPrice". The promotion calculator will prioritize items from highest to lowest price. Example: FixedPriceQuantity=4, FixedPricePrice=99.90 means "Buy any 4 items from the promotion for 99.90 total"
+- [OmniumPromotionKitBundle](OmniumPromotionKitBundle.md) — One complete kit definition inside a kit promotion - its own component groups and its own reward. A kit promotion can hold several bundles, e.g. "ski + binding for 4000" and "ski + binding + poles for 5000" as two bundles of the same promotion. When a cart matches more than one bundle, the one giving the customer the largest discount is applied.
+- [OmniumPromotionKitComponentGroup](OmniumPromotionKitComponentGroup.md)
+- [OmniumPromotionKitReward](OmniumPromotionKitReward.md) — Reward model for promotion kits (i.e., “Buy a one of each component and get a discount on the kit”).
+- [OmniumPromotionKitRewardPatch](OmniumPromotionKitRewardPatch.md) — Reward patch model for kit promotions.
+- [OmniumPromotionMultiBuyReward](OmniumPromotionMultiBuyReward.md) — Configuration for multi-buy promotions (e.g., "Buy 2, get 1 free" / "3 for 2"). Used when the discount's RewardType is "MultiBuys". By default, the calculator prioritizes items from lowest to highest price (cheapest item is discounted). This can be changed with the SortMultibuyItemsDescending setting. Example "3 for 2": RequiredBuyAmount=2, NumberOfDiscountedItems=1, Percentage=100
+- [OmniumPromotionMultiBuyRewardPatch](OmniumPromotionMultiBuyRewardPatch.md) — Reward model for multi-buy promotions (i.e., "2 for the price of 1"). Only used if reward type is "MultiBuys".
+- [OmniumPromotionOmniumResult](OmniumPromotionOmniumResult.md) — Generic query result
+- [OmniumPromotionOmniumSearchResult](OmniumPromotionOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumPromotionPatch](OmniumPromotionPatch.md) — Request for adding a promotion
+- [OmniumPromotionPatchUpdateResult](OmniumPromotionPatchUpdateResult.md)
+- [OmniumPromotionPercentageStep](OmniumPromotionPercentageStep.md)
+- [OmniumPromotionProduct](OmniumPromotionProduct.md)
+- [OmniumPromotionQuantityTier](OmniumPromotionQuantityTier.md) — Represents a quantity-based pricing tier for MultiBuy promotions in the public API. Enables tiered discounts like "2 for 499 NOK, 3 for 649 NOK, 4 for 799 NOK".
+- [OmniumPromotionRequest](OmniumPromotionRequest.md) — Request for adding a promotion
+- [OmniumPromotionReward](OmniumPromotionReward.md) — Reward for a promotion
+- [OmniumPromotionRewardPatch](OmniumPromotionRewardPatch.md) — Reward for a promotion
+- [OmniumPromotionScrollSearchRequest](OmniumPromotionScrollSearchRequest.md) — Request model for the scroll promotion search endpoint (POST /api/Promotions/Search/Scroll). Inherits all promotion filter fields from Omnium.Public.Promotions.Search.OmniumPromotionSearchRequestBase; adds scroll batch sizing. Use this for bulk extraction — exporting large promotion sets, syncing to other systems. The response returns a ScrollId; pass it to GET /api/Promotions/Scroll/{id} to fetch subsequent batches until no ScrollId is returned. For UI-style paginated search, use Omnium.Public.Promotions.Search.OmniumPromotionSearchRequest with the regular search endpoint instead.
+- [OmniumPromotionSearchRequest](OmniumPromotionSearchRequest.md) — Request model for the paginated promotion search endpoint (POST /api/Promotions/Search). Inherits all promotion filter fields from Omnium.Public.Promotions.Search.OmniumPromotionSearchRequestBase; adds pagination controls. For bulk extraction of large result sets (exports, system syncs), use Omnium.Public.Promotions.Search.OmniumPromotionScrollSearchRequest with the scroll endpoint instead.
+- [OmniumPromotionSelectedShipmentMethods](OmniumPromotionSelectedShipmentMethods.md)
+- [OmniumPromotionTranslation](OmniumPromotionTranslation.md)
+- [OmniumPromotionType](OmniumPromotionType.md)
+- [OmniumPromotionTypePatch](OmniumPromotionTypePatch.md) — Promotion type data
+- [OmniumPromotionTypeRequest](OmniumPromotionTypeRequest.md) — Promotion type data
+- [OmniumPropertyItem](OmniumPropertyItem.md) — Generic property item (key values)
+- [OmniumPropertyOption](OmniumPropertyOption.md) — A single value belonging to a centrally managed dropdown option group.
+- [OmniumPropertyOptionOmniumResult](OmniumPropertyOptionOmniumResult.md) — Generic query result
+- [OmniumPropertyOptionSearchRequest](OmniumPropertyOptionSearchRequest.md) — Search request for property options.
+- [OmniumPunchOutSettings](OmniumPunchOutSettings.md)
+- [OmniumPurchaseOrder](OmniumPurchaseOrder.md) — Purchase orders from suppliers
+- [OmniumPurchaseOrderActionExecutionResult](OmniumPurchaseOrderActionExecutionResult.md) — Result from single workflow action
+- [OmniumPurchaseOrderExportModel](OmniumPurchaseOrderExportModel.md) — Used for webhooks and export
+- [OmniumPurchaseOrderExtendedModel](OmniumPurchaseOrderExtendedModel.md) — Extended purchase order model with store and supplier information
+- [OmniumPurchaseOrderForm](OmniumPurchaseOrderForm.md) — Purchase order form
+- [OmniumPurchaseOrderFormPatch](OmniumPurchaseOrderFormPatch.md) — Purchase order form, containing line items for order
+- [OmniumPurchaseOrderLine](OmniumPurchaseOrderLine.md) — Purchase order line
+- [OmniumPurchaseOrderLineExtendedModel](OmniumPurchaseOrderLineExtendedModel.md) — Extended purchase order line with end customer information
+- [OmniumPurchaseOrderLinePatch](OmniumPurchaseOrderLinePatch.md) — Purchase order line
+- [OmniumPurchaseOrderLineReference](OmniumPurchaseOrderLineReference.md) — Representing a line item for creating new delivery from purchase orders
+- [OmniumPurchaseOrderOmniumQueryResult](OmniumPurchaseOrderOmniumQueryResult.md) — Generic result from a paginated Query endpoint. Contains plain entity objects. Works with any entity type: OmniumProduct, OmniumOrder, OmniumCustomer, OmniumCart, etc. For scroll-capable endpoints, see Omnium.Public.Search.Query.OmniumScrollableQueryResult`1.
+- [OmniumPurchaseOrderOmniumResult](OmniumPurchaseOrderOmniumResult.md) — Generic query result
+- [OmniumPurchaseOrderOmniumScrollableQueryResult](OmniumPurchaseOrderOmniumScrollableQueryResult.md) — Result from a scroll-capable Query endpoint. Adds a scroll continuation token to the standard Omnium.Public.Search.Query.OmniumQueryResult`1.
+- [OmniumPurchaseOrderOmniumSearchResult](OmniumPurchaseOrderOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumPurchaseOrderPatch](OmniumPurchaseOrderPatch.md) — Omnium order patch object
+- [OmniumPurchaseOrderQueryRequest](OmniumPurchaseOrderQueryRequest.md) — Request model for the paginated purchase order Query endpoint (POST /api/PurchaseOrders/Query). Inherits all purchase order filter fields from Omnium.Public.PurchaseOrders.Query.OmniumPurchaseOrderQueryRequestBase; adds pagination controls. For bulk extraction (full syncs, exports), use Omnium.Public.PurchaseOrders.Query.OmniumPurchaseOrderScrollQueryRequest with the scroll endpoint instead.
+- [OmniumPurchaseOrderScrollQueryRequest](OmniumPurchaseOrderScrollQueryRequest.md) — Request model for the scroll purchase order Query endpoint (POST /api/PurchaseOrders/Query/Scroll). Inherits all purchase order filter fields from Omnium.Public.PurchaseOrders.Query.OmniumPurchaseOrderQueryRequestBase; adds scroll batch sizing. Use this for bulk extraction — full syncs to other systems (ERP, BI), data exports. For UI-style paginated queries, use Omnium.Public.PurchaseOrders.Query.OmniumPurchaseOrderQueryRequest with the regular Query endpoint instead.
+- [OmniumPurchaseOrderSearchRequest](OmniumPurchaseOrderSearchRequest.md) — Search model for purchase orders
+- [OmniumPurchaseOrderWorkflowExecutionResult](OmniumPurchaseOrderWorkflowExecutionResult.md) — Purchase order workflow execution result
+- [OmniumPurchaseOrderWorkflowRequest](OmniumPurchaseOrderWorkflowRequest.md) — Purchase order workflow execution request
+- [OmniumRating](OmniumRating.md) — Class for rating other entities, like products, customers, stores, etc
+- [OmniumRatingOmniumResult](OmniumRatingOmniumResult.md) — Generic query result
+- [OmniumRatingOmniumSearchResult](OmniumRatingOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumRatingReply](OmniumRatingReply.md) — Class for creating a comment/answer to a rating/review
+- [OmniumRecommendationsResult](OmniumRecommendationsResult.md)
+- [OmniumRelatedProduct](OmniumRelatedProduct.md) — Representing a collection of related product items by a given key. A key could be "Siblings", "Accessories", etc
+- [OmniumRelatedProductItem](OmniumRelatedProductItem.md)
+- [OmniumRentalAvailabilityPeriod](OmniumRentalAvailabilityPeriod.md) — A time period specifying which products are available for rental
+- [OmniumRentalAvailabilityRequest](OmniumRentalAvailabilityRequest.md) — Request rental availability information on the given rental products
+- [OmniumRentalAvailabilityResult](OmniumRentalAvailabilityResult.md) — Availability information
+- [OmniumRentalBooking](OmniumRentalBooking.md) — A booking for a rental product
+- [OmniumRentalProductCreateRequest](OmniumRentalProductCreateRequest.md) — Request for creation of rental products from existing product
+- [OmniumRentalProductCreateResult](OmniumRentalProductCreateResult.md) — Result of rental product creation
+- [OmniumReplacementRequestModel](OmniumReplacementRequestModel.md) — Request model for replacement order
+- [OmniumReplacementSettings](OmniumReplacementSettings.md)
+- [OmniumReturnCharge](OmniumReturnCharge.md) — Return charge
+- [OmniumReturnOrderForm](OmniumReturnOrderForm.md) — Return order form
+- [OmniumReturnOrderFormPatch](OmniumReturnOrderFormPatch.md) — Return order form
+- [OmniumReturnOrderSearchRequest](OmniumReturnOrderSearchRequest.md) — Search request object for return orders
+- [OmniumReturnOrderViewModel](OmniumReturnOrderViewModel.md) — Model for return lists
+- [OmniumReturnOrderViewModelOmniumSearchResult](OmniumReturnOrderViewModelOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumReturnRequestModel](OmniumReturnRequestModel.md) — Request model for order/order line returns
+- [OmniumReturnSettings](OmniumReturnSettings.md)
+- [OmniumReturnType](OmniumReturnType.md)
+- [OmniumRole](OmniumRole.md) — The OmniumRole contains data about roles in Omnium
+- [OmniumSalesLimitation](OmniumSalesLimitation.md) — Class for Sales Limitation
+- [OmniumSalesType](OmniumSalesType.md) — Represents sales breakdown by item type (products, services, gift cards). Note: This is not a standard POS concept and may be specific to certain systems like Sitoo.
+- [OmniumSearchRatingRequest](OmniumSearchRatingRequest.md) — Search request for ratings
+- [OmniumSearchRecommendationsRequest](OmniumSearchRecommendationsRequest.md)
+- [OmniumSearchRequest](OmniumSearchRequest.md) — Generic search request
+- [OmniumSeoInfo](OmniumSeoInfo.md) — Product info for search engine optimization
+- [OmniumSetDefaultLocationRequest](OmniumSetDefaultLocationRequest.md) — Request model for setting the default location for a SKU in a warehouse
+- [OmniumShipment](OmniumShipment.md) — Representing a shipment
+- [OmniumShipmentDimensions](OmniumShipmentDimensions.md) — Shipment package dimensions
+- [OmniumShipmentLineItemsUpdateModel](OmniumShipmentLineItemsUpdateModel.md) — Shipment line items update model for adding existing line items to a shipment
+- [OmniumShipmentOption](OmniumShipmentOption.md) — Information about a specific shipment product, provider(Bring, Postnord, HeltHjem...), returns, price etc.
+- [OmniumShipmentOptionConstraints](OmniumShipmentOptionConstraints.md) — Physical and service-area limits of a transport product. Every value is optional; an unset one places no limit.
+- [OmniumShipmentOptionCost](OmniumShipmentOptionCost.md) — The internal cost of using a shipping option, used to rank allocation plans by cost.
+- [OmniumShipmentPackage](OmniumShipmentPackage.md) — Used by shipping providers to calculate freight cost and space on trucks
+- [OmniumShipmentPatch](OmniumShipmentPatch.md) — Representing a shipment
+- [OmniumShipmentTracking](OmniumShipmentTracking.md) — Tracking for each package/colli. Used if shipping provider returns more than one trackinglink/number. Some providers does not support one tracking for shipment with multiple packages
+- [OmniumShippingOption](OmniumShippingOption.md) — Shipping option to use on cart / order
+- [OmniumShippingPickUpPoint](OmniumShippingPickUpPoint.md) — Object describing a pickUpPoint for a shipment
+- [OmniumSmsMessage](OmniumSmsMessage.md) — Class for sending sms
+- [OmniumSortField](OmniumSortField.md) — Sort field and direction for query endpoints. Available field names are entity-specific.
+- [OmniumSpecialOpeningHours](OmniumSpecialOpeningHours.md) — Class for storing special opening hours
+- [OmniumSpecialOpeningHoursPatch](OmniumSpecialOpeningHoursPatch.md) — Class for storing special opening hours
+- [OmniumSplitPurchaseOrderLine](OmniumSplitPurchaseOrderLine.md) — Request to split a purchase order line into two lines
+- [OmniumStatsAggregate](OmniumStatsAggregate.md) — Aggregated statistics
+- [OmniumStatsAggregateOmniumBucket](OmniumStatsAggregateOmniumBucket.md) — Bucket
+- [OmniumStore](OmniumStore.md) — Physical store, Web shop, Warehouse, or other department of the company
+- [OmniumStoreAddress](OmniumStoreAddress.md) — Class to store a stores physical address
+- [OmniumStoreOmniumResult](OmniumStoreOmniumResult.md) — Generic query result
+- [OmniumStoreOmniumSearchResult](OmniumStoreOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumStorePatch](OmniumStorePatch.md) — Physical store, Web shop, Warehouse, or other department of the company
+- [OmniumStoreSearchRequest](OmniumStoreSearchRequest.md) — Search request object for stores
+- [OmniumStoreUpdateResult](OmniumStoreUpdateResult.md)
+- [OmniumStoreWarehouse](OmniumStoreWarehouse.md) — Available warehouse for a store
+- [OmniumStoreWarehousePatch](OmniumStoreWarehousePatch.md) — Available warehouse for a store
+- [OmniumSubPayment](OmniumSubPayment.md) — Represents a sub-category of a payment method with detailed breakdown.
+- [OmniumSubscription](OmniumSubscription.md) — Omnium subscription model
+- [OmniumSubscriptionOmniumSearchResult](OmniumSubscriptionOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumSubscriptionSearchRequest](OmniumSubscriptionSearchRequest.md) — Subscription search request
+- [OmniumSupplier](OmniumSupplier.md) — Company that delivers purchase orders
+- [OmniumSupplierOmniumSearchResult](OmniumSupplierOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumSupplierPatch](OmniumSupplierPatch.md) — Supplier patch model for partial updates. Only the fields with a value are updated, the rest of the supplier is left unchanged.
+- [OmniumSupplierSearchRequest](OmniumSupplierSearchRequest.md) — Supplier search request
+- [OmniumSupplierUpdateResult](OmniumSupplierUpdateResult.md) — Result of a supplier patch operation. TotalCount is the sum of UpdatedCount, UnchangedCount, NotFoundCount and ErrorCount.
+- [OmniumTagSettings](OmniumTagSettings.md)
+- [OmniumTaxGroup](OmniumTaxGroup.md) — A VAT rate (tax group): the rate, the VAT code of the ERP and the days it is valid on.
+- [OmniumTermsAggregationData](OmniumTermsAggregationData.md) — Terms aggregations
+- [OmniumTermsAggregationDataListOmniumBucket](OmniumTermsAggregationDataListOmniumBucket.md) — Bucket
+- [OmniumTimeEntry](OmniumTimeEntry.md) — Time entry related to project.
+- [OmniumTimeEntrySearchRequest](OmniumTimeEntrySearchRequest.md)
+- [OmniumTokenResponse](OmniumTokenResponse.md)
+- [OmniumTranslationKeys](OmniumTranslationKeys.md)
+- [OmniumTriggerRequest](OmniumTriggerRequest.md) — Used for triggering actions specifically configured for the tenant
+- [OmniumUnitConversion](OmniumUnitConversion.md)
+- [OmniumUnitConversionList](OmniumUnitConversionList.md)
+- [OmniumUpdateLineItemStatusPatch](OmniumUpdateLineItemStatusPatch.md) — Update line item
+- [OmniumUpdateProjectProductStatusRequest](OmniumUpdateProjectProductStatusRequest.md) — Request model for updating the status of individual products in a project
+- [OmniumUpdateRentalProductPriceRequest](OmniumUpdateRentalProductPriceRequest.md) — Request for updating a single price (daily rate or deposit) on a rental product
+- [OmniumUpdateShipmentInfo](OmniumUpdateShipmentInfo.md) — Class for updating shipment method and tracking info
+- [OmniumUpdateStatusPatch](OmniumUpdateStatusPatch.md) — Update status patch
+- [OmniumUserModel](OmniumUserModel.md) — The OmniumUserModel contains data about users in Omnium
+- [OmniumUserPatch](OmniumUserPatch.md) — OmniumUserPatch is used to patch existing omnium users
+- [OmniumValidationError](OmniumValidationError.md)
+- [OmniumValidationResult](OmniumValidationResult.md)
+- [OmniumValueAggregate](OmniumValueAggregate.md) — Value aggregations
+- [OmniumValueAggregateOmniumBucket](OmniumValueAggregateOmniumBucket.md) — Bucket
+- [OmniumVariantPatch](OmniumVariantPatch.md) — SkuId is required. If not set, the patch request will be skipped
+- [OmniumVatGroup](OmniumVatGroup.md) — Represents sales grouped by VAT rate or tax code.
+- [OmniumVatGroupRefund](OmniumVatGroupRefund.md) — Represents refunds/returns grouped by VAT rate.
+- [OmniumVersionListItem](OmniumVersionListItem.md)
+- [OmniumVirtualWarehouseAllocation](OmniumVirtualWarehouseAllocation.md) — Virtual Warehouse Allocation
+- [OmniumVirtualWarehouseAllocationToSplit](OmniumVirtualWarehouseAllocationToSplit.md) — Virtual Warehouse Allocation identifier for split operations. Use either Id or WarehouseCode to identify which allocation to split.
+- [OmniumVisitingaddress](OmniumVisitingaddress.md)
+- [OmniumVoucher](OmniumVoucher.md) — Vouchers
+- [OmniumVoucherOmniumResult](OmniumVoucherOmniumResult.md) — Generic query result
+- [OmniumVoucherOmniumSearchResult](OmniumVoucherOmniumSearchResult.md) — Generic class for receiving search results with facets
+- [OmniumVoucherSearchRequest](OmniumVoucherSearchRequest.md)
+- [OmniumWarehouseInventory](OmniumWarehouseInventory.md)
+- [OmniumWorkflowStep](OmniumWorkflowStep.md)
+- [OmniumWorkflowStepRequest](OmniumWorkflowStepRequest.md) — Workflow step response
+- [OmniumZipCodeRange](OmniumZipCodeRange.md) — Class representing an interval of zip codes
+- [OmniumZReport](OmniumZReport.md) — Represents a Z-Report, a financial summary report generated when closing a cash register or POS terminal. Contains sales, returns, payment methods, and cash management information for a specific register period.
+- [OmniumZReportFilter](OmniumZReportFilter.md)
+- [OmniumZReportPayment](OmniumZReportPayment.md) — Represents a payment method used for sales transactions.
+- [OmniumZReportTotal](OmniumZReportTotal.md) — Represents a total with amount and count (used for sales, returns, grand totals).
+- [OrderLineReplacementRequestModel](OrderLineReplacementRequestModel.md) — Orderline replacement request model
+- [PatchLineItemIdsDetails](PatchLineItemIdsDetails.md) — Details of line item ID updates by location
+- [ProblemDetails](ProblemDetails.md)
+- [PromotionType](PromotionType.md) — Defines the type of promotion [ShippingPromotion = 0, CategoryOrBrandPromotion = 1, MultiBuyPromotion = 2, OrderAmountPromotion = 3, KitPromotion = 4, ProductSearchPromotion = 5, PriceListPromotion = 6, CostPricePromotion = 7, RuleBasedPromotion = 8]
+- [ShipmentPackageLineItemReference](ShipmentPackageLineItemReference.md) — Used to add a link between packages and LineItems
+- [ValidationProblemDetails](ValidationProblemDetails.md)

@@ -1,0 +1,122 @@
+# OmniumOrderLine
+
+Order line
+
+**Fields:**
+
+- `lineItemId`: string, nullable — Line item ID / Order Line ID - REQUIRED
+- `externalIds`: List<[`OmniumExternalId`](OmniumExternalId.md)>, nullable, max length 250 — List of external order line IDs
+- `code`: string, nullable — SKU
+- `ean`: string, nullable, **deprecated** — Product EAN / GTIN number
+- `gtins`: List<string>, nullable — GTIN numbers
+- `displayName`: string, nullable — Product display name
+- `alternativeProductName`: string, nullable — Additional or alternative product name
+- `placedPrice`: number (decimal) — The price for one item, without discounts, i.e. list price
+- `placedPriceExclTax`: number (decimal) — Calculated - The price for one item, without discounts, i.e. list price, without tax
+- `extendedPrice`: number (decimal) — Calculated - Total line item price with all discounts applied, including item and order level discounts
+- `extendedPriceExclTax`: number (decimal) — Calculated - Total line item price with all discounts applied, including item and order level discounts, without tax
+- `priceListId`: string, nullable — Calculated - Reference to connected price list. Used in the context of 'PriceFactor'
+- `priceListItemId`: string, nullable — Calculated - Reference to connected price list item. Used in the context of 'PriceFactor'
+- `discountedPrice`: number (decimal) — Calculated - Total line item price with all item discounts applied. Without order discounts.
+- `discountedPriceExclTax`: number (decimal) — Calculated - Total line item price with all item discounts applied. Without order discounts. Without tax.
+- `lineItemDiscountAmount`: number (decimal), **deprecated** — (OBSOLETE: Use property on Discounted instead) Calculated - Total line item discount.
+- `lineItemDiscountAmountExclTax`: number (decimal), **deprecated** — (OBSOLETE: Use property on DiscountedPriceExclTax instead) Calculated - Total line item discount excl. tax.
+- `suggestedRetailPrice`: number (decimal) — Suggested retail price. Not used in any calculations. Only used for reports or statistics by third party applications.
+- `suggestedRetailPriceExclTax`: number (decimal) — Suggested retail price without tax. Not used in any calculations. Only used for reports or statistics by third party applications.
+- `orderDiscountAmount`: number (decimal) — Calculated - This order line's share of the order level discounts
+- `creditedAmount`: number (decimal) — Calculated - credited amount for order line
+- `originalExtendedPricePerUnit`: number (decimal), nullable — Calculated - Original extended price per unit before cancellation, used for credit calculations when ExtendedPrice becomes 0 after full cancellation
+- `comment`: string, nullable — Order line comment
+- `quantity`: number (decimal) — Number of ordered items
+- `unit`: string, nullable — Quantity unit - e.g. Meter,Pcs,Litre, etc
+- `selectedUnit`: string, nullable — The selected unit of measurement on order line if product is sold in multiple units (Null if sold unit is default unit)
+- `selectedUnitConversionFactor`: number (decimal), nullable — Conversion factor from default unit to selected unit
+- `selectedUnitQuantity`: number (decimal), nullable — The quantity ordered in the selected unit of measurement.
+- `returnQuantity`: number (decimal) — Number of items returned
+- `returnReason`: string, nullable — Return reason comment
+- `returnDate`: string (date-time), nullable — Date returned
+- `returnType`: string, nullable — Return type ID (should correspond to preconfigured list of return types)
+- `canceledQuantity`: number (decimal) — Number of items cancelled
+- `canceledDate`: string (date-time), nullable
+- `cancelReason`: string, nullable — Reason / type of order line cancellation
+- `cancelComment`: string, nullable — Comment regarding cancellation
+- `deliveredQuantity`: number (decimal) — Number of items delivered
+- `customerPickupDeadline`: string (date-time), nullable — Deadline for when the customer needs to pick up the order line (Used for partial deliveries)
+- `storePickDate`: string (date-time), nullable — Deadline for when the store needs to pick the order line (Used for partial deliveries)
+- `readyForPickupQuantity`: number (decimal), nullable — Number of items ready for pick up
+- `readyForPickupDate`: string (date-time), nullable — Date orderLine is ready for pick up
+- `isGift`: boolean — If item should be sent as a gift
+- `isBackorder`: boolean — Product on order line can be back-ordered
+- `isReadOnly`: boolean — Mark the order line as read only.
+- `isReadOnlyByCustomer`: boolean — Mark the order line as read only for the customer. Typically used for carts where there should be order lines that the customer should not be allowed to modify.
+- `cost`: number (decimal) — Enriched from product data: Item cost
+- `costTotal`: number (decimal) — Calculated - Total cost for all items
+- `discounted`: number (decimal) — Total line item discount
+- `discountedExclTax`: number (decimal) — Total line item discount without tax
+- `taxTotal`: number (decimal) — Calculated - Total tax for order line
+- `taxRate`: number (decimal), nullable — Tax rate in percent. If tax is 25%, value here should be 25.00. If not set(null) tax from market will be used.
+- `campaignId`: string, nullable — Optional campaign id
+- `properties`: List<[`OmniumPropertyItem`](OmniumPropertyItem.md)>, nullable, max length 250 — Custom properties
+- `size`: string, nullable — Enriched by product data - item size
+- `color`: string, nullable — Enriched by product data - name of color
+- `brand`: string, nullable — Enriched by product data - name of brand
+- `productType`: string, nullable — Product type
+- `supplierId`: string, nullable — Supplier ID
+- `supplierSkuId`: string, nullable — Supplier Sku ID
+- `supplierName`: string, nullable — Supplier name
+- `productId`: string, nullable — Enriched by product data: Product ID
+- `imageUrl`: string, nullable — Enriched by product data: Product image URL
+- `orderLineDiscounts`: List<[`OmniumOrderLineDiscount`](OmniumOrderLineDiscount.md)>, nullable, max length 250 — Discounts valid for this order line
+- `orderDiscounts`: List<[`OmniumOrderLineOrderDiscount`](OmniumOrderLineOrderDiscount.md)>, nullable — Calculated, read-only - this order line's share of each individual order level discount. The amounts sum to OrderDiscountAmount. Each discount takes the proportion it has of the order form's total discount amount; any rounding residual lands on the last discount, so summing one discount's shares across all lines may differ from its DiscountAmount by cents. Ignored on input, Omnium always recalculates it.
+- `orderLineBonusPoints`: [`OmniumOrderLineBonusPoints`](OmniumOrderLineBonusPoints.md)
+- `expectedDeliveryDate`: string (date-time), nullable — Expected delivery date for order line
+- `expectedDeliveryDateTo`: string (date-time), nullable — End of the expected delivery window for order line, starting at ExpectedDeliveryDate. Leave empty for a single expected delivery date
+- `serialNumber`: string, nullable — Serial number for order line
+- `isSerializableProduct`: boolean, nullable — Indicates whether the product requires a serial number
+- `isRental`: boolean — Indicates whether the order line represents a rental product. Rental dates are stored in Properties (keys: RentalFrom, RentalTo).
+- `packageSkuId`: string, nullable — Package sku ID / Code (used if product is part of package)
+- `packageLineItemId`: string, nullable — Package line item ID (used if product is part of package)
+- `componentId`: string, nullable — Applicable only when the order line represents a component. Stores the identifier of the corresponding component within the parent package's component list.
+- `webSiteProductUrl`: string, nullable — Public website URL to product
+- `customsCode`: string, nullable — Customs code for the line item. Enriched by product data
+- `countryOfOrigin`: string, nullable — Country of origin. Enriched by product data
+- `weight`: number (double), nullable — Weight of a single unit, in kilograms (kg). Enriched by product data when not already set on the line
+- `updateStock`: boolean — Used by order return. If we should increase stock
+- `replacedQuantity`: number (decimal), nullable — Number of items replaced (if a replacement order has been created)
+- `replacedDate`: string (date-time), nullable — Replaced date (if a replacement order has been created)
+- `replacementType`: string, nullable — Type of replacement (should correspond to preconfigured list of replacement types)
+- `replacementReason`: string, nullable — Reason for replacement
+- `isPackage`: boolean, **deprecated** — (OBSOLETE: Use 'IsPackageProduct' or 'IsPackageBrokeDown' instead) If true, product is a package with broken down components. Breakdown is skipped.
+- `isBundle`: boolean — If true, product is a bundle with components. Prices are unchanged on broken down components and should be 0 on the bundle itself.
+- `isPackageProduct`: boolean — If true, product is a package with components. Packages have their own 'package' price (price required). Broken down components price will be set to 0.
+- `isPackageBrokeDown`: boolean — If true, package/bundle breakdown is skipped
+- `isVirtualProduct`: boolean — Indicates whether the product on the order line is a virtual product. Virtual products, such as gift cards or other electronic products, do not require or affect inventory
+- `isConfigurableProduct`: boolean — Indicates whether the order line represents a configurable product. This value is set when a configurable product is created from the cart. Configurable products exist only as order lines and do not have standalone product entries
+- `modifiedReason`: string, nullable — Reason for order line modification
+- `createPurchaseOrder`: boolean, nullable — If true, purchase order should be created from order line
+- `components`: List<[`OmniumProductComponent`](OmniumProductComponent.md)>, nullable, max length 250 — Used for specification of package products
+- `reservedInventoryQuantity`: number (decimal) — Calculated: Reserved inventory
+- `isAwaitingPurchaseOrder`: boolean, nullable — If true, order line is reserved on an incoming purchase order. Order lines with this flag will not be reserved on regular inventory items.
+- `reservedInventoryPurchaseOrderId`: string, nullable — Calculated: Reserved inventory purchase order ID
+- `reservedInventoryPurchaseOrderLineId`: string, nullable — Calculated: Reserved purchase order line ID
+- `reservedInventory`: boolean — Calculated: True if inventory is reserved
+- `reservedInventoryDeliveryId`: string, nullable — Calculated: Reservation delivery ID
+- `groupId`: string, nullable — Order line group ID (should correspond to ID on order.groups)
+- `deliveredDate`: string (date-time), nullable — Date of orderline delivery
+- `requestedDeliveryDate`: string (date-time), nullable — Requested delivery date for the orderline
+- `internalWarehouseLocation`: string, nullable — Date of orderline delivery
+- `isExcludedFromPromotions`: boolean, nullable — If true promotion prices are not recalculated for this order line.
+- `isPriceLocked`: boolean, nullable — When true, the price is locked and will not be recalculated. Also sets IsExcludedFromPromotions to true.
+- `isOpenPrice`: boolean — When true, the product is sold without a fixed price, and the price is entered in the POS when the line is added. The line is then also price locked and excluded from promotions.
+- `grossProfitPercent`: number (decimal), nullable — When set, the cost is calculated from the price excl. tax before discount: cost = price × (1 − GrossProfitPercent / 100). Set from the product when its CostCalculationMethod is GrossProfitPercent.
+- `isDiscountBlocked`: boolean, nullable — Calculated - true when the product on this order line is blocked from having a manual discount applied.
+- `discountReasonCode`: string, nullable — Reason code for manual discount applied to this order line (audit trail). Kept in sync with DiscountReason.ReasonCode for legacy consumers.
+- `discountReason`: [`OmniumDiscountReason`](OmniumDiscountReason.md)
+- `isSkuAccessory`: boolean, nullable — Indicates whether the order line represents a product option/accessory that is attached to another line item.
+- `salesOrigin`: string, nullable — The origin/source of this order line (e.g. "Omnium" for UI-created lines, or values set by external systems)
+- `salesOriginId`: string, nullable — The ID of the sales channel or register that created or last modified this order line (e.g. the InStore register ID)
+
+**Used directly by endpoints in:**
+
+- [Carts | Add](../endpoints/carts/add.md)
+- [Orders | Order Lines](../endpoints/orders/order-lines.md)

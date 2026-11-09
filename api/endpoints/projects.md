@@ -1,115 +1,15 @@
-# Projects — API Endpoints
+# Projects
 
-See `schemas/common.md` for field definitions.
+Source: https://api.omnium.no/documentation
 
-## Contents
+> Projects
 
-### Projects
-
-- `GET /api/Projects/{projectId}`
-- `GET /api/Projects/GetProjectsByPartner`
-- `GET /api/Projects/GetProjectsByCustomer`
-- `POST /api/Projects/Search`
-- `GET /api/Projects/Create`
-- `POST /api/Projects/AddLogItem`
-- `POST /api/Projects/Activate`
-- `POST /api/Projects/UpdateProjectStatus`
-- `PUT /api/Projects`
-- `PATCH /api/Projects`
-- `PUT /api/Projects/{projectId}/partner/{businessCustomerId}`
-- `DELETE /api/Projects/{projectId}/partner`
-- `GET /api/Projects/GetProjectTypes`
-- `POST /api/Projects/AddCustomerToProject`
-- `POST /api/Projects/AddBusinessCustomerToProject`
-- `POST /api/Projects/AddStoreToProject`
-- `POST /api/Projects/AddFormElementsToProject`
-- `GET /api/Projects/{projectId}/Invoices`
-- `POST /api/Projects/Cancel`
-- `POST /api/Projects/Decline`
-- `POST /api/Projects/Accept`
-- `POST /api/Projects/AcceptPartnerRequest`
-- `POST /api/Projects/{projectId}/Partners`
-- `DELETE /api/Projects/{projectId}/Partners`
-- `POST /api/Projects/DeclinePartnerRequest`
-- `POST /api/Projects/GoToWorkflowStep`
-- `POST /api/Projects/{projectId}/AddRejectingPartner`
-- `DELETE /api/Projects/{projectId}/RemoveRejectingPartner`
-- `POST /api/Projects/Project/{projectId}/SendEmail`
-- `POST /api/Projects/Project/{projectId}/SendSms`
-
-### Projects | Assets
-
-- `GET /api/Projects/Assets/GetAssets`
-- `POST /api/Projects/Assets/AddAsset/{projectId}`
-- `POST /api/Projects/Assets/AddAssets/{projectId}`
-- `POST /api/Projects/Assets/UpdateAssets`
-- `DELETE /api/Projects/Assets/DeleteAssets`
-- `DELETE /api/Projects/Assets/DeleteAssetsFromProject`
-
-### Projects | Change orders
-
-- `GET /api/Projects/{projectId}/ChangeOrders/{projectChangeOrderId}`
-- `DELETE /api/Projects/{projectId}/ChangeOrders/{projectChangeOrderId}`
-- `POST /api/Projects/{projectId}/ChangeOrders`
-- `PUT /api/Projects/{projectId}/ChangeOrders`
-- `POST /api/Projects/{projectId}/ChangeOrders/AddMany`
-- `PUT /api/Projects/{projectId}/ChangeOrders/UpdateMany`
-
-### Projects | Logs
-
-- `GET /api/Projects/{projectId}/Log`
-- `POST /api/Projects/ProjectLogs/Search`
-- `PUT /api/Projects/ProjectLogs/Add`
-- `DELETE /api/Projects/ProjectLogs/{id}`
-
-### Projects | Parts
-
-- `GET /api/Projects/{projectId}/ProjectParts/{projectPartId}`
-- `DELETE /api/Projects/{projectId}/ProjectParts/{projectPartId}`
-- `POST /api/Projects/{projectId}/ProjectParts`
-- `PUT /api/Projects/{projectId}/ProjectParts`
-- `POST /api/Projects/{projectId}/ProjectParts/AddMany`
-- `PUT /api/Projects/{projectId}/ProjectParts/{projectPartId}/UpdateProjectTask`
-- `PUT /api/Projects/{projectId}/ProjectParts/UpdateMany`
-
-### Projects | Project types
-
-- `GET /api/ProjectTypes/GetAll`
-- `PATCH /api/ProjectTypes`
-
-### Projects | Reports
-
-- `POST /api/ProjectReports/GetProjectDailyReports`
-- `POST /api/ProjectReports/GetProjectTypeReports`
-
-### Projects | Time entries
-
-- `GET /api/Projects/{projectId}/TimeEntries`
-- `POST /api/Projects/TimeEntries/Search`
-- `PUT /api/Projects/TimeEntries/Add`
-- `DELETE /api/Projects/TimeEntries/{id}`
-- `POST /api/Projects/TimeEntries/DeleteMany`
-
-### Projects | Transactions
-
-- `GET /api/Projects/{projectId}/Transactions/{projectTransactionId}`
-- `DELETE /api/Projects/{projectId}/Transactions/{projectTransactionId}`
-- `POST /api/Projects/{projectId}/Transactions`
-- `PUT /api/Projects/{projectId}/Transactions`
-- `POST /api/Projects/Transactions/Sum`
-- `POST /api/Projects/{projectId}/Transactions/AddMany`
-- `PUT /api/Projects/{projectId}/Transactions/UpdateMany`
-
-### Projects | Versions
-
-- `GET /api/Projects/Versions/{projectId}`
-- `GET /api/Projects/Versions/{projectId}/{versionId}`
+Generated from the Omnium OpenAPI spec by `scripts/sync-api.ts` — do not edit by hand.
+Common conventions and standard error responses (429, 500) are in `api/_INDEX.md`.
 
 ---
 
-## Projects
-
-### `GET /api/Projects/{projectId}`
+## `GET /api/Projects/{projectId}`
 
 **Get single project**
 
@@ -119,11 +19,15 @@ Operation ID: `ProjectsGet`
 |-------|----|------|----------|-------------|
 | `projectId` | path | string | Yes |  |
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Project found and returned
+- 400: string — Project ID is invalid
+- 404: [`ProblemDetails`](../schemas/ProblemDetails.md) — Project does not exist
 
 ---
 
-### `GET /api/Projects/GetProjectsByPartner`
+## `GET /api/Projects/GetProjectsByPartner`
 
 **Get all projects associated with supplier**
 
@@ -136,11 +40,15 @@ Operation ID: `ProjectsGetProjectsByPartner`
 | `pageSize` | query | integer (int32) | No | Max 100. Minimum 1. |
 | `sortOrder` | query | string | No | Property to sort by |
 
-**Response 200:** `OmniumProjectOmniumSearchResult`
+**Responses:**
+
+- 200: [`OmniumProjectOmniumSearchResult`](../schemas/OmniumProjectOmniumSearchResult.md) — Projects found and returned
+- 400: string — Parameters are invalid
+- 404: [`ProblemDetails`](../schemas/ProblemDetails.md) — No projects found
 
 ---
 
-### `GET /api/Projects/GetProjectsByCustomer`
+## `GET /api/Projects/GetProjectsByCustomer`
 
 **Get all projects associated with customer**
 
@@ -153,23 +61,29 @@ Operation ID: `ProjectsGetProjectsByCustomer`
 | `pageSize` | query | integer (int32) | No | Max 100. Minimum 1. |
 | `sortOrder` | query | string | No | Property to sort by |
 
-**Response 200:** `OmniumProjectOmniumSearchResult`
+**Responses:**
+
+- 200: [`OmniumProjectOmniumSearchResult`](../schemas/OmniumProjectOmniumSearchResult.md) — Projects found and returned
+- 400: string — Parameters are invalid
+- 404: [`ProblemDetails`](../schemas/ProblemDetails.md) — No projects found
 
 ---
 
-### `POST /api/Projects/Search`
+## `POST /api/Projects/Search`
 
 **Search for projects**
 
 Operation ID: `ProjectsSearch`
 
-**Request body:** `OmniumProjectSearchRequest`
+**Request body:** [`OmniumProjectSearchRequest`](../schemas/OmniumProjectSearchRequest.md) — Search request
 
-**Response 200:** `OmniumProjectOmniumSearchResult`
+**Responses:**
+
+- 200: [`OmniumProjectOmniumSearchResult`](../schemas/OmniumProjectOmniumSearchResult.md) — Success
 
 ---
 
-### `GET /api/Projects/Create`
+## `GET /api/Projects/Create`
 
 **Add project to OMS.**
 
@@ -179,11 +93,14 @@ Operation ID: `ProjectsCreate`
 |-------|----|------|----------|-------------|
 | `projectTypeId` | query | string | No | ID of the project type to create |
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Projects created and returned
+- 400: string — ProjectTypeId invalid
 
 ---
 
-### `POST /api/Projects/AddLogItem`
+## `POST /api/Projects/AddLogItem`
 
 **Add log item to project**
 
@@ -193,13 +110,18 @@ Operation ID: `ProjectsAddLogItem`
 |-------|----|------|----------|-------------|
 | `projectId` | query | string | No |  |
 
-**Request body:** `OmniumProjectLog`
+**Request body:** [`OmniumProjectLog`](../schemas/OmniumProjectLog.md)
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Success
+- 400: string — Bad Request
+- 404: string — Not Found
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `POST /api/Projects/Activate`
+## `POST /api/Projects/Activate`
 
 **Activate project - Used to reactivate cancelled projects or projects on hold. Will trigger reactivation notification if configured on the project type.**
 
@@ -210,11 +132,14 @@ Operation ID: `ProjectsActivate`
 | `projectId` | query | string | Yes |  |
 | `comment` | query | string | No |  |
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Success
+- 400: string — Bad Request
 
 ---
 
-### `POST /api/Projects/UpdateProjectStatus`
+## `POST /api/Projects/UpdateProjectStatus`
 
 Operation ID: `ProjectsUpdateProjectStatus`
 
@@ -224,11 +149,31 @@ Operation ID: `ProjectsUpdateProjectStatus`
 | `status` | query | string | No |  |
 | `comment` | query | string | No |  |
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Success
+- 400: string — Bad Request
 
 ---
 
-### `PUT /api/Projects`
+## `POST /api/Projects/UpdateProjectProductStatus`
+
+**Update the status of individual products in a project**
+
+Operation ID: `ProjectsUpdateProjectProductStatus`
+
+**Request body:** [`OmniumUpdateProjectProductStatusRequest`](../schemas/OmniumUpdateProjectProductStatusRequest.md) — Request containing project ID and per-product status updates
+
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Product statuses updated successfully. Updated project is returned.
+- 400: string — Invalid request
+- 404: string — Project not found
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
+
+---
+
+## `PUT /api/Projects`
 
 **Update project**
 
@@ -238,13 +183,18 @@ Operation ID: `ProjectsUpdateProject`
 |-------|----|------|----------|-------------|
 | `runWorkflow` | query | boolean | No | If true, workflow will be processed |
 
-**Request body:** `OmniumProjectUpdateRequest`
+**Request body:** [`OmniumProjectUpdateRequest`](../schemas/OmniumProjectUpdateRequest.md) — Project to update
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Project is saved with updated information. Updated project is returned.
+- 400: string — Invalid project in request
+- 404: string — Project not found
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `PATCH /api/Projects`
+## `PATCH /api/Projects`
 
 **Patch Project - update only values in request**
 
@@ -254,13 +204,18 @@ Operation ID: `ProjectsPatchProject`
 |-------|----|------|----------|-------------|
 | `runWorkflow` | query | boolean | No | If true, workflow will be processed |
 
-**Request body:** `OmniumProjectPatch`
+**Request body:** [`OmniumProjectPatch`](../schemas/OmniumProjectPatch.md) — Project patches. Properties with value will be updated
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Project updated successfully
+- 400: string — Project patch is invalid
+- 404: string — Not Found
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `PUT /api/Projects/{projectId}/partner/{businessCustomerId}`
+## `PUT /api/Projects/{projectId}/partner/{businessCustomerId}`
 
 **Add partner to project**
 
@@ -271,11 +226,16 @@ Operation ID: `ProjectsAddPartnerToProject`
 | `projectId` | path | string | Yes |  |
 | `businessCustomerId` | path | string | Yes |  |
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Project is saved with updated information. Updated project is returned.
+- 400: string — Invalid project in request
+- 404: string — Project not found
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `DELETE /api/Projects/{projectId}/partner`
+## `DELETE /api/Projects/{projectId}/partner`
 
 **Delete partner from project**
 
@@ -285,33 +245,46 @@ Operation ID: `ProjectsDeletePartnerFromProject`
 |-------|----|------|----------|-------------|
 | `projectId` | path | string | Yes |  |
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Project is saved with updated information. Updated project is returned.
+- 400: string — Invalid project in request
+- 404: string — Project not found
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `GET /api/Projects/GetProjectTypes`
+## `GET /api/Projects/GetProjectTypes`
 
 **Get all project types**
 
 Operation ID: `ProjectsGetProjectTypes`
 
-**Response 200:** `List<OmniumProjectType>`
+**Responses:**
+
+- 200: List<[`OmniumProjectType`](../schemas/OmniumProjectType.md)> — Projects found and returned
+- 404: [`ProblemDetails`](../schemas/ProblemDetails.md) — No project types found
 
 ---
 
-### `POST /api/Projects/AddCustomerToProject`
+## `POST /api/Projects/AddCustomerToProject`
 
 **Add customer info to a project**
 
 Operation ID: `ProjectsAddCustomerToProject`
 
-**Request body:** `OmniumProject`
+**Request body:** [`OmniumProject`](../schemas/OmniumProject.md) — Project containing customer object to store
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Project is saved with new customer. Updated project is returned.
+- 400: string — Invalid project in request
+- 404: Project not found
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `POST /api/Projects/AddBusinessCustomerToProject`
+## `POST /api/Projects/AddBusinessCustomerToProject`
 
 **Add existing business customer info to a project**
 
@@ -322,11 +295,14 @@ Operation ID: `ProjectsAddBusinessCustomerToProject`
 | `projectId` | query | string | Yes | ID of project |
 | `businessCustomerId` | query | string | Yes | ID of business customer |
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Project is saved with new customer. Updated project is returned.
+- 404: string — Business customer not found
 
 ---
 
-### `POST /api/Projects/AddStoreToProject`
+## `POST /api/Projects/AddStoreToProject`
 
 **Add store id to a project**
 
@@ -336,25 +312,35 @@ Operation ID: `ProjectsAddStoreToProject`
 |-------|----|------|----------|-------------|
 | `runWorkflow` | query | boolean | No | If true, workflow will be processed |
 
-**Request body:** `OmniumProject`
+**Request body:** [`OmniumProject`](../schemas/OmniumProject.md) — Project containing store id
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Project is saved with new store. Updated project is returned.
+- 400: string — Invalid project in request
+- 404: Project not found
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `POST /api/Projects/AddFormElementsToProject`
+## `POST /api/Projects/AddFormElementsToProject`
 
 **Add information (key, value) to a project**
 
 Operation ID: `ProjectsAddFormElementsToProject`
 
-**Request body:** `OmniumProject`
+**Request body:** [`OmniumProject`](../schemas/OmniumProject.md) — Project containing form data
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Project is saved with form elements. Updated project is returned.
+- 400: string — Invalid project in request
+- 404: Project not found
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `GET /api/Projects/{projectId}/Invoices`
+## `GET /api/Projects/{projectId}/Invoices`
 
 **Get all invoices associated with project**
 
@@ -367,59 +353,78 @@ Operation ID: `ProjectsGetInvoicesForProject`
 | `pageSize` | query | integer (int32) | No | Max 100. Minimum 1. |
 | `isPaid` | query | boolean | No | Add filter on payment-status |
 
-**Response 200:** `OmniumInvoiceOmniumSearchResult`
+**Responses:**
+
+- 200: [`OmniumInvoiceOmniumSearchResult`](../schemas/OmniumInvoiceOmniumSearchResult.md) — Invoices found and returned
+- 400: string — Parameters are invalid
+- 404: [`ProblemDetails`](../schemas/ProblemDetails.md) — No invoices found
 
 ---
 
-### `POST /api/Projects/Cancel`
+## `POST /api/Projects/Cancel`
 
 **Cancel project**
 
 Operation ID: `ProjectsCancel`
 
-**Request body:** `OmniumProjectCancelRequest`
+**Request body:** [`OmniumProjectCancelRequest`](../schemas/OmniumProjectCancelRequest.md)
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Success
+- 400: string — Bad Request
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `POST /api/Projects/Decline`
+## `POST /api/Projects/Decline`
 
 **Decline workflow step (go to previous step)**
 
 Operation ID: `ProjectsDecline`
 
-**Request body:** `OmniumWorkflowStepRequest`
+**Request body:** [`OmniumWorkflowStepRequest`](../schemas/OmniumWorkflowStepRequest.md)
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Success
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `POST /api/Projects/Accept`
+## `POST /api/Projects/Accept`
 
 **Accept workflow step (go to next step)**
 
 Operation ID: `ProjectsAccept`
 
-**Request body:** `OmniumWorkflowStepRequest`
+**Request body:** [`OmniumWorkflowStepRequest`](../schemas/OmniumWorkflowStepRequest.md)
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Success
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `POST /api/Projects/AcceptPartnerRequest`
+## `POST /api/Projects/AcceptPartnerRequest`
 
 **Accept workflow step (go to next step)**
 
 Operation ID: `ProjectsAcceptPartnerRequest`
 
-**Request body:** `OmniumWorkflowStepRequest`
+**Request body:** [`OmniumWorkflowStepRequest`](../schemas/OmniumWorkflowStepRequest.md)
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Success
+- 400: string — Bad Request
+- 404: string — Not Found
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `POST /api/Projects/{projectId}/Partners`
+## `POST /api/Projects/{projectId}/Partners`
 
 **Add partners to project**
 
@@ -427,14 +432,19 @@ Operation ID: `ProjectsAddPartners`
 
 | Param | In | Type | Required | Description |
 |-------|----|------|----------|-------------|
-| `businessCustomerIds` | query | array | No |  |
+| `businessCustomerIds` | query | List<string> | No |  |
 | `projectId` | path | string | Yes |  |
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Success
+- 400: string — Bad Request
+- 404: string — Not Found
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `DELETE /api/Projects/{projectId}/Partners`
+## `DELETE /api/Projects/{projectId}/Partners`
 
 **Delete partners from project**
 
@@ -442,38 +452,82 @@ Operation ID: `ProjectsDeletePartners`
 
 | Param | In | Type | Required | Description |
 |-------|----|------|----------|-------------|
-| `businessCustomerIds` | query | array | No |  |
+| `businessCustomerIds` | query | List<string> | No |  |
 | `projectId` | path | string | Yes |  |
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Success
+- 400: string — Bad Request
+- 404: string — Not Found
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `POST /api/Projects/DeclinePartnerRequest`
+## `POST /api/Projects/DeclinePartnerRequest`
 
 **Decline workflow step (go to previous step)**
 
 Operation ID: `ProjectsDeclinePartnerRequest`
 
-**Request body:** `OmniumWorkflowStepRequest`
+**Request body:** [`OmniumWorkflowStepRequest`](../schemas/OmniumWorkflowStepRequest.md)
 
-**Response 200:** `OmniumProject`
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Success
+- 400: string — Bad Request
+- 404: string — Not Found
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `POST /api/Projects/GoToWorkflowStep`
+## `POST /api/Projects/GoToWorkflowStep`
 
 **Go to specific workflow step**
 
 Operation ID: `ProjectsGoToWorkflowStep`
 
-**Request body:** `OmniumWorkflowStepRequest`
+| Param | In | Type | Required | Description |
+|-------|----|------|----------|-------------|
+| `runWorkflow` | query | boolean | No | Default true: the project type's workflow is processed for the step being moved to, which may notify the customer by email/SMS. Set to false to move the step silently - the step change, project log entry, deadline and any status transition are still saved, only the workflow actions are skipped |
 
-**Response 200:** `OmniumProject`
+**Request body:** [`OmniumWorkflowStepRequest`](../schemas/OmniumWorkflowStepRequest.md)
+
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Success
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `POST /api/Projects/{projectId}/AddRejectingPartner`
+## `POST /api/Projects/{projectId}/ChangeProjectType`
+
+**Change the project type of a project, or refresh the project from the project type it already has**
+
+Operation ID: `ProjectsChangeProjectType`
+
+The workflow steps, check lists and the settings the project copies from its project type are taken from the project type again.
+Leave ProjectTypeId empty to refresh the project from its current project type, for example after steps have been added to the project type.
+Unless ResetWorkflowSteps is true, steps and check list items that match keep their dates and completion, and a project that stays on
+its current step keeps its deadline.
+
+| Param | In | Type | Required | Description |
+|-------|----|------|----------|-------------|
+| `projectId` | path | string | Yes | ID of the project |
+| `runWorkflow` | query | boolean | No | If true, the workflow actions of the new current step are processed, which may notify the customer by email/SMS |
+
+**Request body:** [`OmniumChangeProjectTypeRequest`](../schemas/OmniumChangeProjectTypeRequest.md) — The project type and step to change to
+
+**Responses:**
+
+- 200: [`OmniumProject`](../schemas/OmniumProject.md) — Project type changed. Updated project is returned.
+- 400: string — Invalid request, or the workflow step is not on the project type
+- 404: string — Project or project type not found
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
+
+---
+
+## `POST /api/Projects/{projectId}/AddRejectingPartner`
 
 **Add partner to list of partners rejecting project**
 
@@ -484,9 +538,16 @@ Operation ID: `ProjectsAddRejectingPartner`
 | `projectId` | path | string | Yes |  |
 | `rejectingPartnerId` | query | string | No | PartnerId |
 
+**Responses:**
+
+- 200: Partner successfully added to list of rejecting partners
+- 400: string
+- 404: string
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
+
 ---
 
-### `DELETE /api/Projects/{projectId}/RemoveRejectingPartner`
+## `DELETE /api/Projects/{projectId}/RemoveRejectingPartner`
 
 **Remove partner from list of partners rejecting project**
 
@@ -497,9 +558,16 @@ Operation ID: `ProjectsRemoveRejectingPartner`
 | `projectId` | path | string | Yes |  |
 | `rejectingPartnerId` | query | string | No | PartnerId |
 
+**Responses:**
+
+- 200: Partner successfully removed from list of rejecting partners
+- 400: string
+- 404: string
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
+
 ---
 
-### `POST /api/Projects/Project/{projectId}/SendEmail`
+## `POST /api/Projects/Project/{projectId}/SendEmail`
 
 **Send E-mail**
 
@@ -509,11 +577,18 @@ Operation ID: `ProjectsSendEmail`
 |-------|----|------|----------|-------------|
 | `projectId` | path | string | Yes |  |
 
-**Request body:** `OmniumEmailMessage`
+**Request body:** [`OmniumEmailMessage`](../schemas/OmniumEmailMessage.md) — E-mail-message to send
+
+**Responses:**
+
+- 200: Email is sent
+- 400: string — Email is invalid
+- 404: string — Not Found
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
 
 ---
 
-### `POST /api/Projects/Project/{projectId}/SendSms`
+## `POST /api/Projects/Project/{projectId}/SendSms`
 
 **Send SMS**
 
@@ -523,612 +598,11 @@ Operation ID: `ProjectsSendSms`
 |-------|----|------|----------|-------------|
 | `projectId` | path | string | Yes |  |
 
-**Request body:** `OmniumSmsMessage`
+**Request body:** [`OmniumSmsMessage`](../schemas/OmniumSmsMessage.md) — SMS-message to send
 
----
+**Responses:**
 
-## Projects | Assets
-
-### `GET /api/Projects/Assets/GetAssets`
-
-**Get project assets**
-
-Operation ID: `ProjectsGetAssets`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `assetIds` | query | array | No |  |
-
-**Response 200:** `List<OmniumAsset>`
-
----
-
-### `POST /api/Projects/Assets/AddAsset/{projectId}`
-
-**Add asset to project from stream**
-
-Operation ID: `ProjectsAddAsset`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes |  |
-| `fileName` | query | string | No |  |
-
-**Response 200:** `OmniumAsset`
-
----
-
-### `POST /api/Projects/Assets/AddAssets/{projectId}`
-
-**Add assets to project**
-
-Operation ID: `ProjectsAddAssets`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes |  |
-
-**Request body:** `List<OmniumAsset>`
-
----
-
-### `POST /api/Projects/Assets/UpdateAssets`
-
-**Update asset to project**
-
-Operation ID: `ProjectsUpdateAssets`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | query | string | No |  |
-
-**Request body:** `List<OmniumAsset>`
-
-**Response 200:** `List<OmniumAsset>`
-
----
-
-### `DELETE /api/Projects/Assets/DeleteAssets`
-
-**Delete assets from projects**
-
-Operation ID: `ProjectsDeleteAssets`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `assetIds` | query | array | No |  |
-
----
-
-### `DELETE /api/Projects/Assets/DeleteAssetsFromProject`
-
-**Delete all assets from project**
-
-Operation ID: `ProjectsDeleteAssetsFromProject`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | query | string | No |  |
-
----
-
-## Projects | Change orders
-
-### `GET /api/Projects/{projectId}/ChangeOrders/{projectChangeOrderId}`
-
-**Get project change order**
-
-Operation ID: `ProjectsChangeOrdersGetProjectChangeOrder`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-| `changeOrderId` | query | string | No | Project change order ID to get |
-| `projectChangeOrderId` | path | string | Yes |  |
-
-**Response 200:** `OmniumProjectChangeOrder`
-
----
-
-### `DELETE /api/Projects/{projectId}/ChangeOrders/{projectChangeOrderId}`
-
-**Update project change order**
-
-Operation ID: `ProjectsChangeOrdersProjectChangeOrderDelete`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-| `projectChangeOrderId` | path | string | Yes | Project change order ID to delete |
-
-**Response 200:** `OmniumProject`
-
----
-
-### `POST /api/Projects/{projectId}/ChangeOrders`
-
-**Add project change order**
-
-Operation ID: `ProjectsChangeOrdersProjectChangeOrderAdd`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-
-**Request body:** `OmniumProjectChangeOrder`
-
-**Response 200:** `OmniumProject`
-
----
-
-### `PUT /api/Projects/{projectId}/ChangeOrders`
-
-**Update project change orders**
-
-Operation ID: `ProjectsChangeOrdersProjectChangeOrdersUpdate`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-
-**Request body:** `OmniumProjectChangeOrder`
-
-**Response 200:** `OmniumProject`
-
----
-
-### `POST /api/Projects/{projectId}/ChangeOrders/AddMany`
-
-**Update many project change orders**
-
-Operation ID: `ProjectsChangeOrdersProjectChangeOrdersAddMany`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-
-**Request body:** `List<OmniumProjectChangeOrder>`
-
-**Response 200:** `OmniumProject`
-
----
-
-### `PUT /api/Projects/{projectId}/ChangeOrders/UpdateMany`
-
-**Update many project change orders**
-
-Operation ID: `ProjectsChangeOrdersProjectChangeOrderUpdateMany`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-
-**Request body:** `List<OmniumProjectChangeOrder>`
-
-**Response 200:** `OmniumProject`
-
----
-
-## Projects | Logs
-
-### `GET /api/Projects/{projectId}/Log`
-
-**Get log items for a project (sorted by date descending)**
-
-Operation ID: `ProjectLogsGetProjectLog`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes |  |
-| `page` | query | integer (int32) | No |  |
-| `take` | query | integer (int32) | No |  |
-
-**Response 200:** `OmniumProjectLogOmniumSearchResult`
-
----
-
-### `POST /api/Projects/ProjectLogs/Search`
-
-**Search project logs**
-
-Operation ID: `ProjectLogsSearch`
-
-**Request body:** `OmniumProjectLogSearchRequest`
-
-**Response 200:** `List<OmniumProjectLog>`
-
----
-
-### `PUT /api/Projects/ProjectLogs/Add`
-
-**Add/update project log item**
-
-Operation ID: `ProjectLogsAdd`
-
-**Request body:** `OmniumProjectLog`
-
-**Response 200:** `OmniumProjectLog`
-
----
-
-### `DELETE /api/Projects/ProjectLogs/{id}`
-
-**Delete project log item**
-
-Operation ID: `ProjectLogsDelete`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `id` | path | string | Yes |  |
-
----
-
-## Projects | Parts
-
-### `GET /api/Projects/{projectId}/ProjectParts/{projectPartId}`
-
-**Get project part**
-
-Operation ID: `ProjectsPartsGetProjectPart`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-| `projectPartId` | path | string | Yes | Project part ID to get |
-
-**Response 200:** `OmniumProjectPart`
-
----
-
-### `DELETE /api/Projects/{projectId}/ProjectParts/{projectPartId}`
-
-**Update project part**
-
-Operation ID: `ProjectsPartsProjectPartDelete`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-| `projectPartId` | path | string | Yes | Project part ID to delete |
-
-**Response 200:** `OmniumProject`
-
----
-
-### `POST /api/Projects/{projectId}/ProjectParts`
-
-**Add project part**
-
-Operation ID: `ProjectsPartsProjectPartAdd`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-
-**Request body:** `OmniumProjectPart`
-
-**Response 200:** `OmniumProject`
-
----
-
-### `PUT /api/Projects/{projectId}/ProjectParts`
-
-**Update project part**
-
-Operation ID: `ProjectsPartsProjectPartUpdate`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-
-**Request body:** `OmniumProjectPart`
-
-**Response 200:** `OmniumProject`
-
----
-
-### `POST /api/Projects/{projectId}/ProjectParts/AddMany`
-
-**Update many project parts**
-
-Operation ID: `ProjectsPartsProjectPartAddMany`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-
-**Request body:** `List<OmniumProjectPart>`
-
-**Response 200:** `OmniumProject`
-
----
-
-### `PUT /api/Projects/{projectId}/ProjectParts/{projectPartId}/UpdateProjectTask`
-
-**Update task on project part**
-
-Operation ID: `ProjectsPartsUpdateProjectTask`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-| `projectPartId` | path | string | Yes | Project part ID |
-
-**Request body:** `OmniumProjectTask`
-
-**Response 200:** `OmniumProject`
-
----
-
-### `PUT /api/Projects/{projectId}/ProjectParts/UpdateMany`
-
-**Update many project parts**
-
-Operation ID: `ProjectsPartsProjectPartUpdateMany`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-
-**Request body:** `List<OmniumProjectPart>`
-
-**Response 200:** `OmniumProject`
-
----
-
-## Projects | Project types
-
-### `GET /api/ProjectTypes/GetAll`
-
-**Get all project types**
-
-Operation ID: `ProjectTypesGetAll`
-
-**Response 200:** `List<OmniumProjectType>`
-
----
-
-### `PATCH /api/ProjectTypes`
-
-**Patch Project Type - update only values in request**
-
-Operation ID: `ProjectTypesPatchProject`
-
-**Request body:** `OmniumProjectTypePatch`
-
-**Response 200:** `OmniumProjectType`
-
----
-
-## Projects | Reports
-
-### `POST /api/ProjectReports/GetProjectDailyReports`
-
-**Search, filter and generate project daily stats**
-
-Operation ID: `ProjectReportsGetProjectDailyReports`
-
-**Request body:** `OmniumProjectSearchRequest`
-
-**Response 200:** `List<OmniumProjectDailyReport>`
-
----
-
-### `POST /api/ProjectReports/GetProjectTypeReports`
-
-**Get project type stats for a given time-span.
-Stats exclude deleted projects and projects without ProjectTypeName.  
-Stats only return stats on stores to which the user has access.
-Stats include all project created before toDate that are still ongoing or was cancelled or finished within the time-span.**
-
-Operation ID: `ProjectReportsGetProjectTypeReports`
-
-**Request body:** `OmniumProjectTypeReportRequest`
-
-**Response 200:** `List<OmniumProjectTypeReport>`
-
----
-
-## Projects | Time entries
-
-### `GET /api/Projects/{projectId}/TimeEntries`
-
-**Get all project types**
-
-Operation ID: `TimeEntriesGetTimeEntriesForProject`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes |  |
-| `page` | query | integer (int32) | No |  |
-| `pageSize` | query | integer (int32) | No |  |
-
-**Response 200:** `List<OmniumTimeEntry>`
-
----
-
-### `POST /api/Projects/TimeEntries/Search`
-
-**Find time entries**
-
-Operation ID: `TimeEntriesSearch`
-
-**Request body:** `OmniumTimeEntrySearchRequest`
-
-**Response 200:** `List<OmniumTimeEntry>`
-
----
-
-### `PUT /api/Projects/TimeEntries/Add`
-
-**Create time entry**
-
-Operation ID: `TimeEntriesAdd`
-
-**Request body:** `OmniumTimeEntry`
-
-**Response 200:** `OmniumTimeEntry`
-
----
-
-### `DELETE /api/Projects/TimeEntries/{id}`
-
-**Delete time entries**
-
-Operation ID: `TimeEntriesDelete`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `id` | path | string | Yes |  |
-
----
-
-### `POST /api/Projects/TimeEntries/DeleteMany`
-
-**Delete time entries**
-
-Operation ID: `TimeEntriesDeleteMany`
-
-**Request body:** `array`
-
----
-
-## Projects | Transactions
-
-### `GET /api/Projects/{projectId}/Transactions/{projectTransactionId}`
-
-**Get project transaction**
-
-Operation ID: `ProjectsTransactionsGetProjectTransaction`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-| `transactionId` | query | string | No | Project transaction ID to get |
-| `projectTransactionId` | path | string | Yes |  |
-
-**Response 200:** `OmniumProjectTransaction`
-
----
-
-### `DELETE /api/Projects/{projectId}/Transactions/{projectTransactionId}`
-
-**Update project transaction**
-
-Operation ID: `ProjectsTransactionsProjectTransactionDelete`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-| `projectTransactionId` | path | string | Yes | Project transaction ID to delete |
-
-**Response 200:** `OmniumProject`
-
----
-
-### `POST /api/Projects/{projectId}/Transactions`
-
-**Add project transaction**
-
-Operation ID: `ProjectsTransactionsProjectTransactionAdd`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-
-**Request body:** `OmniumProjectTransaction`
-
-**Response 200:** `OmniumProject`
-
----
-
-### `PUT /api/Projects/{projectId}/Transactions`
-
-**Update project transactions**
-
-Operation ID: `ProjectsTransactionsProjectTransactionsUpdate`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-
-**Request body:** `OmniumProjectTransaction`
-
-**Response 200:** `OmniumProject`
-
----
-
-### `POST /api/Projects/Transactions/Sum`
-
-**Search for projects and return a sum over all transactions**
-
-Operation ID: `ProjectsTransactionsGetTransactionSummary`
-
-**Request body:** `OmniumProjectSearchRequest`
-
-**Response 200:** `List<OmniumProjectTransactionSummary>`
-
----
-
-### `POST /api/Projects/{projectId}/Transactions/AddMany`
-
-**Update many project transactions**
-
-Operation ID: `ProjectsTransactionsProjectTransactionsAddMany`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-
-**Request body:** `List<OmniumProjectTransaction>`
-
-**Response 200:** `OmniumProject`
-
----
-
-### `PUT /api/Projects/{projectId}/Transactions/UpdateMany`
-
-**Update many project transactions**
-
-Operation ID: `ProjectsTransactionsProjectTransactionUpdateMany`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-
-**Request body:** `List<OmniumProjectTransaction>`
-
-**Response 200:** `OmniumProject`
-
----
-
-## Projects | Versions
-
-### `GET /api/Projects/Versions/{projectId}`
-
-**Get list of all version items.**
-
-Operation ID: `ProjectsVersionsVersionList`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID to fetch version list for |
-
-**Response 200:** `List<OmniumVersionListItem>`
-
----
-
-### `GET /api/Projects/Versions/{projectId}/{versionId}`
-
-**Get specific project version**
-
-Operation ID: `ProjectGetVersion`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `projectId` | path | string | Yes | Project ID |
-| `versionId` | path | string | Yes | Version ID to fetch |
-
-**Response 200:** `OmniumProjectOmniumVersion`
-
----
+- 200: SMS is sent
+- 400: string — SMS is invalid
+- 404: string — Not Found
+- 409: [`ProblemDetails`](../schemas/ProblemDetails.md) — Conflict
