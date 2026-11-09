@@ -6,7 +6,7 @@ Source: https://docs.omnium.no/docs/Order/Ledger/ledger-chart-of-accounts
 
 The **Chart of Accounts** (COA) is the tenant's mapping from Omnium accounting events to general-ledger account numbers. Every [ledger line](ledger-postings.md) carries an [account category](ledger-postings.md#account-categories); the chart turns that category — together with a VAT rate, tax group, or payment method — into the concrete account number your accounting system expects.
 
-The chart is edited under **Configuration → Settings → Advanced → Accounting settings**, in the **Chart of accounts** card. A store can also carry its own entries that replace individual tenant entries for that store only — see [Store Accounts](ledger-store-accounts.md).
+The chart is edited under **Configuration → Settings → Finance → Accounting settings**, in the **Chart of accounts** card. A store can also carry its own entries that replace individual tenant entries for that store only — see [Store Accounts](ledger-store-accounts.md).
 
 Run the **Validation** tab after editing the chart — see [Configuration](ledger-config.md#validation). A line whose account cannot be resolved is in most cases still written to the posting, but with an empty account number — see [How an account is resolved](ledger-chart-of-accounts.md#how-an-account-is-resolved).
 

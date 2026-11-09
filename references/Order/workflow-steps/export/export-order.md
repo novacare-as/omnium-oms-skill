@@ -181,7 +181,7 @@ Then in your workflow step, specify which one to use:
 
 **What it sends:** The complete order object as JSON via HTTP POST to your specified URL.
 
-**Configuration Location:** Configuration > Settings > Advanced > Connectors
+**Configuration Location:** Configuration > Settings > Integrations > Connectors
 
 **Connector JSON Configuration:**
 

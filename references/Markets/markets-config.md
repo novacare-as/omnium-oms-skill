@@ -118,7 +118,7 @@ Market groups allow you to organize multiple markets together for shared configu
 | **GroupId** \* | string | Unique identifier for the market group. Referenced by `Market.MarketGroupId`. |
 | **GroupName** \* | string | Display name for the market group shown in the UI. |
 | TemplateSettings | [TemplateSettings](markets-config.md#template-settings) | Template configuration that applies to all markets in this group. |
-| EmailClientSettings | [EmailClientSettings](markets-config.md#email-client-settings) | Email configuration that applies to all markets in this group. |
+| EmailClientSettings | [EmailClientSettings](markets-config.md#email-client-settings) | Reply address, inbound email settings and template folder for the markets in this group. |
 | Markets | List<Market> | Collection of markets belonging to this group (populated at runtime). |
 
 ### Sample
@@ -408,37 +408,31 @@ Shipment options define the available shipping methods for a market, including p
 
 ## Email client settings
 
-Email client settings configure how emails are sent for a market, including SMTP settings, sender addresses, and template references.
+Email client settings on a market set its sender address. On a market or a market group they set the reply address, the inbound email settings and some template references. A market has no email service of its own: every email is sent through the tenant's email service, see [Email Client Settings](../configuration/email-client-settings.md).
 
 ### Email client settings model
 
-| Property | Type | Description |
-| --- | --- | --- |
-| Type | string | Email provider type (e.g., "SMTP", "SendGrid"). |
-| Host | string | Email server hostname or URL. |
-| Port | int | Email server port number (e.g., 587 for TLS, 465 for SSL). |
-| UserName | string | Authentication username for the email server. |
-| Password | string | Authentication password for the email server. |
-| KeyName | string | API key name for email services like SendGrid. |
-| StandardEmailAddress | string | Default sender email address (e.g., "[orders@company.com](mailto:orders@company.com)"). |
-| InBoundEmailAddress | string | Email address for receiving inbound emails/replies. |
-| InBoundEmailFromName | string | Display name for inbound email communications. |
-| EmailTemplateContainer | string | Azure blob storage container name for email templates. |
-| EmailTemplateContentFile | string | File path/name for email template content. |
-| IsProductIdDisplayedInsteadOfSku | bool? | When true, display product ID instead of SKU in order confirmation emails. |
-| LanguageCode | string | Language code for email content. Controls the language of standard text elements like "Please reply above this line". |
+These properties take effect on a market or a market group:
+
+| Property | Type | Market | Market group | Description |
+| --- | --- | --- | --- | --- |
+| StandardEmailAddress | string | Yes | No | Sender address for the market's emails (e.g., "[orders@company.com](mailto:orders@company.com)"). |
+| InBoundEmailAddress | string | Yes | Yes | Reply address for comment emails. The market's address comes first, then the market group's, then the tenant's. |
+| InBoundEmailFromName | string | Yes | Yes | Sender name when Omnium forwards an emailed reply to the customer. A market's name replaces the name of the person who replied. A market group's name applies only to a reply without a sender name. |
+| InBoundEmailDomains | List<string> | Yes | Yes | More email domains routed to this tenant for inbound email. |
+| EmailTemplateContentFile | string | Yes | No | Fallback email template for the market, used when the market, its market group and the tenant have no default email template. |
+| EmailTemplateContainer | string | Yes | Yes | Storage folder for templates. A market's folder is read only for `.txt` template files, and a market group's folder only for comment emails. |
+
+The other properties of `EmailClientSettings` (`Type`, `KeyName`, `Host`, `Port`, `UserName`, `Password`, `GraphTenantId`, `GraphClientId`, `GraphClientSecret`, `GraphSenderMailbox`, `GraphSaveToSentItems`, `IsProductIdDisplayedInsteadOfSku` and `LanguageCode`) are read only from the tenant. On a market or market group they have no effect.
 
 ### Sample
 
 ```json
 {
   "EmailClientSettings": {
-    "Type": "SendGrid",
-    "KeyName": "sendgrid-api-key",
     "StandardEmailAddress": "orders@mystore.com",
-    "InBoundEmailAddress": "support@mystore.com",
-    "InBoundEmailFromName": "My Store Support",
-    "LanguageCode": "en"
+    "InBoundEmailAddress": "support@incoming.mystore.com",
+    "InBoundEmailFromName": "My Store Support"
   }
 }
 ```
@@ -697,8 +691,7 @@ For full connector configuration details, see the [Integrations documentation](.
       ],
 
       "EmailClientSettings": {
-        "StandardEmailAddress": "ordre@mystore.no",
-        "LanguageCode": "no"
+        "StandardEmailAddress": "ordre@mystore.no"
       },
 
       "PhoneFormatSettings": {

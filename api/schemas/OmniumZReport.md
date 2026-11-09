@@ -6,6 +6,7 @@ Contains sales, returns, payment methods, and cash management information for a 
 **Fields:**
 
 - `zreportId`: string, nullable — Unique identifier for this Z-Report.
+- `zReportNumber`: integer (int64), nullable — The register's running Z-Report number. Null for reports from a connected POS system that does not number them.
 - `companyName`: string, nullable — Name of the company operating the store.
 - `storeId`: string, nullable — Unique identifier of the store where this report was generated.
 - `storeName`: string, nullable — Name of the store where this report was generated.
@@ -18,8 +19,8 @@ Contains sales, returns, payment methods, and cash management information for a 
 - `comment`: string, nullable — Optional comment or notes entered by staff when closing the register.
 - `discountSales`: List<[`OmniumDiscountSale`](OmniumDiscountSale.md)>, nullable — Discounts applied to sales transactions during this register period.
 - `discountRefunds`: List<[`OmniumDiscountRefund`](OmniumDiscountRefund.md)>, nullable — Discounts applied to return/refund transactions during this register period.
-- `productGroupings`: List<[`OmniumProductGroupings`](OmniumProductGroupings.md)>, nullable — Sales grouped by product category or product group.
-- `productGroupRefunds`: List<[`OmniumProductGroupRefund`](OmniumProductGroupRefund.md)>, nullable — Refunds/returns grouped by product category or product group.
+- `productGroupings`: List<[`OmniumProductGroupings`](OmniumProductGroupings.md)>, nullable — Sales grouped by product category or product group. A product group with items at several VAT rates is listed once per rate, each entry stating its rate in VatValue.
+- `productGroupRefunds`: List<[`OmniumProductGroupRefund`](OmniumProductGroupRefund.md)>, nullable — Refunds/returns grouped by product category or product group. A product group with items at several VAT rates is listed once per rate, each entry stating its rate in VatValue.
 - `vatGroups`: List<[`OmniumVatGroup`](OmniumVatGroup.md)>, nullable — Sales grouped by VAT rate or tax code.
 - `vatGroupRefunds`: List<[`OmniumVatGroupRefund`](OmniumVatGroupRefund.md)>, nullable — Refunds/returns grouped by VAT rate or tax code.
 - `receiptCount`: integer (int32) — Total number of receipts printed during this register period.

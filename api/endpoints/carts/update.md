@@ -23,6 +23,7 @@ Operation ID: `CartDeleteCart`
 
 - 204: Cart is deleted
 - 404: [`ProblemDetails`](../../schemas/ProblemDetails.md) — Cart does not exist
+- 409: [`ProblemDetails`](../../schemas/ProblemDetails.md) — Bonus points redeemed on the cart could not be given back to the member
 
 ---
 

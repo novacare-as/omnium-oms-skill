@@ -94,7 +94,7 @@ Postings use the deposit line's tax group like any other sales line. In Norway, 
 
 ## Setting up container deposits
 
-1.  **Create the tax group for deposits** when tax groups are enabled, for example `PANT`, 0 %, outside VAT scope, under **Configuration → Settings → Advanced → Accounting settings**. Without tax groups, give the deposit article a tax rate instead.
+1.  **Create the tax group for deposits** when tax groups are enabled, for example `PANT`, 0 %, outside VAT scope, under **Configuration → Settings → Finance → Accounting settings**. Without tax groups, give the deposit article a tax rate instead.
 2.  **Create one deposit article per deposit class**, for example `PANT-NO-2` for the 2 kr class, with a price in every market the deposit is charged in and the tax group from step 1. A tenant that keeps one article per country creates one per market.
 3.  **Enable container deposits** under **Configuration → Settings → Products → Container deposit (pant)**. Add a deposit type per class pointing at its article, or insert a country preset and create the articles it names, and choose how orders from external channels are handled.
 4.  **Give products a deposit type** and, for multipacks, the deposit units per item, in the product's **Settings** tab or through the [Product API](container-deposits/api-reference.md#product-fields).

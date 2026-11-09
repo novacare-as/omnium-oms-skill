@@ -33,7 +33,7 @@ For the complete event structure and operation ID reference, see [Events](../Int
 
 ### Scheduled task status
 
-Scheduled tasks run background jobs on a cron schedule. You can monitor their status in the UI under **Configuration > Advanced > Connectors > Scheduled Task**, which shows:
+Scheduled tasks run background jobs on a cron schedule. You can monitor their status in the UI under **Configuration > Settings > Integrations > Scheduled tasks**, which shows:
 
 *   **Last successful run** — when the task last completed successfully
 *   **Next occurrence** — when the task will run next (based on cron schedule)

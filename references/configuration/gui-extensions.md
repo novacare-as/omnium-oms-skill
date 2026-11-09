@@ -33,7 +33,7 @@ Extensions are configured per tenant and appear in specific **extension areas** 
                         templates)        data
 ```
 
-1.  An admin creates an extension in **Configuration > Settings > Advanced > GUI Settings**
+1.  An admin creates an extension in **Configuration > Settings > Platform > User interface**
 2.  The extension is assigned to an **extension area** (e.g., the order sidebar, product edit page, or a context menu)
 3.  At runtime, Omnium renders the extension in that area and passes **context data** (the current order, product, customer, etc.)
 4.  If the extension has an **iframe URL**, it loads the external page with context values injected into the URL
@@ -455,7 +455,7 @@ Embed a CRM view on the customer page:
 
 ## Configuring in the UI
 
-Extensions are managed in the Omnium backoffice under **Configuration > Settings > Advanced > GUI Settings**.
+Extensions are managed in the Omnium backoffice under **Configuration > Settings > Platform > User interface**.
 
 The admin panel provides:
 

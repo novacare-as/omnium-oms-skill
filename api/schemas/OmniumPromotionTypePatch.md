@@ -11,7 +11,7 @@ Promotion type data
 - `categoryAndBrandFilter`: [`OmniumCategoryAndBrandFilter`](OmniumCategoryAndBrandFilter.md)
 - `promotionMultiBuyReward`: [`OmniumPromotionMultiBuyRewardPatch`](OmniumPromotionMultiBuyRewardPatch.md)
 - `discountedCategories`: List<[`OmniumProductCategory`](OmniumProductCategory.md)>, nullable, max length 250 — Discounted categories for Mix and match promotions. E.g buy one item of category A, get one item of category B free. (Only applies if PromotionType is MultiBuyPromotion).
-- `discountedProducts`: List<[`OmniumPromotionProduct`](OmniumPromotionProduct.md)>, nullable, max length 10000 — Discounted products for Mix and match promotions. E.g buy one item of product or category A, get one item of product B free. (Only applies if PromotionType is MultiBuyPromotion).
+- `discountedProducts`: List<[`OmniumPromotionProduct`](OmniumPromotionProduct.md)>, nullable, max length 20000 — Discounted products for Mix and match promotions. E.g buy one item of product or category A, get one item of product B free. (Only applies if PromotionType is MultiBuyPromotion).
 - `productSearchRequest`: [`OmniumProductSearchRequest`](OmniumProductSearchRequest.md)
 - `minQuantity`: integer (int32), nullable — Minimum total quantity of items required in the order (Only applies if PromotionType is OrderAmountPromotion).
 - `conditionOperator`: [`OmniumConditionOperator`](OmniumConditionOperator.md)

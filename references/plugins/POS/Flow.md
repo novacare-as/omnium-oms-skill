@@ -38,7 +38,7 @@ The Omnium–Flow Retail integration in Omnium enables one-way synchronization f
 
 ### Connector Configuration
 
-The Flow integration uses the connector name **`FlowRetail`**. Add a connector under **Configuration -> Settings -> Advanced -> Connectors**:
+The Flow integration uses the connector name **`FlowRetail`**. Add a connector under **Configuration -> Settings -> Integrations -> Connectors**:
 
 ```json
 {

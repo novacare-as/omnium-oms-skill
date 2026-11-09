@@ -48,11 +48,11 @@ Once this connector is configured, stores will be **exported to PinMeTo each tim
 
 ## Exporting data from Omnium to PinMeTo
 
-Export of store data from **Omnium** to **PinMeTo** is triggered by the scheduled task `PinMeToExportScheduledTask`. This scheduled task can be configured under _Contiguration --> Settings --> Advanced --> Scheduled tasks_.
+Export of store data from **Omnium** to **PinMeTo** is triggered by the scheduled task `PinMeToExportScheduledTask`. This scheduled task can be configured under _Configuration --> Settings --> Integrations --> Scheduled tasks_.
 
 ## Importing data from PinMeTo to Omnium
 
-Import of store data from **PinMeTo** to **Omnium** is triggered by the scheduled task `PinMeToImportScheduledTask`. This scheduled task can be configured under _Contiguration --> Settings --> Advanced --> Scheduled tasks_.
+Import of store data from **PinMeTo** to **Omnium** is triggered by the scheduled task `PinMeToImportScheduledTask`. This scheduled task can be configured under _Configuration --> Settings --> Integrations --> Scheduled tasks_.
 
 ## Mapping
 

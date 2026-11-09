@@ -90,7 +90,7 @@ Add `IPriceListExporter` to the list of implementations at the global connector 
 
 Purchase prices are exported separately from selling prices on their own schedule. Each product's best cost price is sent to a designated purchase price list in Sitoo.
 
-**Configuration -> Settings -> Advanced -> Scheduled Tasks**
+**Configuration -> Settings -> Integrations -> Scheduled tasks**
 
 ```json
 {

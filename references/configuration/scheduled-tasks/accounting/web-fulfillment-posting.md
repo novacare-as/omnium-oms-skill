@@ -6,7 +6,7 @@ Source: https://docs.omnium.no/docs/configuration/scheduled-tasks/accounting/web
 
 ## Overview
 
-This task generates [web-fulfillment postings](../../../Order/Ledger/ledger-postings.md#posting-sources): balanced accounting vouchers for the payment transactions of web and click & collect orders. Each run checks the time in the accounting time zone; at or after the configured cutoff hour, it posts the **previous day** for every store, booking only the transactions that are not already on a posting.
+This task generates [web-fulfillment postings](../../../Order/Ledger/ledger-postings.md#posting-sources): balanced accounting vouchers for the payment transactions of web and click & collect orders. Each run posts, for every store, the days that have settled since its last run, booking only the transactions that are not already on a posting. A day is settled when the clock in the accounting time zone has passed the cutoff hour on the next day. So a run at or after the cutoff hour posts the **previous day**, and a run before it posts the day before that when no earlier run did.
 
 ## Identifier
 
@@ -38,7 +38,7 @@ This task has no properties of its own. It is controlled by the tenant's [accoun
 | --- | --- | --- |
 | `postingEnabled` | `accountingSettings.postingEnabled` | Master switch. When off, the task does nothing. |
 | `webFulfillmentPostingEnabled` | `accountingSettings.webFulfillmentPostingEnabled` | Must be on for the task to post. |
-| `webFulfillmentPostingCutoffHour` | `accountingSettings.webFulfillmentPostingCutoffHour` | Hour (0–23, default `2`) in the accounting time zone. Before this hour, the task does nothing. |
+| `webFulfillmentPostingCutoffHour` | `accountingSettings.webFulfillmentPostingCutoffHour` | Hour (0–23, default `2`) in the accounting time zone. Before this hour, the task does not post the previous day. |
 | `timeZone` | `accountingSettings.timeZone` | IANA time zone used for the cutoff check and the day boundaries. Falls back to the tenant's time zone. |
 | `webFulfillmentPostingPerOrderType` | `accountingSettings.webFulfillmentPostingPerOrderType` | When on, one posting per order type per store and day. |
 | `postingExclusions` | `accountingSettings.postingExclusions` | [Rules](../../../Order/Ledger/ledger-posting-exclusions.md) that keep matching orders out of the postings. |
@@ -50,11 +50,12 @@ This task has no properties of its own. It is controlled by the tenant's [accoun
 ### What It Does
 
 1.  Completes without doing anything unless both `postingEnabled` and `webFulfillmentPostingEnabled` are on
-2.  Reads the current hour in the accounting time zone; if it is before the cutoff hour, completes without doing anything
-3.  Otherwise selects the previous day and processes every store
+2.  Selects the days to post in the accounting time zone: every day that has settled since the last successful run, at most 7, and the previous day again on every run at or after the cutoff hour
+3.  Completes without doing anything when there is no such day: a run before the cutoff hour, when an earlier run already posted the day before yesterday
 4.  For each store (and order type, when per-order-type posting is on), books the day's captures and refunds that are not already on a posting, applying the posting exclusions
 5.  Skips a store and day with nothing new to book
 6.  Logs a store and day whose posting fails, and continues with the next one
+7.  Writes the posted days and the number of postings generated, skipped and failed to the run log of the task
 
 ### Prerequisites
 
@@ -65,7 +66,7 @@ This task has no properties of its own. It is controlled by the tenant's [accoun
 
 *   Creates accounting postings with source `WebFulfillment`
 *   A run after a day was already posted books any transactions that arrived since, on an additional posting for that store and day
-*   Never posts days before the previous day. To post older days, use **Generate web fulfillment postings** under **Reports → Accounting** — see [Postings in the UI](../../../Order/Ledger/ledger-reports.md#re-running-web-fulfillment)
+*   Posts at most the last 7 days. When the last successful run is further back, for example after the task was disabled, it posts the last 7 days and completes with a warning. To post older days, use **Generate web fulfillment postings** under **Reports → Accounting** — see [Postings in the UI](../../../Order/Ledger/ledger-reports.md#re-running-web-fulfillment)
 
 * * *
 
@@ -99,6 +100,8 @@ Then configure the scheduled task:
 ## Recommended Schedule
 
 Run every hour (`0 * * * *`). The first run after the cutoff hour posts the previous day; later runs that day only book transactions that arrived since, and complete without changes otherwise.
+
+A daily schedule also works. The schedule is in UTC and the cutoff hour is in the accounting time zone, so pick a UTC hour that is after the cutoff all year. With `Europe/Oslo` and cutoff `2`, `0 3 * * *` runs at 04:00 in winter and 05:00 in summer. A daily run at `0 0 * * *` runs at 01:00 in winter, before the cutoff, and then posts the day before yesterday, one day later than in summer.
 
 * * *
 

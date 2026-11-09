@@ -52,7 +52,7 @@ Both are required. The market connector inherits from the global connector but c
 
 | Aspect | Global Connector | Market Connector |
 | --- | --- | --- |
-| Location | Configuration → Settings → Advanced → Connectors | Market → Connectors |
+| Location | Configuration → Settings → Integrations → Connectors | Market → Connectors |
 | Purpose | Default settings, shared configuration | Market-specific credentials and settings |
 | Required | Yes | Yes (at least one market) |
 | API credentials | No | Yes — each market connects to its own Sitoo eshop |
@@ -66,7 +66,7 @@ Both are required. The market connector inherits from the global connector but c
 
 #### Global Connector Settings (Tenant Level)
 
-Add a connector with name `sitoo` under **Configuration -> Settings -> Advanced -> Connectors**. Click on the three dots in the top right corner to edit the JSON list of connectors and add the following:
+Add a connector with name `sitoo` under **Configuration -> Settings -> Integrations -> Connectors**. Click on the three dots in the top right corner to edit the JSON list of connectors and add the following:
 
 ```json
 {

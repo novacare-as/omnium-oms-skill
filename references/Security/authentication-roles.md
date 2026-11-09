@@ -108,7 +108,7 @@ You can use one of the provided Omnium logos below. If you manage multiple envir
 
 | Light background | Dark background |
 | --- | --- |
-| ![Omnium logo (light)](https://docs.omnium.no/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fentra_id_logo.57d10ad8.png&w=3840&q=75) | ![Omnium logo (dark)](https://docs.omnium.no/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fentra_id_logo2.bcadd7fb.png&w=3840&q=75) |
+| ![Omnium logo (light)](https://docs.omnium.no/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fentra_id_logo.beebb80d.png&w=3840&q=75) | ![Omnium logo (dark)](https://docs.omnium.no/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fentra_id_logo2.da0c54bd.png&w=3840&q=75) |
 
 Once configured, users from your organization can sign in using their existing Entra ID credentials.
 
@@ -216,7 +216,7 @@ Forced sign-in frequency is configured at two levels:
 
 **1\. Global Settings**
 
-Navigate to **Administration → Settings → Advanced Settings**:
+Navigate to **Administration → Settings → Users & access → Security & authentication**:
 
 | Setting | Default | Description |
 | --- | --- | --- |

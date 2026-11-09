@@ -11,6 +11,7 @@
 - `customerName`: string, nullable — Search Invoices by CustomerName
 - `customerId`: string, nullable — Search Invoices by CustomerId
 - `orderId`: string, nullable — Search Invoices by OrderId
+- `shipmentId`: string, nullable — Search Invoices by ShipmentId
 - `projectId`: string, nullable — Search Invoices by ProjectId
 - `query`: string, nullable — Free text search Invoices (search applies to fields Id, OrderId, ProjectId, CustomerName, CustomerId, InvoiceNumber, Kid and ExternalIds)
 - `isPaid`: boolean, nullable — Search Invoices by payment statust

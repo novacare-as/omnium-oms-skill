@@ -18,6 +18,6 @@
 - `availableSteps`: List<string>, nullable, max length 250 — List of available next order statuses. Used if EnforceAvailableStepsPolicy is set to true
 - `workflowSteps`: List<[`OmniumOrderWorkflowStep`](OmniumOrderWorkflowStep.md)>, nullable, max length 250 — Workflow steps to run
 - `translateKey`: string, nullable — Translation key for order status
-- `color`: string, nullable — The colour of the status badge in Omnium, one of Blue, Orange, Purple, Green, Red, Yellow, Teal and Grey. Empty when the status keeps its default colour.
+- `color`: string, nullable — The colour of the status badge in Omnium and of the buttons that set an order or shipment to the status, one of Blue, Orange, Purple, Green, Red, Yellow, Teal and Grey. Empty when the status keeps its default colour.
 - `properties`: List<[`OmniumPropertyItem`](OmniumPropertyItem.md)>, nullable, max length 250 — Custom properties
 - `updateStatusButtonIsDisabledInGui`: boolean — If true, the button for updating to the next order status will be disabled

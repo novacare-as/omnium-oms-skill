@@ -23,7 +23,7 @@ The Flow integration supports **one-way** inventory synchronization from Omnium 
 
 The inventory export runs on a schedule and uses delta synchronization — only products with inventory changes since the last run are processed.
 
-**Configuration -> Settings -> Advanced -> Scheduled Tasks**
+**Configuration -> Settings -> Integrations -> Scheduled tasks**
 
 ```json
 {

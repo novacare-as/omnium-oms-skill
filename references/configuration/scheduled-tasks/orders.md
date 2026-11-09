@@ -14,6 +14,7 @@ The Order scheduled tasks manage the entire order lifecycle, from inventory allo
 | [Cancel Expired Click and Collect](orders/cancel-expired-click-collect.md) | Cancel click and collect orders that exceed time limits | Delta |
 | [Cancel Expired Orders](orders/cancel-expired-orders.md) | Cancel orders that have exceeded their expiration threshold | Delta |
 | [Cancel Orders with Expired Pickup Deadline](orders/cancel-orders-with-expired-pickup-deadline.md) | Cancel orders where the customer pickup deadline has passed | Delta |
+| [Create Draft Purchase Orders](orders/create-draft-purchase-orders.md) | Create and refresh one draft purchase order per supplier from reorder suggestions | Delta |
 | [Delete Old Orders](orders/delete-old-orders.md) | Permanently remove orders older than the configured retention period | Delta |
 | [Order Automation](orders/order-automation.md) | Automatically transition order status based on configurable conditions | Delta |
 | [Payment Settlements](orders/payment-settlements.md) | Retrieve and record payment settlement data from payment providers | Delta |

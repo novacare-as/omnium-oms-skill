@@ -12,3 +12,4 @@
 
 - [Carts | Add](../endpoints/carts/add.md)
 - [Carts | Checkout](../endpoints/carts/checkout.md)
+- [Carts | Line Items](../endpoints/carts/line-items.md)

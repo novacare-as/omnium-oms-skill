@@ -6,7 +6,7 @@ Source: https://docs.omnium.no/docs/Order/Ledger/ledger-tax-groups
 
 A **tax group** is a tenant-defined VAT code: a short stable identifier carrying a VAT **rate** and an **external code** (the ERP / SAF-T MVA-kode) that your accounting system uses on a VAT return. Tax groups tag products, prices, and order lines, and that tag flows through to the VAT code and rate on each [ledger line](ledger-postings.md).
 
-Tax groups are managed under **Configuration → Settings → Advanced → Accounting settings**, on the **VAT rates** tab.
+Tax groups are managed under **Configuration → Settings → Finance → Accounting settings**, on the **VAT rates** tab.
 
 The tax-group subsystem is an **independent switch** from posting generation. Tax groups tag products, prices, and order lines whether or not postings are enabled, and postings can be generated without tax groups.
 

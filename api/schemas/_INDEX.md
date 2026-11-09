@@ -162,6 +162,7 @@ Every schema with its description. Search this file for a name or keyword, then 
 - [OmniumEmailMessage](OmniumEmailMessage.md) — Class for sending email
 - [OmniumEmployee](OmniumEmployee.md) — Class for storing employees
 - [OmniumEntityError](OmniumEntityError.md) — Generic entity error
+- [OmniumEpcSerialRange](OmniumEpcSerialRange.md) — Inclusive range of numeric tag serial numbers. Either bound may be omitted for an open-ended range.
 - [OmniumEpcTag](OmniumEpcTag.md) — A single physical RFID tag, identified by its EPC. Tags carry loose references to products (skuId/GTIN), deliveries and orders - inventory quantities never depend on them.
 - [OmniumEpcTagCountBucket](OmniumEpcTagCountBucket.md) — One distinct value and the number of tags carrying it.
 - [OmniumEpcTagCountGroup](OmniumEpcTagCountGroup.md) — Counts for one GroupBy field.
@@ -316,6 +317,7 @@ Every schema with its description. Search this file for a name or keyword, then 
 - [OmniumPractice](OmniumPractice.md) — Represents practice or training transactions that should not be included in actual financial totals. Note: This is not a standard POS concept and may be specific to certain systems like Sitoo.
 - [OmniumPrice](OmniumPrice.md) — Calculated: Current price (lowest available price) - property is read only, will be set by Omnium when returned to sales channels
 - [OmniumPriceDeleteRequest](OmniumPriceDeleteRequest.md) — Request for deleting prices
+- [OmniumPriceDeleteResult](OmniumPriceDeleteResult.md) — Returned (with 200) by a price delete when at least one request was sent without a ProductId, so Omnium resolved the product from the SKU on each price. A delete where every request carries a ProductId returns 204 No Content.
 - [OmniumPriceList](OmniumPriceList.md) — Represents a price list in the OMS.
 - [OmniumPriceListItem](OmniumPriceListItem.md) — Represents an individual item in a price list within the OMS
 - [OmniumPriceListItemOmniumResult](OmniumPriceListItemOmniumResult.md) — Generic query result

@@ -8,7 +8,7 @@ Source: https://docs.omnium.no/docs/configuration/custom-reports
 
 Custom Reports allow you to define tailored data export configurations for various entity types in Omnium. Each custom report specifies which data columns to include, how to format them, and where the report should be available. Reports can be exported in multiple formats including Excel, CSV, HTML, and PDF.
 
-Custom Reports are configured under **Configuration > Settings > Advanced > Report Settings** and appear in context menus throughout the application wherever data export is available.
+Custom Reports are configured under **Configuration > Settings > Platform > Custom reports** and appear in context menus throughout the application wherever data export is available.
 
 * * *
 
@@ -412,11 +412,11 @@ Example:
 
 ## UI Configuration
 
-Custom Reports are configured in the Omnium UI under **Configuration > Settings > Advanced > Report Settings**.
+Custom Reports are configured in the Omnium UI under **Configuration > Settings > Platform > Custom reports**.
 
 ### Creating a New Report
 
-1.  Navigate to **Configuration > Settings > Advanced > Report Settings**
+1.  Navigate to **Configuration > Settings > Platform > Custom reports**
 2.  Click **Add** to create a new custom report
 3.  Fill in the report details:
     *   **Type**: Select the entity type (Order, Product, etc.)

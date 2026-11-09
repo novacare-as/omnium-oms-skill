@@ -74,7 +74,7 @@ Full tasks process all relevant data regardless of changes. They are typically s
 
 ## Configuration
 
-Scheduled tasks are configured by adding entries to `ScheduledTaskSettings`. Navigate to **Configuration > Advanced > Connectors > Scheduled Task** in the Omnium UI.
+Scheduled tasks are configured by adding entries to `ScheduledTaskSettings`. Navigate to **Configuration > Settings > Integrations > Scheduled tasks** in the Omnium UI.
 
 ![Image](https://docs.omnium.no/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Faddscheduletask.215f5af3.png&w=3840&q=75)
 

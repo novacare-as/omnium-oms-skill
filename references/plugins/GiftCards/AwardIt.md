@@ -15,7 +15,7 @@ For the api used in this integration, take a look [here](https://api-docs.giftca
 
 ## Add a gift provider under Connectors
 
-Go to Configurations -> Settings -> Advanced -> Connectors Add a connector like this:
+Go to Configuration -> Settings -> Integrations -> Connectors Add a connector like this:
 
 ```json
 {

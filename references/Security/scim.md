@@ -84,7 +84,7 @@ Save both values:
 
 Add the SHA-512 hash to your tenant settings:
 
-*   Navigate to **Configuration** → **Settings** → **Advanced**
+*   Navigate to **Configuration** → **Settings** → **Users & access** → **Security & authentication**
 *   Set `HashedScimProvisioningToken` to the SHA-512 hash from step 1
 
 ### 3\. Configure Your Identity Provider

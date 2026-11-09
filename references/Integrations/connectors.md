@@ -79,7 +79,7 @@ Staff can trigger connector actions manually from the Omnium GUI — for example
 
 ### Step 1: Navigate to Connector Settings
 
-Go to **Configuration > Advanced Settings > Connectors** in the Omnium GUI.
+Go to **Configuration > Settings > Integrations > Connectors** in the Omnium GUI.
 
 You'll see a grid listing all configured connectors with their name, type, host, and credentials.
 

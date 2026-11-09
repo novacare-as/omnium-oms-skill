@@ -13,6 +13,9 @@ Source: https://docs.omnium.no/docs/plugins/CRM/voyado
     *   Order receipts
     *   Return receipts
     *   Receipt enrichment (from product data)
+*   Export of orders to the Voyado Order API, for transactional emails
+    *   V2: orders
+    *   V3: orders and returns, with order actions
 *   Loyalty and CRM over webhooks
     *   Bonus point balance
     *   Reward vouchers (import and redeem-at-capture)
@@ -189,10 +192,23 @@ Set `GetOrCreateCustomerMode` to `MemberLookupOnly` to restrict Voyado lookup to
 
 ## Receipts
 
-Export of both order and return receipts from **Omnium** to **Voyado** can be configured through workflow steps in Omnium.
-As receipts in Voyado cannot be altered once created, it is recommended that the export of **order receipts is always set up at the very end** of an order's workflow.
+A receipt is a completed purchase or return on a Voyado contact, and is what Voyado uses for purchase history and bonus points. Omnium sends receipts with the main `VoyadoExporter` connector, for orders with a private customer. Receipts are separate from the [Voyado Order API](voyado.md#voyado-order-api---v2), which triggers transactional emails, and do not need it.
 
 See [Excluding Products from Receipts and Bonus Calculations](voyado.md#excluding-products-from-receipts-and-bonus-calculations) for how order lines are left out of a receipt and how a receipt with no items is handled.
+
+### Order Receipts
+
+1.  On the Voyado connector settings, enable **Export receipts**.
+2.  In the **order workflow**, add the [Export Order](../../Order/workflow-steps/export/export-order.md) step (`ExportOrder`, shown as **Exports order**) with the **Connector** `VoyadoExporter`. A receipt cannot be changed once created, so place the step on the last status of the order.
+
+By default each shipment gets its own receipt. Enable **Export receipts for full orders (not per shipment)** to send one receipt for the whole order, once all shipments are delivered or canceled.
+
+### Return Receipts
+
+1.  On the Voyado connector settings, enable **Export returns**.
+2.  In the **return workflow**, add the [Export Order](../../Order/Returns/return-workflow-steps/export/export-order.md) step (`ExportOrder`, shown as **Exports order**) with the **Connector** `VoyadoExporter`, on the return status that completes the return.
+
+An export step on the order status **Returned** in the order workflow does not send a return receipt.
 
 * * *
 
@@ -815,12 +831,16 @@ Here's a step-by-step outline:
 
 ## Return Order Exports
 
-The `VoyadoOrderV3Exporter` also supports exporting **return orders** to Voyado. This allows triggering Voyado actions when a return is processed in Omnium (e.g., sending a return confirmation email).
+The `VoyadoOrderV3Exporter` also supports exporting **return orders** to Voyado. This allows triggering Voyado actions when a return is processed in Omnium (e.g., sending a return confirmation email). To send the return as a receipt, see [Return Receipts](voyado.md#return-receipts).
 
 ### Setup
 
-1.  In Omnium, add the `ExportReturn` action to the relevant return workflow step.
-2.  Set the **Connector** to `VoyadoOrderV3Exporter`.
+1.  In Omnium, open the **return workflow** (not the order workflow) and add the [Export Order](../../Order/Returns/return-workflow-steps/export/export-order.md) step (`ExportOrder`, shown as **Exports order**) to the return status that should trigger the export.
+
+2.  Set the **Connector** on the step to `VoyadoOrderV3Exporter`.
+
+    An export step on the order status **Returned** in the order workflow does not export the return. It sends the original sale with the status Returned, without return lines or return details.
+
 3.  **OPTIONAL**: Configure a `VoyadoOrderAction` property and `VoyadoActionExtraData` properties on the workflow step, just like for order exports.
 
 ### How It Works

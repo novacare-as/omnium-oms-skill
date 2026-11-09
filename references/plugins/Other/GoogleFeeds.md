@@ -41,7 +41,7 @@ It is possible to add custom properties from products in Omnium to the product f
 
 #### Testing the Feed
 
-1.  Go to **Configuration -> Advanced -> Scheduled Tasks**.
+1.  Go to **Configuration -> Settings -> Integrations -> Scheduled tasks**.
 2.  Locate the scheduled task **"GoogleXmlFeedScheduledTask"**.
 3.  Click the options button on the right side and click **"Run Now"**.
     *   _Note: Depending on the number of products, this process might take some time to complete_.

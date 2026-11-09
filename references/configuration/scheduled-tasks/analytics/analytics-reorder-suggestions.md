@@ -68,6 +68,20 @@ The figures are empty when the warehouse has neither an inventory item nor inven
 
 By default the figures are shown only. When the purchase order setting `ReorderSuggestionsUseInStockSales` is on, `DemandDailyUnitSales` is the sales per day in stock for SKUs that were in stock for at least `ReorderSuggestionsMinDaysInStock` days (14 when not set), so days an item was sold out do not lower its suggestion. Otherwise it is `AverageDailyUnitSales`. See [Purchase order configuration](../../../PurchaseOrders/purchase-order-config.md#reorder-suggestions).
 
+### Draft purchase orders
+
+The reorder suggestion pages (the reorder suggestions page, the reorder suggestions tab of a supplier, the reorder view of the product list and the In-Store reorder view) put suggestions on a draft purchase order: a real purchase order in the status `ReorderSuggestionDraftStatus` names (`New` when it is empty), one per supplier and store.
+
+**Accept** calls `POST api/internal/Analytics/AnalyticsReorderSuggestionAddToPurchaseOrder` with the suggestion. With a `purchaseOrderId` the suggestion goes on that order. Without one it goes on the supplier's newest order in the draft status for the suggestion's warehouse that is not read only and does not carry the `MaintainedByScheduledTask` property, or on a new order in the draft status for that warehouse. The order gets one line per SKU and warehouse at the quantity typed on the row (`ReorderQuantity`), else at `ReorderSuggestion`. The suggestion is stamped with `PurchaseOrderId` and `PurchaseOrderLineItemId`, and keeps the quantity put on the line as `ReorderQuantity`. A suggestion that is already on an order, or has nothing to order, is refused with 400. The response holds the stamped suggestion and the order as the order lists of the pages show it.
+
+**Quantity** calls `POST api/internal/Analytics/AnalyticsReorderSuggestionUpdateQuantity` with `ReorderSuggestionId` and `Quantity`. It sets the quantity on the suggestion's line (only the suggestion's share of a line that also carries other quantities) and keeps it as `ReorderQuantity`. It is refused with 400 once the order has left the draft status.
+
+**Remove** releases the suggestion from its order and drops its line, and keeps the boost.
+
+A draft's lines count as incoming in ATP like the lines of any open purchase order, so the recalculated `ReorderSuggestion` of a suggestion on a draft is usually 0. For a suggestion on a line, the task therefore also works out `SuggestionWithoutOrder`: the suggestion as it would be with the incoming quantity less the ATP entry of the suggestion's own line (`PurchaseOrderLineId`). `SuggestionWithoutOrder - ReorderQuantity` is how far the need moved since the suggestion was added; the row shows it with an Update action that sets the line and `ReorderQuantity` to `SuggestionWithoutOrder`. The field is empty for a suggestion on no line, and is part of the comparison that decides whether a suggestion is indexed again.
+
+When a manager accepts a suggestion onto a draft the [draft purchase orders task](../orders/create-draft-purchase-orders.md) maintains, or changes a quantity on it, the order loses its `MaintainedByScheduledTask` property. The task leaves it alone from then on, and the task's own suggestions on it keep the quantity of their line as `ReorderQuantity`.
+
 ### Prerequisites
 
 *   Historical order data must exist for accurate suggestions
@@ -105,3 +119,4 @@ Run daily during off-peak hours (`0 4 * * *` - 4:00 AM) as this is a resource-in
 
 *   [Analytics Reorder Suggestions Delta](analytics-reorder-suggestions-delta.md) - Incremental updates
 *   [Supplier Reorder Suggestions](../inventory/supplier-reorder-suggestions.md) - Supplier-specific suggestions
+*   [Create Draft Purchase Orders](../orders/create-draft-purchase-orders.md) - One draft purchase order per supplier from the suggestions

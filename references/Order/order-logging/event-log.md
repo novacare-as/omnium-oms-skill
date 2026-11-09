@@ -68,7 +68,7 @@ For subscribing to events via webhooks and queues, see [Events and Webhooks](../
 
 ### Event Log Retention
 
-Event log retention is configured in **Advanced Settings**:
+Event log retention is configured in **Configuration** > **Settings** > **Platform** > **Event Log**:
 
 | Setting | Type | Description |
 | --- | --- | --- |

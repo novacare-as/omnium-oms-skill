@@ -9,7 +9,7 @@
 - `seasonCategoryId`: string, nullable
 - `productFacets`: List<[`OmniumProductFacet`](OmniumProductFacet.md)>, nullable, max length 250
 - `hasPackages`: boolean
-- `isProductStatisticsEnabled`: boolean
+- `isProductStatisticsEnabled`: boolean — No longer used. Always false; kept so the response keeps its shape.
 - `isProductOptionsEnabled`: boolean
 - `isDefaultPriceOverridingPrices`: boolean
 - `defaultProductCostCurrency`: string, nullable
@@ -20,7 +20,7 @@
 - `isOmniumUrlProviderEnabled`: boolean
 - `omniumUrlProviderTemplate`: string, nullable
 - `priceManagement`: boolean
-- `isPriceUpdateOperationDelayed`: boolean
+- `isPriceUpdateOperationDelayed`: boolean — No longer used. Always false; kept so the response keeps its shape.
 - `isVariantPricesJoined`: boolean
 - `isProductPriceSetToLowestVariantPrice`: boolean — If set to true, product price will be updated to the lowest variant price when the product is enriched.
 - `isUpdatePricesAlwaysMarkedAsModified`: boolean — Set to true to force price updates with new "Modified" date, even if price has not changed

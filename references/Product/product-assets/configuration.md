@@ -12,7 +12,7 @@ Product asset configuration is managed through tenant settings. This page covers
 
 Asset files are stored in Azure Blob Storage with optional CDN delivery. Storage configuration is managed by Omnium and does not require manual setup.
 
-Storage is configured by Omnium as part of tenant provisioning. CDN can be configured by the tenant admin under **Configuration > Settings > Advanced > CDN**. See [CDN](cdn.md) for details.
+Storage is configured by Omnium as part of tenant provisioning. CDN can be configured by the tenant admin under **Configuration > Settings > Platform > CDN**. See [CDN](cdn.md) for details.
 
 * * *
 

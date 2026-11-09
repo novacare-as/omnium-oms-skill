@@ -19,6 +19,16 @@ The **Create Return Shipment Booking** step books a return shipment with the con
 
 This step reads properties from the return request. The `CreateReturnLabel` property must be set to "true" for the step to execute.
 
+## Shipment Properties
+
+### ReturnShippingPreBooked
+
+The step books the first shipment on the return. Set `ReturnShippingPreBooked` to `true` in that shipment's `properties` list when the return label has already been booked with the carrier outside Omnium. The key is matched case-insensitively, and any value other than `true` (case-insensitive) means off.
+
+When it is `true`, the step does not call the shipping provider and does not change `returnTrackingNumber` or `returnTrackingLink`. The rest of the step runs as usual: the shipment is set to `Shipped`, its address is set to the receiving store, and the return is saved. The shipment's `labelLink` is cleared, because no label was created, so a label link from outside Omnium is not kept there.
+
+The same property is read in the order workflow. See [Create Return Shipment Booking](../../../workflow-steps/shipments/create-return-shipment-booking.md#returnshippingprebooked) and [Complete Shipment](../../../workflow-steps/shipments/complete-shipment.md#shipment-properties) for the outbound counterpart `ShippingPreBooked`.
+
 ## Behavior
 
 ### What It Does

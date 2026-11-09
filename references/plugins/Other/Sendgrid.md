@@ -8,9 +8,12 @@ Source: https://docs.omnium.no/docs/plugins/Other/Sendgrid
 
 ### Settings in Omnium
 
-1.  Go to **Configuration -> Advanced -> Email Client**.
-2.  Set **type** to **Sendgrid**.
-3.  Add the **API key** to the **"Key Name"** field.
+1.  Go to **Configuration -> Settings -> Communication -> Email client**.
+2.  Set **Email service** to **SendGrid**.
+3.  Add the API key to the **SendGrid API key** field.
+4.  For an EU API key, set **Server address** to `https://api.eu.sendgrid.com`.
+
+See [Email Client Settings](../../configuration/email-client-settings.md) for all fields and for what SendGrid supports compared with SMTP and Microsoft 365.
 
 ### Inbound Parsing
 
@@ -42,8 +45,8 @@ _**NB!** It is recommended to use the **POST the raw, full MIME message** option
 
 ### Inbound Settings in Omnium
 
-1.  Go to **Configuration -> Advanced -> Email Client**.
-2.  Add the new inbound e-mail address to **"Inbound E-mail Address"**.
+1.  Go to **Configuration -> Settings -> Communication -> Email client**.
+2.  Add the new inbound e-mail address to **Reply address for comments**.
 
 ### Using Raw-format with SendGrid
 
@@ -61,5 +64,5 @@ Due to varying formats across different email providers, formatting issues may s
 
 ### Inbound Settings in Omnium:
 
-1.  Go to **Configuration** -> **Advanced** -> **Email Client**
-2.  Add the new inbound email address to **"Inbound email address"**
+1.  Go to **Configuration** -> **Settings** -> **Communication** -> **Email client**
+2.  Add the new inbound email address to **Reply address for comments**

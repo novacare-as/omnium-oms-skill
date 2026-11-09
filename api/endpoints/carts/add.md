@@ -98,6 +98,7 @@ Operation ID: `CartAddItemToCart`
 | `priceStoreId` | query | string | No | Only use when buying from a store with a higher unit price than the default price |
 | `preventAutomaticOrderLineShipmentAssignment` | query | boolean | No | Omnium will automatically assign new line items to existing shipments. If the cart shipment contains a shipment but the orderline should be kept outside the shipment set this propery to true. |
 | `allowNoPriceItems` | query | boolean | No | Allow adding items without a price (they will get price = 0) |
+| `stopOnValidationError` | query | boolean | No | If true, the validators configured for the cart's order type and market run against the cart with the new item before it is saved, and nothing is saved when a validator reports an error. These include validators that check that a cart is ready for checkout, such as payments. The response is then 422 with the validation errors and the cart as it is stored, or no cart when the request would have created it. Validation warnings do not stop the change. |
 
 **Responses:**
 
@@ -105,6 +106,7 @@ Operation ID: `CartAddItemToCart`
 - 201: [`OmniumCart`](../../schemas/OmniumCart.md) — Cart is created and item added. Updated cart is returned
 - 400: string — Parameters are invalid
 - 404: string — Not Found
+- 422: [`OmniumCartOmniumValidationResult`](../../schemas/OmniumCartOmniumValidationResult.md) — stopOnValidationError is true and a validator reported an error. Nothing is saved
 
 ---
 
@@ -125,8 +127,9 @@ Operation ID: `CartAddItemsToCart`
 - `allowNoPriceItems`: defaults to false. Allows items without a price (they get price = 0). Applies to all lines unless a line sets its own `allowNoPriceItems`. A value on a line (true or false) overrides the request value for that line only. A line that leaves it out uses the request value.
 - `lineItemRequests[].quantity`: defaults to 1. If `unitId` is set, the quantity refers to the unit.
 - `lineItemRequests[].unitId`, `priceStoreId`, `forceNewOrderLine`, `allowNoPriceItems`, `properties`.
+- `stopOnValidationError`: defaults to false. If true, the validators configured for the cart's order type and market run against the cart with all the new lines before it is saved, and nothing is saved when a validator reports an error. These include validators that check that a cart is ready for checkout, such as payments. The response is then 422 with the validation errors and the cart as it is stored, or no cart when the request would have created it. Validation warnings do not stop the change.
 
-**Request body:** [`OmniumCartUpdateRequest`](../../schemas/OmniumCartUpdateRequest.md) — CartId (existing cart - a new cart is created if empty), MarketId, StoreId and CustomerId (used for a new cart), PriceStoreId and AllowNoPriceItems (apply to all lines unless set on the line) and LineItemRequests (SkuId, Quantity, UnitId, PriceStoreId, ForceNewOrderLine, AllowNoPriceItems, Properties). LineItemRequests is required.
+**Request body:** [`OmniumCartUpdateRequest`](../../schemas/OmniumCartUpdateRequest.md) — CartId (existing cart - a new cart is created if empty), MarketId, StoreId and CustomerId (used for a new cart), PriceStoreId and AllowNoPriceItems (apply to all lines unless set on the line), LineItemRequests (SkuId, Quantity, UnitId, PriceStoreId, ForceNewOrderLine, AllowNoPriceItems, Properties) and StopOnValidationError. LineItemRequests is required.
 
 **Responses:**
 
@@ -134,6 +137,7 @@ Operation ID: `CartAddItemsToCart`
 - 201: [`OmniumCart`](../../schemas/OmniumCart.md) — Cart is created and items are added. The updated cart is returned
 - 400: string — Parameters are invalid
 - 404: string — Not Found
+- 422: [`OmniumCartOmniumValidationResult`](../../schemas/OmniumCartOmniumValidationResult.md) — StopOnValidationError is true and a validator reported an error. Nothing is saved
 
 ---
 
@@ -150,6 +154,7 @@ Operation ID: `CartAddManyItemsToCart`
 | `storeId` | query | string | No | Store ID for new cart - defaults to null |
 | `customerId` | query | string | No | CustomerId for the new cart - defaults to null |
 | `forceNewOrderLine` | query | boolean | No | If set to true, a new order line will be created even if there is an existing order line with the same sku |
+| `stopOnValidationError` | query | boolean | No | If true, the validators configured for the cart's order type and market run against the cart with all the new items before it is saved, and nothing is saved when a validator reports an error. These include validators that check that a cart is ready for checkout, such as payments. The response is then 422 with the validation errors and the cart as it is stored, or no cart when the request would have created it. Validation warnings do not stop the change. |
 
 **Request body:** List<[`OmniumLineItemRequestModel`](../../schemas/OmniumLineItemRequestModel.md)> — List of Product SKU ids and quantity (defaults to 1 if not provided). (Required)
 
@@ -159,6 +164,7 @@ Operation ID: `CartAddManyItemsToCart`
 - 201: [`OmniumCart`](../../schemas/OmniumCart.md) — Cart is created and items added. Updated cart is returned
 - 400: string — Parameters are invalid
 - 404: string — Not Found
+- 422: [`OmniumCartOmniumValidationResult`](../../schemas/OmniumCartOmniumValidationResult.md) — stopOnValidationError is true and a validator reported an error. Nothing is saved
 
 ---
 

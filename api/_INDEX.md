@@ -151,7 +151,7 @@ Key schemas: [`OmniumFileDownloadRequest`](schemas/OmniumFileDownloadRequest.md)
 | [`endpoints/carts/templates.md`](endpoints/carts/templates.md) | Carts \| Templates | 5 | Various endpoints for carts. Cart templates are typically used as an easy way to create multiple offers to customers in a B2B context, but can be used in other scenarios as well. |
 | [`endpoints/carts/update.md`](endpoints/carts/update.md) | Carts \| Update | 8 | Contains endpoints for creating and modifying carts. Carts are orders that are not yet confirmed by customer. Inherits order model, but has additional properties. |
 
-Key schemas: [`OmniumCart`](schemas/OmniumCart.md), [`OmniumCartOmniumSearchResult`](schemas/OmniumCartOmniumSearchResult.md), [`OmniumCartTemplate`](schemas/OmniumCartTemplate.md), [`OmniumProductComponent`](schemas/OmniumProductComponent.md), [`OmniumCartOmniumValidationResult`](schemas/OmniumCartOmniumValidationResult.md), [`OmniumCartSearchRequest`](schemas/OmniumCartSearchRequest.md), [`OmniumDiscount`](schemas/OmniumDiscount.md), [`OmniumOrderLine`](schemas/OmniumOrderLine.md)
+Key schemas: [`OmniumCart`](schemas/OmniumCart.md), [`OmniumCartOmniumValidationResult`](schemas/OmniumCartOmniumValidationResult.md), [`OmniumCartOmniumSearchResult`](schemas/OmniumCartOmniumSearchResult.md), [`OmniumCartTemplate`](schemas/OmniumCartTemplate.md), [`OmniumProductComponent`](schemas/OmniumProductComponent.md), [`OmniumCartSearchRequest`](schemas/OmniumCartSearchRequest.md), [`OmniumDiscount`](schemas/OmniumDiscount.md), [`OmniumOrderLine`](schemas/OmniumOrderLine.md)
 
 ### Cases
 

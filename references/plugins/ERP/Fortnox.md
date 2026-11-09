@@ -10,7 +10,7 @@ Omnium provides a standardized integration with Fortnox. This includes creation 
 
 ### Setup
 
-The Fortnox integration can be configured under "Configuration->Settings->Advanced->Connectors".
+The Fortnox integration can be configured under "Configuration->Settings->Integrations->Connectors".
 
 An example of a setup might look like this:
 

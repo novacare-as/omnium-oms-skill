@@ -10,7 +10,7 @@ Formatting settings control how Omnium reads and shows dates and times, which cu
 
 The configuration is located under:
 
-**Configuration → Advanced → Formatting**
+**Configuration → Settings → Formats & numbering → Formatting**
 
 The page has two cards: **Formatting** for culture and phone number prefix, and **Time zone** for the default time zone and the time zone overrides.
 

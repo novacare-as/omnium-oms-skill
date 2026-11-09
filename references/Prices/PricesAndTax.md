@@ -182,7 +182,7 @@ Tax groups are **opt-in** per tenant. When disabled, the system behaves exactly 
 
 ### Enabling Tax Groups
 
-Tax groups are configured under **Configuration → Settings → Advanced → Accounting settings → MVA-satser**.
+Tax groups are configured under **Configuration → Settings → Finance → Accounting settings → MVA-satser**.
 
 | Setting | Description |
 | --- | --- |

@@ -7,7 +7,7 @@ Search this file for a keyword or jump to a topic, then read only the pages you 
 ## Topics
 
 - [Carts](#carts) (21 pages)
-- [Configuration](#configuration) (90 pages)
+- [Configuration](#configuration) (92 pages)
 - [Connectors & Plugins](#connectors--plugins) (76 pages)
 - [Customers](#customers) (14 pages)
 - [Getting Started, API Conventions & Security](#getting-started-api-conventions--security) (21 pages)
@@ -65,6 +65,7 @@ Platform settings, scheduled tasks, GUI extensions, reports, and other configura
 
 - [Configuration](configuration.md) — Platform settings, scheduled tasks, GUI extensions, reports, and other configuration options in Omnium.
 - [Custom Reports](configuration/custom-reports.md) — Configure custom data export reports with flexible column mapping, data types, and role-based access control.
+- [Email Client Settings](configuration/email-client-settings.md) — Configure how Omnium sends email, through SendGrid, an SMTP server or Microsoft 365 with the Microsoft Graph API.
 - [Embedded Applications](configuration/embedded-applications.md) — Embed your own web application in the Omnium UI as a page or panel, receive user and object context through postMessage, and authenticate the user in your own application.
 - [Formatting Settings](configuration/formatting-settings.md) — Configure the default time zone, time zones per store, market and market group, culture and phone number prefix.
 - [Generic Concepts](configuration/generic.md) — This page provides an overview of generic concepts in Omnium, such as External IDs,properties and more.
@@ -152,6 +153,7 @@ Platform settings, scheduled tasks, GUI extensions, reports, and other configura
 - [Cancel Expired Click and Collect](configuration/scheduled-tasks/orders/cancel-expired-click-collect.md) — Automatically cancel click and collect orders that exceed their time limits
 - [Cancel Expired Orders](configuration/scheduled-tasks/orders/cancel-expired-orders.md) — Legacy task that cancels expired click and collect orders by flipping their status
 - [Cancel Orders with Expired Pickup Deadline](configuration/scheduled-tasks/orders/cancel-orders-with-expired-pickup-deadline.md) — Automatically cancel orders where the customer pickup deadline has passed.
+- [Create Draft Purchase Orders](configuration/scheduled-tasks/orders/create-draft-purchase-orders.md) — Automatically create and refresh one draft purchase order per supplier from the current reorder suggestions
 - [Delete Old Orders](configuration/scheduled-tasks/orders/delete-old-orders.md) — Permanently remove orders older than the configured retention period
 - [Order Automation](configuration/scheduled-tasks/orders/order-automation.md) — Automatically transition order status based on configurable conditions
 - [Payment Settlements](configuration/scheduled-tasks/orders/payment-settlements.md) — Retrieve and record payment settlement data from payment providers
@@ -476,7 +478,7 @@ Order management in Omnium — lifecycle, workflows, returns, click & collect, a
 - [Export to an Accounting System](Order/Ledger/ledger-accounting-export.md) — How POS Z-report postings and web-fulfillment postings fit together, and how to turn postings and ledger lines from the Accounting API into vouchers in your accounting system or ERP.
 - [Chart of Accounts](Order/Ledger/ledger-chart-of-accounts.md) — Map Omnium events to general-ledger account numbers — account categories, discriminators, currency and tax-group keys, country presets, and the rules Omnium uses to resolve which account a ledger line books to.
 - [Configuration](Order/Ledger/ledger-config.md) — Configure Omnium accounting — enable postings, set currency and time zone, tune auto-balancing, schedule the daily web-fulfillment posting job, and validate the setup.
-- [Posting Exclusions](Order/Ledger/ledger-posting-exclusions.md) — Keep selected orders out of web-fulfillment accounting postings with exclusion rules that filter by market, store, order type, order status, payment method, and sales or return side.
+- [Posting Exclusions](Order/Ledger/ledger-posting-exclusions.md) — Keep selected orders out of web-fulfillment accounting postings with exclusion rules that filter by market, store, order type, order status, payment method, order tags, and sales or return side.
 - [Postings & Ledger Lines](Order/Ledger/ledger-postings.md) — The double-entry posting model in Omnium — how sales, VAT, tender, returns, and gift cards become balanced ledger lines, plus the posting lifecycle and reposting behaviour.
 - [Posting Preview (dry run)](Order/Ledger/ledger-preview.md) — Preview the accounting postings an order or a store/date range would generate, without committing them — useful for validating the chart of accounts and tax groups before going live.
 - [Postings in the UI](Order/Ledger/ledger-reports.md) — Browse accounting postings under Reports — the list and detail views, ledger-line inspection, CSV export, the Accounting Ledger custom report, and the per-Z-report VAT settlement export.

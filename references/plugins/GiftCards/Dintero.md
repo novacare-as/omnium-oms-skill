@@ -35,7 +35,7 @@ Not supported by this plugin:
 
 ### 1\. Add the gift card connector
 
-Go to **Configuration → Settings → Advanced → Connectors** and add:
+Go to **Configuration → Settings → Integrations → Connectors** and add:
 
 ```json
 {

@@ -29,7 +29,7 @@ Setting this value to `0` disables the feature entirely. Only prices within this
 
 A scheduled task must be added to automatically recalculate lowest prices:
 
-1.  Navigate to: `Configuration → Advanced → Scheduled Task`
+1.  Navigate to: `Configuration → Settings → Integrations → Scheduled tasks`
 2.  Click the three-dot menu and select **Add**
 3.  Set the following:
     *   **Implementation type:** `Product lowest price`

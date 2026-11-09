@@ -20,7 +20,7 @@ For each product, OmniStock evaluates:
 The result is stored on the product as two fields:
 
 *   **`OmniStock`** — a list of store IDs where the product is available for online purchase
-*   **`OmniStockLevels`** — stock level indicators (High/Low/Out of Stock) per store
+*   **`OmniStockLevels`** — a stock level indicator (High/Low/Out of Stock) per store, plus the exact quantity available online when the store has [exact quantities](omnistock.md#exact-omnistock-quantities) turned on
 
 * * *
 
@@ -67,15 +67,42 @@ A product is considered available on the OmniStock store if **at least one** of 
 
 ### Stock Levels
 
-OmniStock calculates a stock level per store per SKU (variant). The levels are determined by comparing aggregate available inventory against a configurable threshold:
+OmniStock calculates a quantity and a stock level per store per SKU (variant). The quantity is the aggregate available inventory across the eligible warehouses, less the store's [OmniStock buffer](omnistock.md#omnistock-buffer). The levels are determined by comparing the quantity against a configurable threshold:
 
 | Stock Level | Condition |
 | --- | --- |
-| **HighInStock** | Available inventory > threshold |
-| **LowInStock** | Available inventory > 0 but ≤ threshold |
-| **OutOfStock** | Available inventory = 0 |
+| **HighInStock** | Quantity > threshold |
+| **LowInStock** | Quantity > 0 but ≤ threshold |
+| **OutOfStock** | Quantity = 0 |
 
 The threshold is configured tenant-wide via the `OmniStockLowInStockThreshold` setting (default: 10 units). Available inventory is the sum across all eligible warehouses for that store.
+
+### OmniStock buffer
+
+You can hold back a few units of each SKU on an OmniStock store, so that the last units in the physical stores, the stock most likely to be miscounted, are not sold online. Set `omniStockBuffer` in the OmniStock store's rules. The buffer comes off the summed stock of the warehouses linked to that store.
+
+Set `isExcludedFromOmniStockBuffer` on a warehouse whose stock must always count in full, typically the central warehouse. Its stock is added to the quantity untouched, and the buffer is only taken from the other warehouses. The buffer never holds back more than those warehouses have, so the excluded warehouse can be sold out. The flag is set on its own: marking a store as a central warehouse for allocation does not exclude it from the buffer.
+
+Examples for an OmniStock store with a buffer of 3, a central warehouse excluded from the buffer and two stores:
+
+| Central warehouse | Store A | Store B | Quantity | Stock level |
+| --- | --- | --- | --- | --- |
+| 5 | 2 | 1 | 5 | LowInStock |
+| 0 | 4 | 2 | 3 | LowInStock |
+| 0 | 2 | 1 | 0 | OutOfStock |
+| 12 | 4 | 2 | 15 | HighInStock |
+
+Without a buffer, the quantity is the sum of the available inventory.
+
+The OmniStock buffer is different from the [stock buffer](stock-buffer.md). The stock buffer is set per store, with a product and a tenant-wide fallback, and holds back units in each warehouse during cart validation and allocation. The OmniStock buffer is set on the OmniStock store and holds back units from that sales channel's total. The OmniStock calculation does not apply the stock buffer.
+
+### Exact OmniStock quantities
+
+By default, products carry only the stock level per OmniStock store. If you need the exact number, for example to sync it to another system as stock, turn on `isOmniStockQuantityEnabled` in the OmniStock store's rules. Each of that store's stock levels then also carries a `quantity`: the available inventory of the eligible warehouses less the store's OmniStock buffer.
+
+Turning the setting on or off starts a [full recalculation](omnistock.md#delta-vs-full-recalculation), which fills in or clears the quantities on every active product. The buffer applies to the stock level whether or not exact quantities are on.
+
+A stock level changes only now and then, but the quantity changes with almost every stock change. With exact quantities on, OmniStock updates the products far more often, which adds load, especially in peak season. Turn it on only for the OmniStock stores whose quantities you actually use. The first full recalculation after turning it on updates every active product that has stock levels for the store.
 
 * * *
 
@@ -105,7 +132,7 @@ For each active product, the system evaluates every OmniStock store by checking 
 
 ### 3\. Update Product Availability
 
-The product's `OmniStock` field is set to the list of OmniStock store IDs where the product passed all checks. The `OmniStockLevels` field is populated with per-store stock level indicators for each variant.
+The product's `OmniStock` field is set to the list of OmniStock store IDs where the product passed all checks. The `OmniStockLevels` field is populated with per-store stock level indicators for each variant, and with the quantity for stores that have exact quantities turned on.
 
 ### Delta vs Full Recalculation
 
@@ -138,6 +165,9 @@ Rules are configured on the store's `OmniStockRules` property.
 | ExcludedProductIds | List<string> | Specific products that will never be available from this warehouse. Matched against the product id of the main product, so the whole product with all its variants is excluded. |
 | ProfitabilityThreshold | decimal? | Minimum profit margin (unit price minus cost) required for the product to be available. Requires `CurrencyCode` to be set. The check is skipped when the warehouse has no market in that currency, when the product has no valid price for that market, or when neither the price nor the product carries a cost. |
 | CurrencyCode | string? | Currency used for profitability calculation. The system picks the first of the warehouse's `AvailableOnMarkets` whose currency matches and evaluates the product's best valid price for that market. |
+| OmniStockBuffer | decimal? | Set on an OmniStock store. Units held back from the store's OmniStock quantity, taken from the warehouses that are not excluded from the buffer. Empty or `0` means no buffer. See [OmniStock buffer](omnistock.md#omnistock-buffer). |
+| IsOmniStockQuantityEnabled | bool? | Set on an OmniStock store. Products carry the store's exact quantity next to the stock level. Off by default. See [Exact OmniStock quantities](omnistock.md#exact-omnistock-quantities). |
+| IsExcludedFromOmniStockBuffer | bool? | Set on a warehouse. Its stock always counts in full, and an OmniStock store's buffer is never taken from it, so it can be sold out online. |
 
 ### Rule Evaluation Order
 
@@ -164,6 +194,9 @@ Open the warehouse under **Stores**, then select the **Online assortment rules**
 | Excluded brands | `ExcludedBrands` | Brand values that exist on products in the catalogue. |
 | Excluded seasons | `ExcludedSeasons` | Season values that exist on products in the catalogue. |
 | Excluded products | `ExcludedProductIds` | Product search, or a product list of type _SKU only_ or _Product id only_. |
+| OmniStock buffer | `OmniStockBuffer` | Free number. Leave empty for no buffer. Shown only on a store with the OmniStock role. |
+| Calculate exact OmniStock quantity | `IsOmniStockQuantityEnabled` | Switch. Shown only on a store with the OmniStock role. |
+| Excluded from the OmniStock buffer | `IsExcludedFromOmniStockBuffer` | Switch. Shown only on a warehouse (**Is warehouse** checked), and takes effect when the warehouse is linked to an OmniStock store. |
 
 The header of each section shows the number of selected values. Rules that are left empty are ignored.
 
@@ -208,6 +241,26 @@ In this example, Store-Oslo will only ship products that:
 
 On store PUT and PATCH, a missing or `null` `omniStockRules` leaves the existing rules unchanged. A value replaces the whole rule set. Send an empty object (`"omniStockRules": {}`) to remove all rules.
 
+The buffer is set on the OmniStock store, and the exclusion on the warehouse. Send them with `PATCH /api/Stores/PatchStore`, which leaves the fields you do not send unchanged (see [Store API](../Stores/store-api.md)). Because a value replaces the whole rule set, include each store's other rules when you set these:
+
+```json
+{
+  "id": "Webshop-NO",
+  "omniStockRules": {
+    "omniStockBuffer": 3
+  }
+}
+```
+
+```json
+{
+  "id": "CentralWarehouse",
+  "omniStockRules": {
+    "isExcludedFromOmniStockBuffer": true
+  }
+}
+```
+
 * * *
 
 ## Where OmniStock Is Used
@@ -238,6 +291,10 @@ Content-Type: application/json
 
 When an order is placed on a store with the **OmniStock** role and the shipment is a delivery, the same warehouse assortment and OmniStock rules gate reallocation of order lines to a ship-from-store warehouse. A line is only moved to a warehouse whose rules the product passes; inventory is checked separately by the allocation itself. Products that are not found in the catalogue are not restricted.
 
+### Cart validation
+
+The [Inventory Validator](../Carts/validation/cart-validators/inventory-validator.md) can validate carts against the same warehouses and buffer as OmniStock, on live stock. Set the validator's `UseOmniStock` property to `true`. A delivered line on an OmniStock store then counts only the warehouses OmniStock sells the product from, and the store's OmniStock buffer is held back. See [Validate against OmniStock](../Carts/validation/cart-validators/inventory-validator.md#validate-against-omnistock).
+
 * * *
 
 ## Configuration
@@ -246,7 +303,7 @@ When an order is placed on a store with the **OmniStock** role and the shipment 
 
 | Setting | Type | Default | Description |
 | --- | --- | --- | --- |
-| InventoryManagement.OmniStockLowInStockThreshold | decimal | 10 | The inventory threshold for determining stock levels. Products with aggregate inventory above this value are `HighInStock`; at or below are `LowInStock`. |
+| InventoryManagement.OmniStockLowInStockThreshold | decimal | 10 | The inventory threshold for determining stock levels. Products with an OmniStock quantity above this value are `HighInStock`; at or below are `LowInStock`. |
 
 ### Store Configuration
 
@@ -259,6 +316,8 @@ For OmniStock to work, stores must be configured with the correct roles and rela
 | StoreRoleIds | Must include `"OmniStock"` | Marks this store as an online sales channel |
 | AvailableWarehouses | At least one entry | Links to warehouses that can fulfill orders for this channel |
 | AvailableOnMarkets | At least one market | Defines which markets this store serves |
+| OmniStockRules.OmniStockBuffer | Optional | Units held back from this channel's OmniStock quantity. See [OmniStock buffer](omnistock.md#omnistock-buffer). |
+| OmniStockRules.IsOmniStockQuantityEnabled | Optional | Keeps this channel's exact quantity on the products. See [Exact OmniStock quantities](omnistock.md#exact-omnistock-quantities). |
 
 #### ShipFromStore (Fulfillment Location)
 
@@ -268,6 +327,7 @@ For OmniStock to work, stores must be configured with the correct roles and rela
 | IsWarehouse | `true` | Identifies the store as a warehouse |
 | AvailableOnMarkets | At least one market | Used for profitability threshold calculations |
 | OmniStockRules | Optional | Business rules controlling product eligibility |
+| OmniStockRules.IsExcludedFromOmniStockBuffer | Optional | Counts this warehouse's stock in full, outside the OmniStock buffer |
 
 ### Assortment Configuration
 
@@ -296,13 +356,19 @@ A list of OmniStock store IDs where the product is available for online purchase
 
 **Type**: `List<OmniStockLevel>`
 
-Per-store stock level indicators, set on each variant (or on the product itself if it has no variants).
+Per-store stock level indicator, plus the quantity for stores with exact quantities turned on, set on each variant (or on the product itself if it has no variants). In the example below, both stores have exact quantities turned on.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `StoreId` | string | The OmniStock store |
+| `StockLevel` | string | `HighInStock`, `LowInStock` or `OutOfStock` |
+| `Quantity` | decimal? | The quantity the store offers online: the available inventory of the eligible warehouses less the store's [OmniStock buffer](omnistock.md#omnistock-buffer). `0` when the product is out of stock. Only set when the store has [exact quantities](omnistock.md#exact-omnistock-quantities) turned on; otherwise left out. |
 
 ```json
 {
   "omniStockLevels": [
-    { "storeId": "Webshop-NO", "stockLevel": "HighInStock" },
-    { "storeId": "Webshop-SE", "stockLevel": "LowInStock" }
+    { "storeId": "Webshop-NO", "stockLevel": "HighInStock", "quantity": 24 },
+    { "storeId": "Webshop-SE", "stockLevel": "LowInStock", "quantity": 3 }
   ]
 }
 ```
@@ -385,6 +451,19 @@ A retailer wants physical stores to fulfill online orders, but only for certain 
 
 **Result:** Only clothing and accessories with at least 100 NOK margin (excluding PremiumBrand) will be available for ship-from-store fulfillment.
 
+### Scenario 4: Sell Out the Central Warehouse, Keep a Buffer in the Stores
+
+A retailer wants every unit in the central warehouse sold online, but does not want to sell the last few units in its physical stores, where counts are often wrong.
+
+**Configuration:**
+
+*   `Webshop-NO` (OmniStock, linked to: CentralWarehouse, Store-Oslo, Store-Bergen) with `omniStockRules.omniStockBuffer`: 3
+*   `CentralWarehouse` (ShipFromStore) with `omniStockRules.isExcludedFromOmniStockBuffer`: true
+*   Optionally, the [Inventory Validator](../Carts/validation/cart-validators/inventory-validator.md#validate-against-omnistock) with `UseOmniStock` set to `true`, so carts follow the same quantity
+*   Optionally, `omniStockRules.isOmniStockQuantityEnabled`: true on `Webshop-NO`, if another system needs the exact quantity
+
+**Result:** A product with 5 units in the central warehouse and 2 + 1 in the stores offers 5 online. With no central stock and 4 + 2 in the stores, it offers 3. With only 2 + 1 in the stores, it is out of stock online.
+
 * * *
 
 ## Troubleshooting
@@ -409,6 +488,7 @@ A retailer wants physical stores to fulfill online orders, but only for certain 
 1.  Verify the `OmniStockLowInStockThreshold` tenant setting
 2.  Check that inventory is correctly reported at all linked warehouses
 3.  Remember that stock levels are aggregated across all eligible warehouses for each store
+4.  Check the OmniStock store's `OmniStockBuffer`, and which linked warehouses have `IsExcludedFromOmniStockBuffer` set
 
 ### Full Recalculation Triggered Unexpectedly
 

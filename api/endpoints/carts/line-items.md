@@ -24,12 +24,14 @@ For non-bundle products, only the individual line item quantity is updated.
 | `cartId` | path | string | Yes | ID of existing cart. (Required) |
 | `skuId` | path | string | Yes | Product SKU id. (Required) |
 | `quantity` | path | number (decimal) | Yes | Quantity to set. Defaults to 0 if less than 0. (Required) |
+| `stopOnValidationError` | query | boolean | No | If true, the validators configured for the cart's order type and market run against the cart with the new quantity before it is saved, and nothing is saved when a validator reports an error. These include validators that check that a cart is ready for checkout, such as payments. The response is then 422 with the validation errors and the cart as it is stored. Validation warnings do not stop the change. |
 
 **Responses:**
 
 - 200: [`OmniumCart`](../../schemas/OmniumCart.md) — Quantity updated and cart is returned
 - 400: string — Bad Request
 - 404: string — Not Found
+- 422: [`OmniumCartOmniumValidationResult`](../../schemas/OmniumCartOmniumValidationResult.md) — stopOnValidationError is true and a validator reported an error. Nothing is saved
 
 ---
 
@@ -49,12 +51,14 @@ For non-bundle products, only the individual line item quantity is updated.
 | `orderLineId` | path | string | Yes | Order line ID. (Required) |
 | `quantity` | path | number (decimal) | Yes | Quantity to set. Defaults to 0 if less than 0. (Required) |
 | `keepPrice` | query | boolean | No | If false, the price will be updated to the current product price. If true, the current price will be kept, and is only recalculated with new quantity. Note: For bundle products, this parameter is ignored as bundle pricing follows specific business rules. |
+| `stopOnValidationError` | query | boolean | No | If true, the validators configured for the cart's order type and market run against the cart with the new quantity before it is saved, and nothing is saved when a validator reports an error. These include validators that check that a cart is ready for checkout, such as payments. The response is then 422 with the validation errors and the cart as it is stored. Validation warnings do not stop the change. |
 
 **Responses:**
 
 - 200: [`OmniumCart`](../../schemas/OmniumCart.md) — Quantity updated and cart is returned
 - 400: string — Bad Request
 - 404: string — Cart or order line was not found
+- 422: [`OmniumCartOmniumValidationResult`](../../schemas/OmniumCartOmniumValidationResult.md) — stopOnValidationError is true and a validator reported an error. Nothing is saved
 
 ---
 

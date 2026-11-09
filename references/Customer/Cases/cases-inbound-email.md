@@ -89,14 +89,14 @@ The Destination URL **must use HTTPS**. Omnium requires HTTPS for all API endpoi
 
 Omnium needs to know which email domains belong to your tenant so it can route incoming emails correctly.
 
-The `InBoundEmailDomains` setting has no field in the Email Client Settings UI. Ask Omnium to add it to the `EmailClientSettings` section of your tenant settings.
+Set the domains in **Configuration → Settings → Communication → Email client**, in the **Inbound email domains** field on the **Sender and replies** card. The field is shown when **Email service** is **SendGrid**.
 
-The setting holds the domains, next to the addresses you set in the UI:
+In the tenant settings, the domains sit next to the addresses:
 
 ```json
 {
   "EmailClientSettings": {
-    "Type": "Sendgrid",
+    "Type": "sendgrid",
     "StandardEmailAddress": "noreply@yourcompany.com",
     "InBoundEmailAddress": "support@incoming.yourcompany.com",
     "InBoundEmailDomains": [
@@ -118,11 +118,11 @@ Key fields:
 
 ### Step 4: Configure the Inbound Email Address
 
-The **Inbound Email Address** is the reply-to address that Omnium includes in outbound email notifications. This allows customers to reply directly to case notifications.
+The **Reply address for comments** is the reply-to address that Omnium includes in outbound comment emails. This allows customers to reply directly to case notifications.
 
-1.  Navigate to **Configuration → Settings → Advanced**
-2.  Go to **Notifications → Email Client Settings**
-3.  Set the **Inbound Email Address** field (e.g., `support@incoming.yourcompany.com`)
+1.  Navigate to **Configuration → Settings → Communication**
+2.  Go to **Email client**
+3.  Set the **Reply address for comments** field (e.g., `support@incoming.yourcompany.com`). The field is shown when **Email service** is **SendGrid**
 4.  Click **Save**
 
 ### Step 5: Enable Cases and Configure Case Settings
@@ -134,12 +134,13 @@ The **Inbound Email Address** is the reply-to address that Omnium includes in ou
 
 ### Step 6: Configure Inbound Email From Name (Optional)
 
-You can configure a display name for outbound case emails at the Market or Market Group level:
+You can set the sender name Omnium uses when it forwards an emailed reply to the customer, at the Market or Market Group level. The setting has no field in the UI: set `InBoundEmailFromName` in the `EmailClientSettings` of the market or market group.
 
-1.  Navigate to **Configuration → Settings → Markets**
-2.  Go to the relevant **Market** or **Market Group** settings
-3.  In **Email Client Settings**, set the **Inbound Email From Name** field
-4.  Click **Save**
+*   On a market, the name replaces the name of the person who replied.
+*   Without a market name, Omnium keeps the name of the person who replied.
+*   On a market group, the name applies only to a reply without a sender name.
+
+See [Email settings on markets and market groups](../../configuration/email-client-settings.md#email-settings-on-markets-and-market-groups).
 
 * * *
 
@@ -198,7 +199,7 @@ When an inbound email arrives, Omnium searches for the sender by email address:
 | "No email content to process" | Ensure **Send Raw** is checked in SendGrid Inbound Parse settings |
 | Cases not created (no errors) | Verify **Case Settings → Enabled** is on |
 | Cases created without customer link | Sender email doesn't match any customer in Omnium |
-| Customer replies not threaded | Ensure **Inbound Email Address** is configured in Email Client Settings |
+| Customer replies not threaded | Ensure **Reply address for comments** is configured in Email Client Settings |
 | SendGrid shows failed webhook delivery | Verify the URL uses HTTPS (not HTTP) |
 | Duplicate domains warning | Same domain configured for multiple tenants — each domain can only map to one tenant |
 

@@ -23,9 +23,10 @@ Search filters for EPC tags. All filters are optional and combined with AND.
 - `serialNumber`: string, nullable — Tag serial number.
 - `serialFrom`: integer (int64), nullable — Lowest serial number to include (inclusive). Tags whose serial is not numeric never match a range.
 - `serialTo`: integer (int64), nullable — Highest serial number to include (inclusive).
+- `serialRanges`: List<[`OmniumEpcSerialRange`](OmniumEpcSerialRange.md)>, nullable — More serial ranges to include; a tag in any one of them matches. SerialFrom/SerialTo, when given, count as one more range. Tags whose serial is not numeric never match a range.
 - `hasSuffix`: boolean, nullable — True returns only EPCs longer than 96 bits (a suffix past character 24), false only plain 96-bit EPCs. Omit for no filter. Combined with Suffixes, false means "everything except tags with one of those suffixes".
 - `suffixes`: List<string>, nullable — Suffix values: the hex past character 24 of the EPC, e.g. "99979999". Alone or with HasSuffix true, only tags with one of them are returned; with HasSuffix false, tags with one of them are excluded.
-- `requireSuffixAndSerialRange`: boolean, nullable — How the suffix filter (HasSuffix/Suffixes) and the serial range (SerialFrom/SerialTo) combine when both are given: omitted or false returns tags matching either one, true only tags matching both. Every other filter applies either way.
+- `requireSuffixAndSerialRange`: boolean, nullable — How the suffix filter (HasSuffix/Suffixes) and the serial ranges (SerialFrom/SerialTo and SerialRanges) combine when both are given: omitted or false returns tags matching either one, true only tags matching both. Every other filter applies either way.
 - `lastSeenStoreId`: string, nullable — Store where the tags were last seen.
 - `lastSeenSources`: List<string>, nullable — Flows that produced the last observation, e.g. "InventoryCount", "GoodsReception", "Migration".
 - `lastSeenLocation`: string, nullable — In-store zone or area of the last observation.

@@ -20,7 +20,7 @@ The integration covers three flows:
 
 ### Connector
 
-Add a connector under **Configuration → Advanced Settings → Connectors**. The connector **Name** must be `inretrn` — this is the value you reference from the workflow steps that trigger the export.
+Add a connector under **Configuration → Settings → Integrations → Connectors**. The connector **Name** must be `inretrn` — this is the value you reference from the workflow steps that trigger the export.
 
 | Field | Description |
 | --- | --- |

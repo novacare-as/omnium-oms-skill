@@ -10,7 +10,7 @@ Rounding Settings allow you to define price rounding policies that automatically
 
 Each rounding policy contains a set of range-based rules. When a price is rounded, the system finds the rule whose price range matches the input price and applies the configured rounding method. Multiple policies can be defined to support different rounding strategies for different contexts (e.g., discount rounding vs. price list rounding).
 
-Rounding Settings are configured under **Configuration > Settings > Advanced > Rounding**.
+Rounding Settings are configured under **Configuration > Settings > Finance > Rounding settings**.
 
 * * *
 
@@ -134,11 +134,11 @@ In both cases, the rounding policy is selected by its `Key` value.
 
 ## UI Configuration
 
-Rounding Settings are configured in the Omnium UI under **Configuration > Settings > Advanced > Rounding**.
+Rounding Settings are configured in the Omnium UI under **Configuration > Settings > Finance > Rounding settings**.
 
 ### Creating a Rounding Policy
 
-1.  Navigate to **Configuration > Settings > Advanced > Rounding**
+1.  Navigate to **Configuration > Settings > Finance > Rounding settings**
 2.  Click **Add** to create a new rounding policy
 3.  Fill in the policy details:
     *   **Name**: A unique key used to reference the policy (e.g., `NicePrice95`)

@@ -17,7 +17,7 @@ The standard synchronization method that runs at configured intervals (e.g., hou
 
 The integration tracks the last successful export timestamp to determine which products need syncing. To avoid exporting products that are still being edited, a 10-minute buffer is applied—products modified within the last 10 minutes are excluded from the current sync and picked up in the next cycle.
 
-**Configuration -> Settings -> Advanced -> Scheduled Tasks**
+**Configuration -> Settings -> Integrations -> Scheduled tasks**
 
 ```json
 {
@@ -33,7 +33,7 @@ A complete synchronization of all products regardless of when they were last mod
 
 Full export is more resource-intensive than delta export since it processes the entire catalog. It is particularly useful for recovering from sync issues or after configuration changes when you need to guarantee the two systems are fully aligned.
 
-**Configuration -> Settings -> Advanced -> Scheduled Tasks**
+**Configuration -> Settings -> Integrations -> Scheduled tasks**
 
 ```json
 {

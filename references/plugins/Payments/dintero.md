@@ -96,7 +96,7 @@ For Omnium to fetch settlements from Dintero, the scheduled task **PaymentSettle
 
 To activate:
 
-1.  Go to **Configuration -> Settings -> Advanced -> Scheduled Task**.
+1.  Go to **Configuration -> Settings -> Integrations -> Scheduled tasks**.
 2.  Select **"Add"** from the menu in the top right corner.
 3.  Select **PaymentSettlementsScheduledTask** from the list.
 4.  Set up a schedule for the task.

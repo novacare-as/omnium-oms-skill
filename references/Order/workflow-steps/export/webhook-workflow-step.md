@@ -60,7 +60,7 @@ Optionally add `"StopOnError": true` to halt the workflow on failure. To set a s
 
 If multiple workflow steps need the same endpoint, or you want to manage credentials separately, create a connector in tenant settings and reference it from the workflow step.
 
-**Connector** (Configuration > Settings > Advanced > Connectors):
+**Connector** (Configuration > Settings > Integrations > Connectors):
 
 ```json
 {

@@ -12,7 +12,7 @@
 - `categoryAndBrandFilter`: [`OmniumCategoryAndBrandFilter`](OmniumCategoryAndBrandFilter.md)
 - `promotionMultiBuyReward`: [`OmniumPromotionMultiBuyReward`](OmniumPromotionMultiBuyReward.md)
 - `discountedCategories`: List<[`OmniumProductCategory`](OmniumProductCategory.md)>, nullable, max length 250
-- `discountedProducts`: List<[`OmniumPromotionProduct`](OmniumPromotionProduct.md)>, nullable, max length 10000
+- `discountedProducts`: List<[`OmniumPromotionProduct`](OmniumPromotionProduct.md)>, nullable, max length 20000
 - `productSearchRequest`: [`OmniumProductSearchRequest`](OmniumProductSearchRequest.md)
 - `minQuantity`: integer (int32), nullable — Minimum total quantity of items required in the order (Only applies if PromotionType is OrderAmountPromotion).
 - `conditionOperator`: [`OmniumConditionOperator`](OmniumConditionOperator.md)

@@ -7,7 +7,7 @@ Invoices
 - `id`: string, nullable — Invoice ID
 - `url`: string, nullable — Invoice URL (invoice PDF or other external url)
 - `invoiceNumber`: string, nullable — Invoice number
-- `invoiceType`: string, nullable — Invoice type [Ingoing, Outgoing, ]
+- `invoiceType`: string, nullable — Invoice type [Ingoing, Outgoing, Receipt]. A Receipt is the paid sales document Omnium issues for one shipment.
 - `invoiceDate`: string (date-time) — Invoice date
 - `customerId`: string, nullable — Customer ID
 - `customerName`: string, nullable — Customer name
@@ -17,6 +17,7 @@ Invoices
 - `kid`: string, nullable — Invoice KID-number (Norwegian customer identification number)
 - `comment`: string, nullable — Invoice comment
 - `orderId`: string, nullable — Original order Id
+- `shipmentId`: string, nullable — The shipment of the order this invoice documents, when it covers one shipment only. A receipt always has one.
 - `projectId`: string, nullable — Id of related project
 - `deliveryDate`: string (date-time) — Deliver date
 - `amount`: number (decimal) — In the order currency, typically USD, SEK, NOK.
@@ -25,6 +26,7 @@ Invoices
 - `amountOutstanding`: number (decimal) — The amount outstanding
 - `currency`: string, nullable — Invoice currency
 - `isCreditNote`: boolean — True if invoice is a credit note
+- `creditedInvoiceIds`: List<string>, nullable — For a credit note: the ids of the invoices and receipts it reverses
 - `origin`: string, nullable — Where the invoice originated (Which system provided the ID)
 - `storeId`: string, nullable — Invoice store ID
 - `marketId`: string, nullable — Invoice market ID

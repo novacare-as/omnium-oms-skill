@@ -37,14 +37,12 @@ A store holding three regular units and one priority unit (inventory 4, priority
 
 ## Mark returned units as priority stock
 
-The [Update Inventory](../Order/Returns/return-workflow-steps/inventory/update-inventory.md) return workflow step (`UpdateInventory`) restocks returned units in the store that receives the return. It marks the restocked quantity as priority stock when either of these settings applies:
+The [Update Inventory](../Order/Returns/return-workflow-steps/inventory/update-inventory.md) return workflow step (`UpdateInventory`) restocks returned units in the store that receives the return. It marks the restocked quantity as priority stock when both of these apply:
 
-| Setting | Where | Marks as priority stock |
-| --- | --- | --- |
-| `PriorityInventoryOutsideAssortment` | Property on the `UpdateInventory` step in the return workflow | Units of a product that is outside the receiving store's assortment |
-| `IsPriorityInventory` | Return type, shown as the **Priority stock** switch on the return type | Every unit restocked with that return type |
+*   The line's return type has `IsPriorityInventory` set to `true`, shown as the **Priority stock** switch on the return type. It is off by default.
+*   The product is outside the receiving store's assortment. That is the case when the product's `storeIds` list is not empty and does not include the store, or when the store's assortment categories leave the product out.
 
-Neither setting is on by default. A product is outside a store's assortment when its `storeIds` list is not empty and does not include the store, or when the store's assortment categories leave the product out.
+The store picks the return type when it registers the return, so the return type only narrows which returns qualify. A product the store carries is always restocked as regular stock, whatever the return type, so a store cannot move its own stock ahead of other stores'. A tenant without product or store assortments gets no priority stock from returns.
 
 For the return type settings, see [Return types](../Order/Returns/return-config.md#return-types).
 

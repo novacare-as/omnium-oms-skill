@@ -21,7 +21,7 @@ The FIFO webhook posts the same envelope as the regular Webhook export — the o
 
 ### Step 1: Create the connector
 
-Create a connector in **Configuration → Advanced Settings → Connectors**:
+Create a connector in **Configuration → Settings → Integrations → Connectors**:
 
 ```json
 {

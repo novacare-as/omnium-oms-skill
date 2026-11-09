@@ -174,7 +174,7 @@ Run this task:
 
 ### Manual Execution
 
-Run the task manually from **Configuration → Settings → Advanced → Scheduled Tasks → UpdateProductCategoriesScheduledTask → Run Now**.
+Run the task manually from **Configuration → Settings → Integrations → Scheduled tasks → UpdateProductCategoriesScheduledTask → Run Now**.
 
 * * *
 

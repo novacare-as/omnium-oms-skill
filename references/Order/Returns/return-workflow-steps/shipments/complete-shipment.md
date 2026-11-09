@@ -19,6 +19,10 @@ The **Complete Shipment** step marks return shipments as completed and can notif
 
 This step has no configurable properties.
 
+## Shipment Properties
+
+The step completes the return's shipments with the same logic as [Complete Shipment](../../../workflow-steps/shipments/complete-shipment.md) in the order workflow, so it reads the same shipment properties. Set `ShippingPreBooked` to `true` on a return shipment to complete it without booking it with the shipping provider. See [ShippingPreBooked](../../../workflow-steps/shipments/complete-shipment.md#shippingprebooked) for details.
+
 ## Behavior
 
 ### What It Does

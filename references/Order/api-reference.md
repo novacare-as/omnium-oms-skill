@@ -199,9 +199,72 @@ GET /api/Orders/ORD-2024-000001
 
 * * *
 
+### List order versions
+
+List the stored versions of an order, newest first, to follow its change history or find the version ID of a specific change. Omnium stores a new version every time the order is saved. Each item shows when the version was created and which user, API user or system process created it. To get the full order data of a version, use [Get order version](api-reference.md#get-order-version).
+
+**Endpoint:** `GET /api/Orders/Versions/{id}`
+
+**Parameters:**
+
+| Parameter | Type | Location | Required | Default | Description |
+| --- | --- | --- | --- | --- | --- |
+| `id` | string | path | Yes | \- | The order ID |
+| `take` | int | query | No | 20 | Maximum number of versions on the page (1-100). Values outside this range are clamped to 1 or 100 |
+| `continuationToken` | string | query | No | \- | The `continuationToken` from the previous page. Leave it out for the first page |
+
+**Response:** `200 OK` with one page of versions, `400 Bad Request` when `continuationToken` is malformed, or `404 Not Found` when the order does not exist, has no versions, or is not available to your API user.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `versions` | array | The versions on this page, newest first |
+| `versions[].versionId` | string | The version ID. Use it with [Get order version](api-reference.md#get-order-version) |
+| `versions[].id` | string | The order ID |
+| `versions[].created` | datetime | When the version was created (UTC) |
+| `versions[].createdBy` | string | Name of the user or API user that saved the order, or `System` for changes made by Omnium itself |
+| `continuationToken` | string | Pass this value to get the next page. Left out of the response when there are no more versions |
+
+**Example request:**
+
+```
+GET /api/Orders/Versions/ORD-2024-000001?take=100
+```
+
+**Example response:**
+
+```json
+{
+  "versions": [
+    {
+      "versionId": "2516086862699999999",
+      "id": "ORD-2024-000001",
+      "created": "2026-11-02T10:15:30Z",
+      "createdBy": "ERP Integration"
+    },
+    {
+      "versionId": "2516086896479999999",
+      "id": "ORD-2024-000001",
+      "created": "2026-11-02T09:19:12Z",
+      "createdBy": "System"
+    }
+  ],
+  "continuationToken": "abc123..."
+}
+```
+
+**Get all versions:** call the endpoint again with the `continuationToken` from the previous response, and repeat until the response has no `continuationToken`. Treat the token as an opaque value and URL-encode it when you add it to the query string.
+
+```
+GET /api/Orders/Versions/ORD-2024-000001?take=100&continuationToken=abc123...
+```
+
+A page can contain fewer versions than `take` and still return a `continuationToken`. Use a missing token, not a short page, to detect the last page.
+
+* * *
+
 ### Get order version
 
-Retrieve a specific historical version of an order.
+Retrieve a specific historical version of an order. Find the version ID with [List order versions](api-reference.md#list-order-versions).
 
 **Endpoint:** `GET /api/Orders/{id}/{versionId}`
 
@@ -212,7 +275,7 @@ Retrieve a specific historical version of an order.
 | `id` | string | path | Yes | The order ID |
 | `versionId` | string | path | Yes | The version ID |
 
-**Response:** `200 OK` with a versioned object containing `versionId`, `createdBy`, and `created` metadata, with the order data under `value`.
+**Response:** `200 OK` with a versioned object containing `versionId`, `createdBy`, and `created` metadata, with the order data under `value`. `404 Not Found` when the version does not exist or the order in that version belongs to a store your API user has no access to. Versions of a permanently deleted order can still be read.
 
 * * *
 

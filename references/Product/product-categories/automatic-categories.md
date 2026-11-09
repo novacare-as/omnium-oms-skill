@@ -153,7 +153,7 @@ Brands (brands)
 
 ## Enabling Scheduled Tasks
 
-Scheduled tasks are configured in tenant settings under **Configuration → Settings → Advanced → Scheduled Tasks**.
+Scheduled tasks are configured in tenant settings under **Configuration → Settings → Integrations → Scheduled tasks**.
 
 ### Task Configuration
 
@@ -261,7 +261,7 @@ When `isProductCategoryEnriched` is enabled, the product's `productCategories` a
 
 ### Checking Task Status
 
-View scheduled task history in **Configuration → Settings → Advanced → Scheduled Tasks → History** to see:
+View scheduled task history in **Configuration → Settings → Integrations → Scheduled tasks → History** to see:
 
 *   Last run time
 *   Success/failure status
@@ -281,7 +281,7 @@ View scheduled task history in **Configuration → Settings → Advanced → Sch
 
 Tasks can be run manually from the Omnium UI:
 
-1.  Navigate to **Configuration → Settings → Advanced → Scheduled Tasks**
+1.  Navigate to **Configuration → Settings → Integrations → Scheduled tasks**
 2.  Find the task (e.g., `CreateCategoriesFromBrandScheduledTask`)
 3.  Click **Run Now**
 

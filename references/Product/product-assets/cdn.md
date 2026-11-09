@@ -55,7 +55,7 @@ The `assets[].externalUrl` field always contains the original source URL (e.g. f
 
 If Omnium manages your CDN, it is configured automatically and no action is needed.
 
-To use your own CDN, enter the endpoint URL in the Omnium UI under **Configuration > Settings > Advanced > CDN**.
+To use your own CDN, enter the endpoint URL in the Omnium UI under **Configuration > Settings > Platform > CDN**.
 
 | Setting | Description |
 | --- | --- |

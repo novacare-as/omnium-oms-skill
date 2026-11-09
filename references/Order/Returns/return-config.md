@@ -93,7 +93,7 @@ Return types categorize returns and control inventory behavior and return charge
 | **Id** \* | string | Unique identifier for the return type. Used as the key when selecting a return type. |
 | **TranslationKey** \* | string | Translation key for the display name. The actual text is defined in the translation files. |
 | UpdateInventory | bool? | Whether to update inventory when this return type is used. Defaults to `true` if not specified. Set to `false` for return types where items should not be restocked (e.g., defective items sent to supplier). |
-| IsPriorityInventory | bool? | When `true`, units restocked with this return type are marked as [priority stock](../../Inventory/priority-stock.md), so allocation sells them first. Applied by the `UpdateInventory` return workflow step. Has no effect when `UpdateInventory` is `false`, since nothing is restocked; the **Priority stock** switch on the return type is disabled then. |
+| IsPriorityInventory | bool? | When `true`, units restocked with this return type are marked as [priority stock](../../Inventory/priority-stock.md), so allocation sells them first, when the product is outside the receiving store's assortment. A product the store carries is restocked as regular stock. Applied by the `UpdateInventory` return workflow step. Has no effect when `UpdateInventory` is `false`, since nothing is restocked; the **Priority stock** switch on the return type is disabled then. |
 | ReturnTypeCharges | [List<ReturnTypeCharge>](return-config.md#return-type-charges) | Currency-specific fees charged when this return type is used. |
 
 ### Return type charges

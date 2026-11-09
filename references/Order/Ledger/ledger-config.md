@@ -4,7 +4,7 @@ Source: https://docs.omnium.no/docs/Order/Ledger/ledger-config
 
 > Configure Omnium accounting — enable postings, set currency and time zone, tune auto-balancing, schedule the daily web-fulfillment posting job, and validate the setup.
 
-Accounting is configured per tenant under **Configuration → Settings → Advanced → Accounting settings**. The screen is organised into tabs: **Accounting settings**, **VAT rates** (tax groups), and **Validation**. This page covers the general and posting settings, the setup order, and validation. The chart of accounts, tax groups, posting exclusions, and store-level accounts each have their own page.
+Accounting is configured per tenant under **Configuration → Settings → Finance → Accounting settings**. The screen is organised into tabs: **Accounting settings**, **VAT rates** (tax groups), and **Validation**. This page covers the general and posting settings, the setup order, and validation. The chart of accounts, tax groups, posting exclusions, and store-level accounts each have their own page.
 
 Accounting is **off by default**. Nothing is posted until you enable it explicitly. Enabling it is safe to do incrementally — turn on postings first, validate, then enable the web-fulfillment job.
 
@@ -40,14 +40,14 @@ A first-time setup follows this order, because each step depends on the one befo
 | Over/short account number | string | — | GL account used for till discrepancies and for auto-balancing lines that go to `OverShort`. Overrides any `OverShort` entry in the chart of accounts. |
 | Balance tolerance | decimal | `0.005` | When a posting's debit and credit differ by **more** than this amount, an auto-balancing line is added. Differences at or below it are left unbalanced. Set `0` to balance every difference. See [auto-balancing](ledger-postings.md#auto-balancing). |
 | Draft orphan timeout (minutes) | int | `10` | Age after which an abandoned `Draft` posting is removed by the [Orphaned Posting Cleanup](../../configuration/scheduled-tasks/accounting/orphaned-posting-cleanup.md) scheduled task. Drafts only remain when saving a posting is interrupted. |
-| Web fulfillment cutoff hour | int | `2` | Hour of the day (0–23) in the accounting time zone. When the scheduled task runs at or after this hour, it posts the previous day; before it, the task does nothing. It is a gate, not a run time — the task's own schedule decides when it runs. |
+| Web fulfillment cutoff hour | int | `2` | Hour of the day (0–23) in the accounting time zone. When the scheduled task runs at or after this hour, it posts the previous day; before it, it posts only a day that earlier runs left out. It is a gate, not a run time — the task's own schedule decides when it runs. |
 
 **Posting enabled** is the master switch. The web-fulfillment job, Z-report postings, and all downstream exports depend on it. Turning it off stops all posting generation immediately.
 
 ## How POS and web postings are triggered
 
 *   **POS** — postings are built **inline** when a register's Z-report is closed. No scheduling is involved; the posting exists as soon as the Z-report settles. If the posting cannot be built (for example because an auto-balancing account is missing), the Z-report itself still succeeds and no posting is created.
-*   **Web fulfillment** — the [Web Fulfillment Posting](../../configuration/scheduled-tasks/accounting/web-fulfillment-posting.md) scheduled task posts the previous accounting day for all stores when it runs at or after the cutoff hour. Add it under **Configuration → Settings → Advanced → Scheduled Tasks**; turning on the setting alone does not schedule it.
+*   **Web fulfillment** — the [Web Fulfillment Posting](../../configuration/scheduled-tasks/accounting/web-fulfillment-posting.md) scheduled task posts the previous accounting day for all stores when it runs at or after the cutoff hour. Add it under **Configuration → Settings → Integrations → Scheduled tasks**; turning on the setting alone does not schedule it.
 
 You can also generate or preview web-fulfillment postings on demand from the UI without waiting for the scheduled run — see [Posting Preview](ledger-preview.md) and [Postings in the UI](ledger-reports.md).
 

@@ -18,9 +18,15 @@ Operation ID: `AllocationSimulate`
 Send exactly one subject: {orderId} or {cartId} for something already in Omnium, or
 {order} or {cart} for a basket that is not. A checkout normally sends the basket.
 
-Name several {profileKeys} to get several rankings from one run: the plans are worked out
-once and each profile only contributes an order over them, so asking for three costs little more
-than asking for one. The first key decides {selectedPlan}.
+The primary profile decides {selectedPlan} and is always the first ranking: the order's or
+cart's {requestedAllocationProfileKey}, otherwise the default profile in the allocation
+settings for the market and sales store, otherwise {Balanced}. Name more {profileKeys}
+to get more rankings from one run, after the primary one: the plans are worked out once and each
+profile only contributes an order over them, so asking for three costs little more than asking
+for one.
+
+Set {trigger} to {Reallocation} to answer as a reallocation would, so the rules scoped to
+reallocation take part. It defaults to {InitialAllocation}.
 
 A checkout that already holds its own availability can pass it as {inventoryOverrides} and
 skip Omnium's inventory read.

@@ -168,7 +168,7 @@ NB! Sending the SKU in "productId" does not work - the price would be silently i
 
 ## `DELETE /api/Prices`
 
-**Delete one or more prices on a product in Omnium. Will delete existing price if found.**
+**Delete one or more prices on a product in Omnium. Will delete existing price if found. ProductId is optional: when it is omitted, every price must carry the SKU in Code and Omnium resolves the product from it. SKUs that match no product, more than one product, or no stored price are returned in the 200 response, together with the number of prices deleted; the rest of the request is still deleted. A request that sends ProductId on every item returns 204.**
 
 Operation ID: `PricesDeletePrices`
 
@@ -176,5 +176,6 @@ Operation ID: `PricesDeletePrices`
 
 **Responses:**
 
+- 200: [`OmniumPriceDeleteResult`](../../schemas/OmniumPriceDeleteResult.md) — Success
 - 204: Success
 - 400: string — Bad Request
