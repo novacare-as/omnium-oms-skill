@@ -40,7 +40,7 @@ A cart in Omnium represents a shopping session that can be converted into an ord
 All Cart API endpoints are available at:
 
 ```
-https://api.omnium.no/api/Cart
+https://<tenantId>.api.omnium.no/api/Cart
 ```
 
 Full API reference: [Omnium Cart API Documentation](https://api.omnium.no/documentation/index.html#/Carts)
@@ -869,7 +869,7 @@ Here's a realistic example of a cart service that mirrors the customer journey. 
 public class OmniumCartService
 {
     private readonly HttpClient _httpClient;
-    private const string BaseUrl = "https://api.omnium.no/api/Cart";
+    private const string BaseUrl = "https://<tenantId>.api.omnium.no/api/Cart";
 
     public OmniumCartService(HttpClient httpClient)
     {

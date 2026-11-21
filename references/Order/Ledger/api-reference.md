@@ -11,7 +11,7 @@ For the concepts behind these objects, see [Postings & Ledger Lines](ledger-post
 ## Base URL
 
 ```
-https://api.omnium.no/api/Accounting
+https://<tenantId>.api.omnium.no/api/Accounting
 ```
 
 The endpoints appear under the **commerce** group in Swagger: [Omnium API Documentation](https://api.omnium.no/documentation/index.html).
@@ -147,7 +147,7 @@ Search ledger lines across postings — useful for building an account-by-accoun
 | Property | Type | Description |
 | --- | --- | --- |
 | Id | string | Unique posting ID. |
-| Source | [OmniumPostingSource](api-reference.md#enums) | `PosZReport` or `WebFulfillment`. Returned as a number. |
+| Source | [OmniumPostingSource](api-reference.md#enums) | `PosZReport`, `WebFulfillment` or `SafeWithdrawal`. Returned as a number. |
 | OrderType | string | Order type the posting covers, when web-fulfillment postings are split [per order type](ledger-config.md#posting-settings). Empty on per-store `WebFulfillment` postings and on all `PosZReport` postings. |
 | ZReportId | string | Z-report the posting was built from (POS only). |
 | ZReportNumber | long? | Z-report number, when applicable. |
@@ -155,7 +155,7 @@ Search ledger lines across postings — useful for building an account-by-accoun
 | StoreIds | List<string> | Stores covered. WebFulfillment postings have a single entry. |
 | RegisterIds | List<string> | Registers covered by the source Z-report. Empty for WebFulfillment. |
 | AccountingCompanyCode | string | Accounting company code of the posting's store, when configured. See [Store Accounts](ledger-store-accounts.md#store-accounting-fields). |
-| PostingDate | DateTime | Accounting period date — the transaction day in the accounting time zone for `WebFulfillment`, the Z-report's UTC date for `PosZReport`. |
+| PostingDate | DateTime | Accounting period date — the transaction day in the accounting time zone for `WebFulfillment`, the Z-report's UTC date for `PosZReport`, the day of the withdrawal in the accounting time zone for `SafeWithdrawal`. |
 | CreatedAt | DateTime | UTC creation timestamp. |
 | CurrencyCode | string | ISO currency code (e.g. `NOK`). |
 | Status | string | `Posted`, `Exported`, `Reconciled`, `Rejected`, or `Superseded`. |
@@ -275,6 +275,7 @@ Responses return `source` and `category` as numbers, while the swagger documenta
 | --- | --- | --- |
 | 0 | `PosZReport` | Built inline when a POS Z-report is closed. |
 | 1 | `WebFulfillment` | Built daily per (store, posting date) from the payment transactions of web/CS orders at the store. |
+| 2 | `SafeWithdrawal` | Built inline when cash is registered from a store's safe to the bank in the In-Store app. See [Safe withdrawals](ledger-postings.md#safe-withdrawals). |
 
 **OmniumAccountCategory**
 

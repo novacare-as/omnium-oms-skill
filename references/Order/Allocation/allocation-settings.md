@@ -40,12 +40,12 @@ These settings are on the **Global** and **Market** levels. **Allocation engine 
 | **Maximum shipments** | 3 | The most warehouses one order may be spread across. A plan that needs more is dropped. Parcels that a split rule forces from the same warehouse do not count |
 | **Allow splitting** | On | Lets an order ship from more than one warehouse when no single warehouse can serve all of it. Off means such an order gets no plan |
 | **Always evaluate splits** | Off | Builds split plans even when one warehouse can serve the whole order, so a profile that prefers them can rank them |
-| **Set shipping method from plan** | Off | Writes a shipping method onto the shipments the engine moves. A shipment keeps the method it has; one without a method gets the cheapest method that can be used from the chosen warehouse |
+| **Set shipping method from plan** | Off | Writes the shipping method the plan chose onto the shipments. A shipment keeps its method while it can be used from the chosen warehouse. A shipment without a method, or whose method a rule, the warehouse or the carrier's limits rule out, gets the cheapest method that can be used. A shipment that stays at its warehouse only has its method changed: it keeps its status, and the order log records the change of method. A shipment on a pick list keeps its method. The order keeps the shipping price the customer was charged |
 | **Set reserved line flags** | On | Marks the placed lines as reserved, the way the existing allocation workflow steps do, so later steps in the same workflow read them correctly. The inventory reservation itself stays with the inventory workflow steps |
 | **Allocate without checking stock** | Off | Every store counts as able to serve every line. Only for a tenant whose stock is kept outside Omnium; each decision made this way says so in the trace |
 | **Allow goods that are on order** | Off | Lets a store serve a line from a confirmed purchase order that arrives before the customer's requested delivery date. Off means only stock on hand counts |
 | **Status on new shipments** | Empty | The order status written on the shipments the engine moves or splits off, so the workflow for that status runs on them. When empty, a moved shipment keeps its status, and a shipment that is split off gets the next status in the order type's status flow |
-| **Force a shipping method** | Empty | A shipping method written on the shipments the engine moves, instead of the one the plan chose. Only used when **Set shipping method from plan** is on |
+| **Force a shipping method** | Empty | A shipping method written instead of the one the plan chose: on every shipment the engine moves or splits off, and on a shipment that stays at its warehouse only when the plan gives it a new method. Only used when **Set shipping method from plan** is on |
 | **Candidate store roles** | Empty | A store needs one of these store roles to be considered at all. Empty means every store that is a warehouse |
 
 ### Incoming warehouse code
@@ -77,6 +77,10 @@ Lines that are already reserved or picked always stay where they are, whatever t
 A profile is what the engine optimises for. On the **Global** level, the **Profiles** section lists the built-in profiles and any you have added. Select **Add** to add your own, and **Save** to store your changes.
 
 A profile weighs one or more objectives in tiers. Tier 1 decides first; a later tier only separates plans that tied on the tiers above it. **Tie threshold** sets how close two plans must be to count as tied (0.01 by default). The built-in profiles cannot be deleted, but you can change their weights.
+
+**Tie threshold** must be from 0 to 0.2. A tier scores each plan from 0 to 1, so a larger threshold would make every plan tie on every tier, and the profile would no longer rank the plans. A profile with a value outside that range cannot be saved. If a profile was saved with one earlier, allocation ranks with the nearest bound (0 or 0.2) and logs a warning until the profile is changed.
+
+A tier where every objective weighs 0 gives every plan the same score, so it never separates plans. The editor warns about such a tier.
 
 | Objective | Favours plans that |
 | --- | --- |

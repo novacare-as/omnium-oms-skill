@@ -8,7 +8,7 @@ Source: https://docs.omnium.no/docs/PurchaseOrders/Suppliers/supplier-api
 
 The Supplier API lets you manage the companies and entities that provide goods to your business. Suppliers are referenced by purchase orders and products, and carry logistics parameters such as lead time and shipping terms that drive Omnium's replenishment features.
 
-This page covers the public API at `https://api.omnium.no/api/Suppliers`. For an overview of the supplier concept, see the [Suppliers overview](../Suppliers.md).
+This page covers the public API at `https://<tenantId>.api.omnium.no/api/Suppliers`. For an overview of the supplier concept, see the [Suppliers overview](../Suppliers.md).
 
 ### How suppliers connect to other entities
 
@@ -45,7 +45,7 @@ When you update a supplier's `DefaultLeadTime`, the new value is automatically p
 All supplier endpoints are available at:
 
 ```
-https://api.omnium.no/api/Suppliers
+https://<tenantId>.api.omnium.no/api/Suppliers
 ```
 
 Endpoints require one of two authorization roles:

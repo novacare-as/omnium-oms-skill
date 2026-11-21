@@ -164,6 +164,10 @@ Store roles integrate with inventory management settings to control which wareho
 
 See the [Inventory Management documentation](../Inventory/inventory-config.md) for details on configuring warehouse allocation rules based on store roles.
 
+### Role-based workflow steps
+
+You can enable or disable an order workflow step for store roles with `EnabledForStoreRoles` and `DisabledForStoreRoles`. The step then runs only for shipments sent from a warehouse with the right roles. See [Store Role Filter](../Order/order-lifecycle.md#store-role-filter).
+
 * * *
 
 ## Default properties

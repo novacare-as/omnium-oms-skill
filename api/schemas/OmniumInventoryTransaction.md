@@ -14,6 +14,7 @@ Represents an inventory transaction in the public API
 - `warehouseName`: string, nullable — Name of the warehouse
 - `inventoryChange`: number (decimal) — Change in inventory quantity
 - `reservedInventoryChange`: number (decimal) — Change in reserved inventory quantity
+- `priorityInventoryChange`: number (decimal) — Change in the number of items that should be sold first
 - `newInventory`: number (decimal) — New inventory quantity after transaction
 - `newReservedInventory`: number (decimal) — New reserved inventory quantity after transaction
 - `orderId`: string, nullable — Associated order ID

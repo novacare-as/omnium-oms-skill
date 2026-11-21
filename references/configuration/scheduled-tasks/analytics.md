@@ -15,7 +15,6 @@ The Analytics scheduled tasks are responsible for generating statistics, aggrega
 | [Analytics Order Line](analytics/analytics-order-line.md) | Index order line analytics for changed orders | Delta |
 | [Analytics Reorder Suggestions](analytics/analytics-reorder-suggestions.md) | Generate product reorder suggestions | Full |
 | [Analytics Reorder Suggestions Delta](analytics/analytics-reorder-suggestions-delta.md) | Update reorder suggestions based on inventory changes | Delta |
-| [Add Stats Orders](analytics/add-stats-orders.md) | Queue changed orders for statistics processing | Delta |
 | [Add Stats Customers](analytics/add-stats-customers.md) | Queue changed customers for statistics processing | Delta |
 | [Reindex All Stats Customers](analytics/reindex-all-stats-customers.md) | Rebuild entire customer statistics index | Full |
 
@@ -29,7 +28,7 @@ Analytics tasks work together to maintain the statistics and reporting infrastru
 2.  **Inventory Analytics** - Monitors inventory levels and movements over time
 3.  **Order Line Analytics** - Provides detailed order line data for sales analysis
 4.  **Reorder Suggestions** - Analyzes sales patterns to recommend inventory replenishment
-5.  **Stats Queues** - FIFO queues for asynchronous statistics processing
+5.  **Stats Customer Queue** - FIFO queue for asynchronous customer statistics processing
 
 * * *
 

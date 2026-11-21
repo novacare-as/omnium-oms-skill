@@ -25,7 +25,7 @@ The simulator shows each run in terms of the engine's stages, as they appear on 
 | **Guards and context** | Checks that the engine runs at all (the allocation engine is enabled, virtual stock locations are not in use, and there are lines to allocate), decides which profile ranks the plans, and gathers the rules in scope and the candidate warehouses |
 | **Candidates** | Every store is a candidate for every line. Stores are ruled out when they are not warehouses, are excluded from allocation, lack a candidate role, do not carry the product in their assortment, fail their OmniStock rules, or do not have enough available stock. Reserved or picked lines stay where they are |
 | **Line rules** | [Allocation rules](allocation-rules.md) for the line stage exclude, restrict, or prefer warehouses per line, and decide which lines must ship together or apart |
-| **Segmentation** | The engine builds plans: first every single warehouse that can ship the whole order, then split plans when splitting is allowed. A plan never uses more warehouses than the maximum number of shipments allowed. Lines no warehouse can serve are set aside as lines that could not be placed |
+| **Segmentation** | The engine builds plans: first the single warehouses that can ship the whole order, then split plans when splitting is allowed. A plan never uses more warehouses than the maximum number of shipments allowed, and a run builds at most 50 plans. When more warehouses can ship the whole order, the best of them on each measure the profiles rank by get a plan. Lines no warehouse can serve are set aside as lines that could not be placed |
 | **Shipment and plan checks** | Each plan gets its shipping options, estimated shipping cost, distance, and delivery probability. Shipment and plan rules can reject a plan; when a rule rejects every plan because of certain warehouses, the engine tries again without them |
 | **Ranking** | Each plan is scored under each profile. The best plan under the primary profile is the selected plan |
 | **Outcome** | The result of the run - see [outcomes](allocation-simulator.md#result-the-plan) |
@@ -254,6 +254,7 @@ Lines that could not be placed and the trace explain each decision with a reason
 | `PlanRejectedByRule` | Rejected by a rule |
 | `RepairedByExcludingWarehouses` | Tried again without the rejected stores |
 | `MaxShipmentsExceeded` | More shipments than allowed |
+| `WholeOrderPlansCapped` | More warehouses could ship the whole order than the plan limit allows, so only the best of them got a plan |
 | `ShipmentOptionConstraintFailed` | The transport product cannot carry this shipment |
 | `NoAllowedShippingOption` | No shipping method can be used from this store |
 | `ShippingOptionsExcludedByRule` | Shipping options excluded by a rule |

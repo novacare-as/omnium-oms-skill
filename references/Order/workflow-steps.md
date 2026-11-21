@@ -123,7 +123,7 @@ When order moves to processing:
 1.  **Notification** - Sends notifications that order is being prepared
 2.  **UpdateShipmentStatus** - Updates shipment status
 
-### Status: Ship (11 workflow steps)
+### Status: Ship (10 workflow steps)
 
 When order is shipped to customer:
 
@@ -137,4 +137,3 @@ When order is shipped to customer:
 8.  **SetCompletedDate** - Records order completion timestamp
 9.  **CustomerClubMoveFromOnHoldToEarnedPoints** _(invisible)_ - Converts held points to earned points
 10.  **CustomerClubCancelNewPointsOnHold** _(invisible)_ - Cleans up temporary point calculations
-11.  **CustomerClubCalculateAndUpdateTierForMember** _(invisible, runs after save)_ - Updates customer loyalty tier

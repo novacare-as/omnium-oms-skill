@@ -2,52 +2,52 @@
 
 Source: https://docs.omnium.no/docs/Customer/Cases/cases-dashboard
 
-> Cases dashboard with key stats, charts by status, priority, assignee, source, and tag, plus filtering options.
+> Cases dashboard with key numbers, charts by status, priority, assignee, source, tag, SKU and product, filtering, and the My cases panel on My page.
 
-The Cases Dashboard provides an overview of your case workload and trends. Access it from **Customer → Cases → Dashboard**.
+The Cases Dashboard provides an overview of your case workload and trends. Open it from **Customers → Cases → Dashboard**. Deleted cases are never counted.
 
-## Key Stats
+## Key Numbers
 
-Four summary cards are displayed at the top of the dashboard:
+Four figures are displayed at the top of the dashboard:
 
-| Stat | Description |
+| Figure | Description |
 | --- | --- |
-| **Open Cases** | Total number of cases that are not in a closed or deleted status |
-| **Unassigned Cases** | Cases with no assigned user — these need attention |
-| **Avg Resolution (days)** | Average number of days from case creation to resolution |
-| **Created This Week** | Number of cases created in the current week |
+| **Open Cases** | Cases that are not in **Status Closed**. Cases in other statuses, such as a resolved status, count as open. When **Status Closed** is not set, a status named `Closed` counts as closed |
+| **Unassigned Cases** | Open cases with no assigned user |
+| **Avg resolution time** (days) | The average number of days from creation to the resolved date, for the cases that have a resolved date. A case gets a resolved date only when its status changes with **Set to**, the AI assistant or the API's change status endpoint. See [Dates](cases-management.md#dates) |
+| **Created This Week** | Cases created in the last 7 days |
 
 ## Charts
 
-The dashboard includes several chart views that break down cases by different dimensions:
+The dashboard includes several charts that break down cases by different dimensions. Each chart has a fixed chart type.
 
 ### Cases by Status
 
-Distribution of cases across all configured statuses. Quickly identify bottlenecks (e.g., too many cases stuck in "New").
+Distribution of cases across the statuses. Quickly identify bottlenecks (e.g., too many cases stuck in "New").
 
-### Cases by Priority
+### Cases Over Time
 
-Breakdown by priority level. Helps assess the severity distribution of open cases.
+Cases created per day over the last 90 days. Useful for spotting trends and seasonal patterns.
 
 ### Cases by Assignee
 
 Shows how cases are distributed among team members. Useful for workload balancing.
 
+### Cases by Priority
+
+Breakdown by priority. Helps assess the severity distribution of cases.
+
 ### Cases by Source
 
-Distribution by case origin (Email, Phone, Web, etc.). Reveals which channels generate the most support requests.
+Distribution by case origin (`Email`, `Sms`, `Order` or a source an agent typed). Reveals which channels generate the most support requests.
 
-### Cases by Tag
+### Top Tags
 
-Breakdown by tag. Identifies common issue categories.
+The 10 most used tags. Identifies common issue categories.
 
-### Cases by SKU / Product
+### Cases by SKU and Cases by Product
 
-Shows which products or SKUs are involved in cases. Helps identify products with recurring issues.
-
-### Cases Over Time
-
-A line chart showing case creation volume over the past 90 days. Useful for spotting trends and seasonal patterns.
+Two charts that show which SKUs and which products the cases are linked to. Helps identify products with recurring issues. Cases are linked to SKUs and products when they are created from an order line, or through the API.
 
 ## Filtering
 
@@ -55,13 +55,14 @@ The dashboard supports filters to narrow the data:
 
 | Filter | Description |
 | --- | --- |
-| **Status** | Show data for specific statuses only |
-| **Priority** | Filter by priority level |
-| **Assigned To** | Filter by assigned agent |
-| **Date Range** | Limit data to a specific time period |
+| **My cases** | Only the cases assigned to you |
+| **Status** | One status |
+| **Priority** | One priority |
+| **Date range** | Cases created in this period |
+| **Show only** | **Without orders** or **Without customers**, as in the case list |
 
-Filters apply to all charts and stats simultaneously.
+Filters apply to all figures and charts at the same time.
 
-## Chart Display Options
+## My Cases on My Page
 
-Charts support switching between **bar chart** and **pie chart** views where applicable. Use the toggle on each chart to switch display modes.
+When [Cases is enabled](cases-config.md#enabling-cases), **My page** has a **My cases** panel for the signed-in user. It shows how many open cases (not in **Status Closed**) are assigned to the user, and a chart of the user's cases created in the period chosen on My page.

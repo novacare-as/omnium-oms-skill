@@ -8,7 +8,7 @@ Source: https://docs.omnium.no/docs/Prices/Campaigns/campaign-api
 
 The Campaign API lets external systems manage campaigns programmatically. Use it to integrate campaign management with your ERP, build custom campaign dashboards, or automate campaign workflows from external systems.
 
-All endpoints are available at `https://apitest.omnium.no/api/Campaigns` (test) and your production API host under the same path.
+All endpoints are available at `https://<tenantId>.test.api.omnium.no/api/Campaigns` (test) and your production API host under the same path.
 
 ### What you can do
 
@@ -162,7 +162,7 @@ Returns a single campaign by ID.
 **Example:**
 
 ```
-curl -X GET "https://apitest.omnium.no/api/Campaigns/abc-123" \
+curl -X GET "https://<tenantId>.test.api.omnium.no/api/Campaigns/abc-123" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -267,7 +267,7 @@ Search and filter campaigns with pagination. This is the primary way to list cam
 **Example — Find all active campaigns in the Norwegian market:**
 
 ```
-curl -X POST "https://apitest.omnium.no/api/Campaigns/Search" \
+curl -X POST "https://<tenantId>.test.api.omnium.no/api/Campaigns/Search" \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -283,7 +283,7 @@ curl -X POST "https://apitest.omnium.no/api/Campaigns/Search" \
 To find campaigns that overlap with a date range, combine `StartTo` and `EndFrom`. This returns campaigns where `StartDate <= endOfRange` AND `EndDate >= startOfRange`:
 
 ```
-curl -X POST "https://apitest.omnium.no/api/Campaigns/Search" \
+curl -X POST "https://<tenantId>.test.api.omnium.no/api/Campaigns/Search" \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -297,7 +297,7 @@ curl -X POST "https://apitest.omnium.no/api/Campaigns/Search" \
 **Example — Full-text search with tag filter:**
 
 ```
-curl -X POST "https://apitest.omnium.no/api/Campaigns/Search" \
+curl -X POST "https://<tenantId>.test.api.omnium.no/api/Campaigns/Search" \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -347,7 +347,7 @@ Creates a new campaign. Returns the created campaign with server-set fields (`Id
 **Example — Create a basic campaign:**
 
 ```
-curl -X POST "https://apitest.omnium.no/api/Campaigns" \
+curl -X POST "https://<tenantId>.test.api.omnium.no/api/Campaigns" \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -368,7 +368,7 @@ curl -X POST "https://apitest.omnium.no/api/Campaigns" \
 Properties let you attach arbitrary metadata to campaigns. Use them for ERP references, budget tracking, or any custom data:
 
 ```
-curl -X POST "https://apitest.omnium.no/api/Campaigns" \
+curl -X POST "https://<tenantId>.test.api.omnium.no/api/Campaigns" \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -411,7 +411,7 @@ Replaces an existing campaign with the provided data. This is a full replacement
 **Example — Update campaign dates and add a store filter:**
 
 ```
-curl -X PUT "https://apitest.omnium.no/api/Campaigns/abc-123" \
+curl -X PUT "https://<tenantId>.test.api.omnium.no/api/Campaigns/abc-123" \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -442,7 +442,7 @@ Permanently deletes a campaign. All promotions linked to the campaign are automa
 **Example:**
 
 ```
-curl -X DELETE "https://apitest.omnium.no/api/Campaigns/abc-123" \
+curl -X DELETE "https://<tenantId>.test.api.omnium.no/api/Campaigns/abc-123" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -492,7 +492,7 @@ A campaign can move only to a status that its current status lists as an availab
 An environment with a locked status typically moves `Planning → Locked → Active`, so a `Planning` campaign must be locked before it can go live:
 
 ```
-curl -X PATCH "https://apitest.omnium.no/api/Campaigns/abc-123/status" \
+curl -X PATCH "https://<tenantId>.test.api.omnium.no/api/Campaigns/abc-123/status" \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{ "status": "Locked" }'
@@ -507,7 +507,7 @@ When you change a campaign's status, the workflow steps configured for the new s
 **Example — Activate a campaign:**
 
 ```
-curl -X PATCH "https://apitest.omnium.no/api/Campaigns/abc-123/status" \
+curl -X PATCH "https://<tenantId>.test.api.omnium.no/api/Campaigns/abc-123/status" \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{ "status": "Active" }'
@@ -516,7 +516,7 @@ curl -X PATCH "https://apitest.omnium.no/api/Campaigns/abc-123/status" \
 **Example — Complete a campaign after its end date:**
 
 ```
-curl -X PATCH "https://apitest.omnium.no/api/Campaigns/abc-123/status" \
+curl -X PATCH "https://<tenantId>.test.api.omnium.no/api/Campaigns/abc-123/status" \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{ "status": "Completed" }'
@@ -537,7 +537,7 @@ Returns the IDs of all promotions linked to a campaign. Use these IDs with the P
 **Example:**
 
 ```
-curl -X GET "https://apitest.omnium.no/api/Campaigns/abc-123/promotions" \
+curl -X GET "https://<tenantId>.test.api.omnium.no/api/Campaigns/abc-123/promotions" \
   -H "Authorization: Bearer <token>"
 ```
 
@@ -562,7 +562,7 @@ A campaign's **Planning** tab lists the items of the price lists that belong to 
 **Step 1:** Create the campaign, with its campaign code and last year's campaign:
 
 ```
-curl -X POST "https://apitest.omnium.no/api/Campaigns" \
+curl -X POST "https://<tenantId>.test.api.omnium.no/api/Campaigns" \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -579,7 +579,7 @@ curl -X POST "https://apitest.omnium.no/api/Campaigns" \
 **Step 2:** Create a price list promotion in the campaign. `campaignId` must be an existing campaign:
 
 ```
-curl -X POST "https://apitest.omnium.no/api/Promotions" \
+curl -X POST "https://<tenantId>.test.api.omnium.no/api/Promotions" \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -596,7 +596,7 @@ curl -X POST "https://apitest.omnium.no/api/Promotions" \
 **Step 3:** Create the promotion's price list. `promotionId` puts it under the campaign; `campaignId` records the campaign on the price list too:
 
 ```
-curl -X POST "https://apitest.omnium.no/api/PriceLists/AddPriceList" \
+curl -X POST "https://<tenantId>.test.api.omnium.no/api/PriceLists/AddPriceList" \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -614,7 +614,7 @@ curl -X POST "https://apitest.omnium.no/api/PriceLists/AddPriceList" \
 **Step 4:** Add the items with their campaign prices and planning figures:
 
 ```
-curl -X POST "https://apitest.omnium.no/api/PriceLists/AddPriceListItems" \
+curl -X POST "https://<tenantId>.test.api.omnium.no/api/PriceLists/AddPriceListItems" \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '[
@@ -639,7 +639,7 @@ Linking a promotion with `campaignId` works as adding it on the campaign page: t
 **Move or remove a promotion:** send only the campaign in a patch. A patch that changes nothing but the campaign does not save the promotion itself, so its prices are not rebuilt:
 
 ```
-curl -X PATCH "https://apitest.omnium.no/api/Promotions" \
+curl -X PATCH "https://<tenantId>.test.api.omnium.no/api/Promotions" \
   -H "Authorization: Bearer <token>" \
   -H "Content-Type: application/json" \
   -d '{ "id": "bf26-shoes", "campaignId": "" }'

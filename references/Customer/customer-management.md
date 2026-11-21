@@ -349,13 +349,13 @@ PATCH /api/businesscustomers/PatchBusinessCustomer
 
 ## External IDs and Integration
 
-Customers can be linked to multiple external systems using the `externalIds` field. Each entry has a `source` (system name) and `value` (ID in that system):
+Customers can be linked to multiple external systems using the `externalIds` field. Each entry has a `providerName` (system name) and `id` (ID in that system):
 
 ```
 "externalIds": [
-  { "source": "Shopify", "value": "gid://shopify/Customer/12345" },
-  { "source": "D365", "value": "CUST-00042" },
-  { "source": "VoyadoContactId", "value": "abc-def-123" }
+  { "providerName": "Shopify", "id": "gid://shopify/Customer/12345" },
+  { "providerName": "D365", "id": "CUST-00042" },
+  { "providerName": "VoyadoContactId", "id": "abc-def-123" }
 ]
 ```
 
@@ -513,8 +513,8 @@ DELETE /api/privatecustomers/Anonymize?id={customerId}
 
 This:
 
-*   Removes all personal data (name, email, phone, addresses)
-*   Marks the customer as anonymized
+*   Deletes the customer record
+*   Removes all personal data (name, email, phone, addresses) from the customer's orders and carts, and marks them as anonymized
 *   Preserves order records for business continuity (without personal data)
 *   Is irreversible
 
@@ -552,7 +552,7 @@ Omnium includes a built-in loyalty program with bonus points, tiers, and automat
 Key concepts:
 
 *   **Points** are earned on purchases and can be used as payment via the BonusPoints payment provider
-*   **Tiers** segment members by spending level (e.g., Bronze, Silver, Gold)
+*   **Tiers** segment members by what they bought for in a qualifying period (e.g., Bronze, Silver, Gold). A tier can give a higher bonus % and access to promotions. With an external customer club system such as Voyado, the tier is the member level from that system
 *   **Birthday and sign-up points** reward engagement milestones
 *   **Points expire** after a configurable number of days
 *   **Workflow steps** handle point calculation, earning, and cancellation throughout the order lifecycle

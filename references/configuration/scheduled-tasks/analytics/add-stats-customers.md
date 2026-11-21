@@ -82,11 +82,10 @@ The task detects customers needing statistics updates through two mechanisms:
 
 ## Recommended Schedule
 
-Run every 5 minutes (`*/5 * * * *`) to keep customer statistics current. Align schedule with the Add Stats Orders task for consistent processing.
+Run every 5 minutes (`*/5 * * * *`) to keep customer statistics current.
 
 * * *
 
 ## Related Tasks
 
-*   [Add Stats Orders](add-stats-orders.md) - Order statistics queue
 *   [Reindex All Stats Customers](reindex-all-stats-customers.md) - Full customer stats rebuild

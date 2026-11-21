@@ -17,7 +17,6 @@ Customer steps manage customer records and loyalty program operations during ord
 | [Customer Club Move From On Hold To Earned Points](customers/customer-club-move-from-on-hold-to-earned-points.md) | `CustomerClubMoveFromOnHoldToEarnedPoints` | Move held points to earned |
 | [Customer Club Calculate Points On Hold And Move To Earned](customers/customer-club-calculate-points-on-hold-and-move-to-earned.md) | `CustomerClubCalculatePointsOnHoldAndMoveToEarned` | Calculate and earn points in one step |
 | [Customer Club Cancel New Points On Hold](customers/customer-club-cancel-new-points-on-hold.md) | `CustomerClubCancelNewPointsOnHold` | Cancel held points on order cancellation |
-| [Customer Club Calculate And Update Tier For Member](customers/customer-club-calculate-and-update-tier-for-member.md) | `CustomerClubCalculateAndUpateTierForMember` | Update customer loyalty tier |
 
 ## Common Use Cases
 
@@ -45,14 +44,6 @@ Cancel points when orders are cancelled:
 
 ```
 OrderCanceled → CustomerClubCancelNewPointsOnHold
-```
-
-### Tier Management
-
-Update tier status on new orders:
-
-```
-New Order → CustomerClubCalculateAndUpateTierForMember
 ```
 
 ## Loyalty Points Lifecycle

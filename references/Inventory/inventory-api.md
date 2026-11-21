@@ -191,6 +191,34 @@ For more details, visit the [ATP model documentation](https://api.omnium.no/docu
 
 For details, see [Priority Stock](priority-stock.md).
 
+#### Last Counted Date
+
+`lastCounted` is the time (UTC) the stock of the inventory item (one SKU at one warehouse) was last counted, or `null` if it has not been counted. Use it to find stock that moves but has not been counted for a long time. The field is returned with the inventory item and is read only: Omnium ignores it when you send it in an add or update request, and keeps the stored date.
+
+These set `lastCounted` to the time the change is saved:
+
+*   Updating the inventory from an inventory count in the Omnium UI or the In-Store app. Every counted SKU gets the date, also one where the count found no deviation.
+*   A stock-taking imported from [Sitoo](../plugins/POS/Sitoo/Inventory.md#stock-taking). Every line with a counted quantity gets the date.
+*   **Update Inventory** in the In-Store app, also when the quantity you enter equals the stock.
+*   A stock quantity you change in the inventory view of a product in the Omnium UI. A save that leaves the quantity as it was, for example a change of the priority stock alone, does not set the date.
+*   `PUT /api/Inventory/UpdateManyWithMetadata` with `transactionType` `InventoryCount` or `StockTaking`. Every inventory item in the request gets the date, also an item whose quantity did not change. When [inventory rules are applied to API inventory updates](virtual-stock-locations.md#applying-rules-to-api-inventory-updates) and the request changes the `inventory` quantity of a physical inventory item, only the physical inventory items in the request get the date.
+
+```
+PUT /api/Inventory/UpdateManyWithMetadata
+{
+  "inventoryItems": [
+    { "sku": "Topeak-43543512", "warehouseCode": "OsloStore", "inventory": 12 },
+    { "sku": "Topeak-43543513", "warehouseCode": "OsloStore", "inventory": 4 }
+  ],
+  "reason": "Annual stock count",
+  "transactionType": "InventoryCount"
+}
+```
+
+`lastCounted` only moves forward. A count that finds the stock as it was sets only the date: it writes no inventory transaction and is not exported to connected systems, and the item keeps its `modified` date, so a delta search on `LastModified` does not return the item for that count. With the FIFO or average cost [inventory value provider](inventory-value.md), such a count still writes a transaction when the item's batches do not add up to the counted quantity, because saving the count brings the batches back to it. A count in the Omnium UI, the In-Store app or Sitoo that finds no stock of a SKU that has no inventory item at the warehouse does not create an item.
+
+Deviations found by inventory counts in the Omnium UI and the In-Store app are logged as inventory transactions with `transactionType` `InventoryCount`. Older count transactions can carry `PurchaseOrder` for an increase and `SalesOrder` for a decrease.
+
 * * *
 
 ## API Integrations – Best Practices

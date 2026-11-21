@@ -334,7 +334,6 @@ These settings control order statistics collection and logging behavior.
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
-| UseStatsOrderQueues | bool | false | When enabled, orders are copied to dedicated statistics queues for analytics processing. Enable this for advanced reporting and analytics scenarios. |
 | ShippingProfitPercent | decimal | null | The profit percentage from shipping subtotals. Used for calculating shipping profit in statistics and reports. For example, set to 15 if your shipping profit margin is 15%. |
 | UseVerboseLogging | bool | false | Enable detailed logging for order operations. Use for troubleshooting but disable in production for performance. |
 | IncludedOrderTypesForRevenueStats | List<string> | \["Pos", "Online"\] | Order types included in key numbers, average order values, and revenue statistics. If not set, defaults to "Pos" and "Online". |
@@ -345,7 +344,6 @@ These settings control order statistics collection and logging behavior.
 
 ```
 "OrderSettings": {
-  "UseStatsOrderQueues": true,
   "ShippingProfitPercent": 15.0,
   "IncludedOrderTypesForRevenueStats": ["Online", "ClickAndCollect"],
   "IncludedOrderStatusesForRevenueStats": ["Completed", "Delivered"],
@@ -912,7 +910,6 @@ Below is a comprehensive example showing all order settings configured together:
     "IsOrderValidationEnabled": true,
     "IsOrderValidationOnOpenEnabled": false,
 
-    "UseStatsOrderQueues": true,
     "ShippingProfitPercent": 15.0,
 
     "CancelOrderIfAllLineItemsCancelled": true,

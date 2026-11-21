@@ -252,7 +252,7 @@ Key schemas: [`OmniumProject`](schemas/OmniumProject.md), [`OmniumComment`](sche
 | [`endpoints/orders/analytics.md`](endpoints/orders/analytics.md) | Orders \| Analytics | 2 | Order analytics endpoints. |
 | [`endpoints/orders/batch-updates.md`](endpoints/orders/batch-updates.md) | Orders \| Batch Updates | 5 | Endpoints for batch updates for orders. |
 | [`endpoints/orders/click-and-collect.md`](endpoints/orders/click-and-collect.md) | Orders \| Click and Collect | 3 | Click and collect order type has some custom features in Omnium UI and API. |
-| [`endpoints/orders/get.md`](endpoints/orders/get.md) | Orders \| Get | 9 | Endpoints for order getters. |
+| [`endpoints/orders/get.md`](endpoints/orders/get.md) | Orders \| Get | 10 | Endpoints for order getters. |
 | [`endpoints/orders/gift-cards.md`](endpoints/orders/gift-cards.md) | Orders \| Gift Cards | 4 | Gift cards |
 | [`endpoints/orders/invoices.md`](endpoints/orders/invoices.md) | Orders \| Invoices | 1 | Invoices |
 | [`endpoints/orders/order-lines.md`](endpoints/orders/order-lines.md) | Orders \| Order Lines | 6 | Order lines. |
@@ -333,9 +333,10 @@ Key schemas: [`OmniumCampaign`](schemas/OmniumCampaign.md), [`OmniumCampaignRequ
 |------|-----|-----------|-------------|
 | [`endpoints/purchase-orders.md`](endpoints/purchase-orders.md) | Purchase Orders | 22 | Purchase orders |
 | [`endpoints/purchase-orders/deliveries.md`](endpoints/purchase-orders/deliveries.md) | Purchase Orders \| Deliveries | 12 | Deliveries |
+| [`endpoints/purchase-orders/reorder-suggestions.md`](endpoints/purchase-orders/reorder-suggestions.md) | Purchase Orders \| Reorder Suggestions | 6 |  |
 | [`endpoints/purchase-orders/workflows.md`](endpoints/purchase-orders/workflows.md) | Purchase Orders \| Workflows | 2 | Purchase order workflows |
 
-Key schemas: [`OmniumPurchaseOrder`](schemas/OmniumPurchaseOrder.md), [`OmniumComment`](schemas/OmniumComment.md), [`OmniumDelivery`](schemas/OmniumDelivery.md), [`OmniumDeliveryGoodsReceptionLine`](schemas/OmniumDeliveryGoodsReceptionLine.md), [`OmniumPurchaseOrderOmniumResult`](schemas/OmniumPurchaseOrderOmniumResult.md), [`OmniumPurchaseOrderOmniumScrollableQueryResult`](schemas/OmniumPurchaseOrderOmniumScrollableQueryResult.md), [`OmniumPurchaseOrderOmniumSearchResult`](schemas/OmniumPurchaseOrderOmniumSearchResult.md), [`OmniumPurchaseOrderSearchRequest`](schemas/OmniumPurchaseOrderSearchRequest.md)
+Key schemas: [`OmniumPurchaseOrder`](schemas/OmniumPurchaseOrder.md), [`OmniumComment`](schemas/OmniumComment.md), [`OmniumDelivery`](schemas/OmniumDelivery.md), [`OmniumReorderSuggestionOmniumResult`](schemas/OmniumReorderSuggestionOmniumResult.md), [`OmniumDeliveryGoodsReceptionLine`](schemas/OmniumDeliveryGoodsReceptionLine.md), [`OmniumPurchaseOrderOmniumResult`](schemas/OmniumPurchaseOrderOmniumResult.md), [`OmniumPurchaseOrderOmniumScrollableQueryResult`](schemas/OmniumPurchaseOrderOmniumScrollableQueryResult.md), [`OmniumPurchaseOrderOmniumSearchResult`](schemas/OmniumPurchaseOrderOmniumSearchResult.md)
 
 ### Ratings
 

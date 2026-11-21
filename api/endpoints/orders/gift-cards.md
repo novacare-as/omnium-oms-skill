@@ -71,6 +71,7 @@ Operation ID: `GiftCardGet`
 | `code` | path | string | Yes |  |
 | `marketId` | query | string | No |  |
 | `giftCardPin` | query | string | No | Gift card PIN, if required, along with the code provided by the gift card provider. |
+| `storeId` | query | string | No | Optional store ID. Gift card providers with credentials per store use the credentials of this store. |
 
 **Responses:**
 

@@ -138,6 +138,7 @@ Every promotion can be targeted using a combination of conditions:
 | **Stores** | Apply only in specific stores (or exclude specific stores) |
 | **Customer groups** | Apply only to customers in specific groups |
 | **Customer club members** | Restrict to loyalty program members |
+| **Member tiers** | Restrict to members with one of the selected tiers. See [Member tiers](../Customer/customer-club.md#promotions-for-tiers) |
 | **Order types** | Apply only to certain order types (e.g., B2C only) |
 
 ### What it applies to (product-level promotions)

@@ -77,7 +77,7 @@ Rental is controlled by these settings in **Configuration → Settings → Order
 | --- | --- | --- |
 | `isRentalEnabled` | bool | Enables rental features in the Omnium UI |
 | `rentalProjectTypeId` | string | ID of the project type used when creating rental projects from orders. Setting this also enables rental-related UI features. |
-| `rentalReturnBufferMinutes` | int | **Reserve the unit after return (minutes)**. How long a rental instance stays reserved after it is returned, for example for checking and cleaning. No rental can start in this time, and a rental must end this long before the next one starts. Empty or `0` turns it off. See [Reservation after return](rental-api.md#reservation-after-return). |
+| `rentalReturnBufferMinutes` | int | **Reserve the unit after return (minutes)**. How long a rental instance stays reserved after it is returned, for example for checking and cleaning. The time counts from when the rental project is completed, and from the booked return until then. No rental can start in this time, and a rental must end this long before the next one starts. Empty or `0` turns it off. See [Reservation after return](rental-api.md#reservation-after-return). |
 
 Rental projects are only created automatically when `rentalProjectTypeId` is set. If you enable `isRentalEnabled` without configuring `rentalProjectTypeId`, rental order lines will be processed but no tracking project will be created.
 

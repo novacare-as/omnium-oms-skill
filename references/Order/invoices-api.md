@@ -9,7 +9,7 @@ The Invoices API gives access to the sales documents of orders and projects: inv
 All endpoints are available at:
 
 ```
-https://api.omnium.no/api/Invoices
+https://<tenantId>.api.omnium.no/api/Invoices
 ```
 
 The endpoints require an API user with read access to orders. Uploading a new invoice file with `AddInvoice` requires admin access to orders.
@@ -107,7 +107,7 @@ A credit note from a return lists the receipts that hold the returned lines in `
 
 ```
 GET /api/Invoices/Orders/1004812 HTTP/1.1
-Host: api.omnium.no
+Host: <tenantId>.api.omnium.no
 Authorization: Bearer YOUR_API_KEY
 ```
 
@@ -188,7 +188,7 @@ This request finds the receipt of shipment 2 on order 1004812:
 
 ```
 POST /api/Invoices/Search HTTP/1.1
-Host: api.omnium.no
+Host: <tenantId>.api.omnium.no
 Authorization: Bearer YOUR_API_KEY
 Content-Type: application/json
 

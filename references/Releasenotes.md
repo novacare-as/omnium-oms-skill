@@ -7,3 +7,12 @@ Source: https://docs.omnium.no/docs/Releasenotes
 Stay informed about the latest changes and upgrades to the Omnium API. With new features released every week, this section provides a detailed summary of each update to help you integrate seamlessly and make the most of the new functionalities.
 
 For detailed user guides and information about new features, visit help.omnium.no.
+
+## Release freezes
+
+Omnium is released every week, but releases pause during the busiest periods of the year:
+
+*   **Black Friday and Black Month**: no releases from mid-November until early December.
+*   **Christmas and New Year**: no releases from mid or late December until the first or second week of January.
+
+The release notes for the current year list the exact dates.

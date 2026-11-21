@@ -15,7 +15,7 @@ Choose a messaging system that suits your requirements. Omnium options include:
 
 ### Set Up a Queue
 
-1.  **Delta Query**: When making a request to the delta query endpoint, include a timestamp parameter indicating the point in time from which you want to retrieve changes. This could be the timestamp of the last successful synchronization.
+1.  **Delta Query**: When making a request to the delta query endpoint, include the timestamp parameter indicating the point in time from which you want to retrieve changes. This could be the timestamp of the last successful synchronization. The name of the parameter depends on the resource, for example `modifiedFrom` for orders and products. See [Delta Queries](delta.md).
 
 2.  **Process the Response**: The response from Omnium will contain data that has changed since the specified timestamp. The response format will depend on the specific API and endpoint you are using.
 

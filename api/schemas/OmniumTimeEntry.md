@@ -11,6 +11,8 @@ Time entry related to project.
 - `activityName`: string, nullable — Name of the activity
 - `date`: string (date-time), nullable — Date of the time entry
 - `hours`: integer (int32), nullable — The number of hours for the time entry
+- `costRate`: number (decimal), nullable — Internal cost per hour, in the currency of the project
+- `billingRate`: number (decimal), nullable — Price per hour billed to the customer, in the currency of the project. Null for hours that are not billed
 - `comment`: string, nullable — Comment
 - `timeCode`: string, nullable — Time code
 - `timeCodeName`: string, nullable — Time code name

@@ -11,7 +11,7 @@ For configuring workflows and workflow steps, see [Workflow Steps](../workflow-s
 ## Base URL
 
 ```
-https://api.omnium.no/api/Orders
+https://<tenantId>.api.omnium.no/api/Orders
 ```
 
 Full Swagger reference: [Omnium Order Workflow API Documentation](https://api.omnium.no/documentation/index.html#/Orders%20%7C%20Workflow)
@@ -69,15 +69,40 @@ Set `skipRunWorkflow` to `true` to update the status without executing any workf
 }
 ```
 
-**Response:** `200 OK` with [WorkflowExecutionResult](workflow.md#workflow-execution-result-model)
+### Update order fields and status in one call
+
+Set `orderPatch` to change order fields in the same call as the status. The patch uses the same rules as [Patch order](../api-reference.md#patch-order). The field changes and the new status are saved together, and the workflow sees the changed values.
+
+```json
+{
+  "status": "Completed",
+  "orderPatch": {
+    "customerReference": "PO-12345",
+    "properties": [
+      { "key": "ErpReference", "value": "SAP-12345" }
+    ]
+  }
+}
+```
+
+*   Set the new status with `status`. A request that sets a status inside the patch gets `400 Bad Request`: `orderPatch.status`, `orderPatch.orderForm.shipments[].orderStatus`, `orderPatch.returnOrderForms[].status` or `orderPatch.returnOrderForms[].shipments[].orderStatus`.
+*   When a part of `orderPatch` cannot be applied, the order is not changed, the workflow does not run, and the call gets `400 Bad Request` with the patch error in the response body.
+*   The `200 OK` response contains `orderPatchResult`, the same result as [Patch order](../api-reference.md#patch-order) returns.
+*   When the workflow aborts, the status goes back to the previous status, but the field changes from `orderPatch` stay saved, because the workflow steps ran on them.
+*   With `skipRunWorkflow: true`, the order is saved with a concurrency check. When another process keeps changing the order while it is saved, the call gets `409 Conflict`, and you can retry it.
+*   With `executeWorkFlowAsync: true`, the patch is sent with the background update and applied when the update is processed. The response is `202 Accepted` with no body. When a part of `orderPatch` cannot be applied in the background, the order is not changed, the workflow does not run, and the order gets the error `OrderUpdateStatusQueueError` and the event `310110` (ApiOrderUpdateStatusQueuedError). Watch the order's `errors` list or subscribe to the event to detect it.
+
+Use one call instead of a `PatchOrder` call followed by an `UpdateStatus` call when the field changes and the status belong together. Two separate calls can be processed in a different order than you sent them.
+
+**Response:** `200 OK` with [WorkflowExecutionResult](workflow.md#workflow-execution-result-model), or `202 Accepted` when `executeWorkFlowAsync` is `true`
 
 **Error responses:**
 
 | Status | Meaning |
 | --- | --- |
-| 400 | Missing status, or order is in a queued/read-only state |
+| 400 | Missing status, a status is set inside `orderPatch`, a part of `orderPatch` cannot be applied, or order is in a queued/read-only state |
 | 404 | Order not found |
-| 409 | Order is locked by another operation (only when [order locking](../order-locking.md) is enabled for the tenant) |
+| 409 | Order is locked by another operation (only when [order locking](../order-locking.md) is enabled for the tenant), or `skipRunWorkflow` is `true` with an `orderPatch` and the order kept changing while it was saved |
 | 500 | Internal error |
 
 * * *
@@ -274,6 +299,8 @@ This is a read-only operation. The cart and any resulting order are not modified
 | Status | string | Yes | New status to set (e.g., "New", "InProgress", "InTransit", "ReadyForPickup", "Completed", "OrderCanceled", "PartiallyShipped") |
 | ShipmentInfo | [UpdateShipmentInfo](workflow.md#update-shipment-info-model) | No | Shipment to target and optional shipment data updates |
 | SkipRunWorkflow | bool | No | If true, only updates the status without running workflow steps (default: false) |
+| ExecuteWorkFlowAsync | bool | No | If true, the status update and the workflow are processed in the background, and the response is `202 Accepted`. Ignored when `skipRunWorkflow` is true (default: false) |
+| OrderPatch | [OmniumOrderPatch](../api-reference.md#patch-model) | No | Order fields to change in the same call. See [Update order fields and status in one call](workflow.md#update-order-fields-and-status-in-one-call). Statuses are not allowed in the patch |
 | ReturnId | string | No | Return order form ID, for return order workflows |
 | UserId | string | No | User identifier to record on the status change |
 
@@ -396,6 +423,7 @@ Returned by all workflow endpoints. Contains the execution result of each workfl
 | Order | OmniumOrder | The updated order after workflow execution |
 | IsAborted | bool | True if the workflow failed and was aborted |
 | OrderActionExecutionResults | List<[ActionResult](workflow.md#action-result-model)\> | Results for each executed workflow step (max 250) |
+| OrderPatchResult | object | Result of `orderPatch` (`totalCount`, `updatedCount`, `unchangedCount`, `notFoundCount`, `errorCount`, `isModified`). Only set when the request has an `orderPatch` |
 
 ### Action result model
 

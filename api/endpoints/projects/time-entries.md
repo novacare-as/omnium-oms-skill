@@ -51,7 +51,7 @@ Search time entries.
 
 Operation ID: `TimeEntriesAdd`
 
-Add/update a time entry.
+Add/update a time entry. When a time entry with the given id exists, a CostRate or BillingRate that is not sent keeps its stored value.
 
 **Request body:** [`OmniumTimeEntry`](../../schemas/OmniumTimeEntry.md) — Omnium TimeEntry object
 

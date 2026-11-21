@@ -38,7 +38,7 @@ For each order, the engine:
 
 1.  **Finds the candidates** - every store that is a warehouse, carries the product, passes its OmniStock rules, and has enough available stock.
 2.  **Applies the line rules** - rules rule stores out, restrict lines to certain stores, or prefer some stores over others.
-3.  **Builds plans** - every way to ship the whole order, from one warehouse or split across several, within the maximum number of shipments.
+3.  **Builds plans** - the ways to ship the whole order, from one warehouse or split across several, within the maximum number of shipments. When hundreds of stores could ship the order, only the best of them get a plan, so a run stays fast.
 4.  **Checks each plan** - shipping options, weight and distance limits, and the shipment and plan rules.
 5.  **Ranks the plans** - each plan is scored under the profile, and the best one is the selected plan.
 

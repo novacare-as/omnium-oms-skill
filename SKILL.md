@@ -101,7 +101,7 @@ or open `api/schemas/<SchemaName>.md` directly.
 | Products | Products, Alerts, Assets, Batch Updates, Categories, Cost Prices, Get, Inventory, Price List Items, Price Lists, Prices, Query, Recommendations, Rentals, RFID Tags, Search, Update, Variants | [api/_INDEX.md › Products](api/_INDEX.md#products) |
 | Projects | Projects, Assets, Change orders, Logs, Parts, Project types, Reports, Time entries, Transactions, Versions | [api/_INDEX.md › Projects](api/_INDEX.md#projects) |
 | Promotions | Promotions, Campaigns | [api/_INDEX.md › Promotions](api/_INDEX.md#promotions) |
-| Purchase Orders | Purchase Orders, Deliveries, Workflows | [api/_INDEX.md › Purchase Orders](api/_INDEX.md#purchase-orders) |
+| Purchase Orders | Purchase Orders, Deliveries, Reorder Suggestions, Workflows | [api/_INDEX.md › Purchase Orders](api/_INDEX.md#purchase-orders) |
 | Ratings | Ratings | [api/_INDEX.md › Ratings](api/_INDEX.md#ratings) |
 | Settings | Settings, Event Subscriptions, Products, Property Options | [api/_INDEX.md › Settings](api/_INDEX.md#settings) |
 | Stores | Stores | [api/_INDEX.md › Stores](api/_INDEX.md#stores) |

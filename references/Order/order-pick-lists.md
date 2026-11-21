@@ -108,7 +108,7 @@ If `SplitCancelledOrderlinesToStatus` is empty, or names a status that does not 
 ### Base URL
 
 ```
-https://api.omnium.no/api/PickList
+https://<tenantId>.api.omnium.no/api/PickList
 ```
 
 Full Swagger reference: [Omnium Pick List API Documentation](https://api.omnium.no/documentation/index.html).

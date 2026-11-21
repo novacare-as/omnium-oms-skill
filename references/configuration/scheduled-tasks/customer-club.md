@@ -18,6 +18,7 @@ The Customer Club scheduled tasks manage all aspects of the loyalty program, inc
 | [Monthly Report](customer-club/monthly-report.md) | Generate and email monthly membership statistics report | Full |
 | [Point Balance Notification](customer-club/point-balance-notification.md) | Notify members when points reach a threshold | Delta |
 | [Set Interests Special](customer-club/set-interests-special.md) | Automatically assign interests to members based on store | Delta |
+| [Update Member Tiers](customer-club/update-member-tiers.md) | Give members a tier from what they bought for in the qualifying period | Delta |
 | [Newsletter](customer-club/newsletter.md) | Process and send scheduled newsletters to segments | Full |
 
 * * *
@@ -52,4 +53,5 @@ Most Customer Club tasks require the following tenant settings to be configured:
 | Expire Soon Notification | `0 8 * * *` (8 AM daily) | Send during business hours |
 | Monthly Report | `0 7 1 * *` (7 AM on 1st) | Generate after month-end |
 | Newsletter | `*/5 * * * *` (every 5 min) | Process scheduled newsletters promptly |
+| Update Member Tiers | `0 * * * *` (hourly) | Give a new tier soon after a purchase |
 | Other tasks | `0 2 * * *` (2 AM daily) | Run during off-peak hours |

@@ -24,6 +24,7 @@ Search filters for EPC tags. All filters are optional and combined with AND.
 - `serialFrom`: integer (int64), nullable — Lowest serial number to include (inclusive). Tags whose serial is not numeric never match a range.
 - `serialTo`: integer (int64), nullable — Highest serial number to include (inclusive).
 - `serialRanges`: List<[`OmniumEpcSerialRange`](OmniumEpcSerialRange.md)>, nullable — More serial ranges to include; a tag in any one of them matches. SerialFrom/SerialTo, when given, count as one more range. Tags whose serial is not numeric never match a range.
+- `issuerSerials`: List<[`OmniumEpcTagIssuerSerials`](OmniumEpcTagIssuerSerials.md)>, nullable — Issuers and serials a tag must have, any one pair: the tag's company prefix is the issuer's and its serial one of the issuer's serials, e.g. the single tags of a cluster result (Singles.MatchingIssuerSerials). Tags whose serial is not numeric never match.
 - `hasSuffix`: boolean, nullable — True returns only EPCs longer than 96 bits (a suffix past character 24), false only plain 96-bit EPCs. Omit for no filter. Combined with Suffixes, false means "everything except tags with one of those suffixes".
 - `suffixes`: List<string>, nullable — Suffix values: the hex past character 24 of the EPC, e.g. "99979999". Alone or with HasSuffix true, only tags with one of them are returned; with HasSuffix false, tags with one of them are excluded.
 - `requireSuffixAndSerialRange`: boolean, nullable — How the suffix filter (HasSuffix/Suffixes) and the serial ranges (SerialFrom/SerialTo and SerialRanges) combine when both are given: omitted or false returns tags matching either one, true only tags matching both. Every other filter applies either way.
@@ -36,6 +37,9 @@ Search filters for EPC tags. All filters are optional and combined with AND.
 - `modifiedFrom`: string (date-time), nullable — Only tags modified at or after this date - use for delta downloads.
 - `modifiedTo`: string (date-time), nullable — Only tags modified at or before this date.
 - `batchIds`: List<string>, nullable — Import or registration batches the tags were written in.
+- `inSavedRange`: boolean, nullable — True: only tags inside a saved serial range (its issuer, serials and stores); false: only tags outside every saved range; null: no filter. The ranges that count are those with one of SavedRangeStatuses (every saved range when none are given); with SavedRangeIds, those saved ranges instead, whatever their status.
+- `savedRangeStatuses`: List<string>, nullable — Statuses of the saved ranges InSavedRange counts: Active, Distributor and/or Unknown. Omit for every saved range.
+- `savedRangeIds`: List<string>, nullable — Saved serial ranges a tag must lie in (any one of them). Unknown ids match nothing.
 - `labels`: List<string>, nullable — Tags carrying any of these labels.
 - `verificationStatuses`: List<string>, nullable — Spot-check outcomes: Confirmed, Rejected, NotFound or custom values.
 - `productInfoState`: string, nullable — Product enrichment state: Synced (a SKU was resolved), Unsynced (no SKU) or MissingBrand (SKU but no brand).

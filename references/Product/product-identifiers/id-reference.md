@@ -32,6 +32,7 @@ The `Id` is the **primary unique identifier** for every product and variant docu
 | **Unique** | Must be unique across all products |
 | **Automatic** | No - must be provided |
 | **Mutable** | No - changing Id creates a new document |
+| **Characters** | The API rejects an Id that contains `"`, `#`, `/` or `?`. Letters, digits, hyphens (`-`) and underscores (`_`) are recommended |
 
 ### Behavior
 

@@ -17,6 +17,7 @@ delta (ProcessInventoryTransactions) or total (UpdateMany) endpoints for those.
 - `reorderMinQuantity`: number (decimal), nullable — Minimum number of items to order
 - `disableReorderSuggestions`: boolean, nullable — When true, no reorder suggestions are generated for this inventory item (SKU/warehouse combination). Supports FieldsToForceNull.
 - `calculatedInventory`: number (decimal), nullable — Calculated inventory (used for packages where available inventory is calculated from components)
+- `priorityInventory`: number (decimal), nullable — Number of items in stock that should be sold first. Capped at the item's inventory.
 - `properties`: List<[`OmniumPropertyItem`](OmniumPropertyItem.md)>, nullable, max length 250 — Customer properties (key values)
 - `keepExistingProperties`: boolean, nullable — Set to 'false' if you want to replace the whole 'Properties' list. If true, new properties will be added to the existing list of properties. 'True' by default.
 - `atp`: List<[`OmniumInventoryAtp`](OmniumInventoryAtp.md)>, nullable, max length 250 — List of ATP values (future deliveries). When provided, the existing ATP list is replaced.

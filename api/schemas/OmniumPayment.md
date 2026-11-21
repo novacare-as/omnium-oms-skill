@@ -22,6 +22,7 @@ they are processed in the order they appear in the payments list.
 - `customerName`: string, nullable — Name of the customer associated with this payment.
 - `implementationClass`: string, nullable — Not in use - reserved for internal purposes.
 - `id`: string, nullable — Unique identifier for this specific payment record in Omnium. Different from TransactionId which is the provider's reference. When updating payments, matching is done on this Id.
+- `paymentNumber`: string, nullable — Short, human-readable number for this payment, suited for ERP and accounting systems that cannot store Omnium.Public.Payments.Models.OmniumPayment.Id. Omnium sets it when the tenant setting "Number each payment" is on: the order id, a dash and a running number shared by all orders, for example "1001-57". When a new payment is sent in with a payment number, Omnium keeps it. Use PATCH to change the payment number of an existing payment.
 - `paymentId`: integer (int32), **deprecated** — Deprecated. Use TransactionId instead.
 - `paymentMethodId`: string (uuid), **deprecated** — Deprecated. Use PaymentMethodName instead.
 - `paymentMethodName`: string, nullable — Identifies the payment provider. Must match a configured provider name in Omnium. Examples: "Klarna", "Vipps", "Stripe", "Adyen", "GiftCard", "Dintero" This determines which integration Omnium uses for capture/refund operations.

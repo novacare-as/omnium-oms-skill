@@ -12,6 +12,7 @@ Private customer
 - `discountCoupons`: List<[`OmniumDiscountCoupon`](OmniumDiscountCoupon.md)>, nullable, max length 250 — Personal discount coupons
 - `isCustomerClubMember`: boolean — True if customer is part of customer club
 - `bonusPoints`: integer (int32) — Number of bonus points earned by customer
+- `tiers`: List<[`OmniumPrivateCustomerTier`](OmniumPrivateCustomerTier.md)>, nullable, max length 250 — The member's tiers from external customer club systems (CRM), when Omnium's customer club is off. One per program. Set by the integration with that system. The amounts can be points, depending on the system
 - `tags`: List<string>, nullable, max length 250 — Tags for customer
 - `customerId`: string, required — Unique ID
 - `customerNumber`: string, nullable — Customer identifier - does not have to be unique for each store, etc

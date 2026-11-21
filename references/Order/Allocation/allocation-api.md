@@ -97,12 +97,16 @@ Content-Type: application/json
 | `Outcome` | string | The result of the run. See [outcomes](allocation-api.md#outcomes) |
 | `PrimaryProfileKey` | string | The profile that decided the selected plan |
 | `SelectedPlan` | object | The plan at the top of the primary ranking. `null` when no plan was found |
-| `Plans` | array | Every feasible plan. Rankings refer to them by `planId` |
+| `Plans` | array | The feasible plans the run built, at most 50. Rankings refer to them by `planId`. See [how many plans](allocation-api.md#how-many-plans) |
 | `Rankings` | array | One ordered list of plans per requested profile, the primary profile first |
 | `UnallocatableLines` | array | Lines no warehouse could serve, each with the reasons why |
 | `Trace` | array | The engine's reasoning. Only included when `includeTrace` is `true` |
 | `ConfigurationVersion` | string | The version of the allocation configuration the decision was made against |
 | `TotalMs` | long | How long the run took, in milliseconds |
+
+#### How many plans
+
+A run builds at most 50 plans. When more warehouses than that can ship the whole order on their own, the engine gives a plan to the best of them on each measure the requested profiles rank by - distance, shipping cost, stock depth, warehouse priority, and priority stock - and to the warehouse the order's lines are already on. The others get no plan, and the trace contains `WholeOrderPlansCapped`. When split plans are evaluated as well, the whole-order plans leave up to half of the 50 for them.
 
 #### Plan
 
@@ -227,7 +231,7 @@ An unallocatable line has `lineId`, `skuId`, `quantity`, and `reasons` - a list 
 }
 ```
 
-`plans` is shortened in this example; in a real response it lists every feasible plan, including the selected one.
+`plans` is shortened in this example; in a real response it lists every feasible plan the run built, including the selected one.
 
 ### Outcomes
 

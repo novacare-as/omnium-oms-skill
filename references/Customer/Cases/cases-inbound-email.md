@@ -2,7 +2,7 @@
 
 Source: https://docs.omnium.no/docs/Customer/Cases/cases-inbound-email
 
-> Automatically create cases from incoming customer emails using SendGrid Inbound Parse — setup, email flow, reply tracking, and troubleshooting.
+> Automatically create cases from incoming customer emails using SendGrid Inbound Parse — setup, email flow, case priority, reply tracking, and troubleshooting.
 
 ## Overview
 
@@ -131,6 +131,7 @@ The **Reply address for comments** is the reply-to address that Omnium includes 
 2.  Go to **Case Settings**
 3.  Toggle **Enabled** to on
 4.  Configure statuses, priorities, and default values as described in [Configuration](cases-config.md)
+5.  Optionally, add [priority rules](cases-config.md#priority-rules) to give new cases a priority from words in the email's subject or message
 
 ### Step 6: Configure Inbound Email From Name (Optional)
 
@@ -156,17 +157,41 @@ See [Email settings on markets and market groups](../../configuration/email-clie
     *   **Source** — set to "Email"
     *   **Customer** — matched by sender email (searches Private Customers, then Business Customers)
     *   **Status** — set to the configured **Status New**
-    *   **Priority** — set to the configured **Default Priority**
-    *   **Related Order** — if the subject or body contains `#12345`, the order is automatically linked
+    *   **Priority** — set by the first matching priority rule, or to the configured **Default Priority** when no rule matches (see [Case Priority](cases-inbound-email.md#case-priority))
+    *   **Related Order** — if the subject or body contains `#12345`, the order is automatically linked (see [Order Detection](cases-inbound-email.md#order-detection))
 5.  The email body and any attachments are added as the first Case Note
+
+Omnium creates a new case for every email that does not reply to an email sent from Omnium. When the customer writes a fresh email about an existing case instead of replying, it becomes a new case.
+
+### Order Detection
+
+Omnium looks for `#` followed by at least three digits, first in the subject and then in the body, and uses the first match. When an order has that order number, the case is linked to the order and gets the order's market. Only one order is linked. When no order is found, or the lookup fails, the case is still created without an order.
+
+### Case Priority
+
+When Omnium creates a new case from an email, it checks the [priority rules](cases-config.md#priority-rules) in the case settings:
+
+1.  The rules are checked from the top of the list down. Each rule looks for a word or phrase in the email's **subject**, its **message**, or either of them.
+2.  The first rule whose value the subject or message contains sets the priority. Upper and lower case are ignored.
+3.  When no rule matches, or no rules are set up, the case gets the **Default Priority**.
+
+The message that the rules check is the text of the email without the quoted or forwarded earlier messages. A rule without a value, or one that points to a priority that is no longer in the **Priorities** list, is skipped.
+
+The rules only set the priority of a **new** case. A reply that Omnium adds to an existing case leaves the priority as it is.
 
 ### Reply Tracking
 
 When a case notification email is sent to a customer, Omnium embeds a tracking reference in the email headers. When the customer replies:
 
-1.  Omnium detects the tracking reference in the reply headers
-2.  The reply is added as a new comment on the original Case
-3.  If the case was **closed**, it is automatically reopened to the **Status Reopen** status
+1.  Omnium detects the tracking reference in the reply headers (`In-Reply-To` and `References`)
+2.  The reply is added to the original Case: a reply to a public note as a public note, and a reply to an internal note as an internal note
+3.  If the case was **closed**, it is automatically reopened to the **Status Reopen** status. A case in a status named `Pending` moves one level down. See [Email Threading](cases-notes-and-communication.md#email-threading)
+
+The reply does not change the case's priority.
+
+### Cases from SMS
+
+With two-way SMS through [LINK Mobility](../../plugins/Other/LinkMobility.md), an SMS that does not answer an existing conversation also creates a case when Cases is enabled. The case gets the source `Sms`, the first 60 characters of the message as its subject, and the **Default Priority**: priority rules apply only to email.
 
 ### Customer Matching
 
@@ -186,7 +211,7 @@ When an inbound email arrives, Omnium searches for the sender by email address:
 *   **Domain Caching** — Omnium caches the domain-to-tenant mapping for 5 minutes. Changes to `InBoundEmailDomains` may take up to 5 minutes to take effect
 *   **Attachments** — File attachments in inbound emails are automatically uploaded and attached to the Case Note
 *   **Inline Images** — Inline images (e.g., from email signatures) are extracted and stored as file attachments
-*   **Unassigned Cases** — Cases created from inbound email have no assigned user. Assign cases manually or configure automation rules
+*   **Unassigned Cases** — Cases created from inbound email have no assigned user. Omnium has no rules that assign cases: an agent assigns them in the case, or an integration assigns them through the [API](cases-api.md) (`POST /api/cases/{id}/assignto`). The **Unassigned Cases** figure on the [Cases Dashboard](cases-dashboard.md) shows how many are waiting
 
 * * *
 
@@ -197,8 +222,11 @@ When an inbound email arrives, Omnium searches for the sender by email address:
 | Emails not arriving at Omnium | Verify MX records: run `nslookup -type=MX incoming.yourcompany.com` |
 | "No tenant found for email domain" | Add the domain to `InBoundEmailDomains` in Tenant Settings JSON. Wait up to 5 minutes for cache refresh |
 | "No email content to process" | Ensure **Send Raw** is checked in SendGrid Inbound Parse settings |
-| Cases not created (no errors) | Verify **Case Settings → Enabled** is on |
+| Cases not created (no errors) | Verify **Case Settings → Enabled** is on. While it is off, the email is added to the sender's customer card instead |
+| Case not linked to the order the customer mentions | Omnium needs `#` and the order number, for example `#100123`, and links only the first match |
 | Cases created without customer link | Sender email doesn't match any customer in Omnium |
+| Case gets the Default Priority although a priority rule's word is in the email | Check that the rule's **Look in** covers where the word is (subject or message), that the rule's priority is still in the **Priorities** list, and that the word is not only in a quoted or forwarded message. Rules apply only to new cases, not to replies |
+| Case gets a different priority than expected | A rule higher in the list matched first. Move the rule that should win to the top |
 | Customer replies not threaded | Ensure **Reply address for comments** is configured in Email Client Settings |
 | SendGrid shows failed webhook delivery | Verify the URL uses HTTPS (not HTTP) |
 | Duplicate domains warning | Same domain configured for multiple tenants — each domain can only map to one tenant |
@@ -216,4 +244,5 @@ When an inbound email arrives, Omnium searches for the sender by email address:
 *   **Omnium**: Case Settings → **Enabled** is on
 *   **Omnium**: At least one status configured with **Status New** set
 *   **Omnium**: **Default Priority** is set
+*   **Omnium** (optional): **Priority rules** set up for emails that need another priority than the default
 *   **Test**: Send a test email and verify a Case is created

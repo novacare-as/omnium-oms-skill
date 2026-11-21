@@ -8,6 +8,7 @@ Payment transaction
 - `authorizationCode`: string, nullable — Payment provider authorization code / transaction id
 - `customerName`: string, nullable — Name of customer
 - `id`: string, nullable — Unique for each transaction
+- `paymentNumber`: string, nullable — Short, human-readable number for this payment, see Omnium.Public.Payments.Models.OmniumPayment.PaymentNumber
 - `paymentMethodId`: string (uuid), nullable — Payment GUID
 - `paymentMethodName`: string, nullable — Provider ID
 - `paymentType`: string, nullable — Payment type e.g. "Invoice", ""

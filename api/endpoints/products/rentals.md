@@ -47,6 +47,10 @@ Operation ID: `RentalsGetRentalSourceProducts`
 
 Operation ID: `RentalsGetAvailability`
 
+When the tenant keeps rental units reserved after a return (returnBufferMinutes above 0), each booking is
+reserved until reservedUntil, and only bookings that conflict with a rental from 'from' to 'to' are returned:
+a rental may start when a reservation ends, and must end returnBufferMinutes before the next booking starts.
+
 **Request body:** [`OmniumRentalAvailabilityRequest`](../../schemas/OmniumRentalAvailabilityRequest.md)
 
 **Responses:**
@@ -110,6 +114,7 @@ Operation ID: `RentalsAddRentalProductToCart`
 - 200: [`OmniumCart`](../../schemas/OmniumCart.md) — Rental product and deposit successfully added to cart
 - 400: string — Bad Request
 - 404: string — Not Found
+- 409: string — The tenant keeps rental units reserved after a return, and the unit is reserved in the period or already in the cart for an overlapping period
 - 422: string — Client Error
 
 ---

@@ -9,6 +9,7 @@ Source: https://docs.omnium.no/docs/plugins/CRM/voyado
 *   Synchronization of customers
     *   One-way sync (Omnium as Master)
     *   Two-way sync
+    *   Member level as the customer's tier
 *   Export of receipts
     *   Order receipts
     *   Return receipts
@@ -32,7 +33,7 @@ Source: https://docs.omnium.no/docs/plugins/CRM/voyado
 
 The Omnium-Voyado integration provides several options for customizing the sync of customers to Voyado. In Voyado Engage there is the concept of contact-types, which separates between Contacts and Members. This is somewhat analogous to the separation between customers and customer club members in Omnium. In the default setup, this separation is mirrored between Omnium and Voyado, mapping PrivateCustomers to Voyado-Contacts and CustomerClubMembers to Voyado Members. However, depending on the use case, different customers might require different behaviors. The Omnium-Voyado integration supports several options for this flow.
 
-|  | Default | ExportMembersOnly | ExportAllCustomersAsMember |
+|  | Default | ExportMembersOnly | ExportAllCustomersAsMembers |
 | --- | --- | --- | --- |
 | _PrivateCustomer_ | Contact | \- | Member |
 | _CustomerClubMember_ | Member | Member | Member |
@@ -42,13 +43,13 @@ The Omnium-Voyado integration provides several options for customizing the sync 
 |  | Description | Use case |
 | --- | --- | --- |
 | IgnoreConsents | This setting instructs Omnium to ignore consents when syncing customers | Used when Voyado is master of consents and they are pushed directly to Voyado. |
-| UniqueIdentifier | Specifies the field that constitutes the unique identifier for a customer | In a case with a 2-way customer sync between Omnium and Voyado and 3rd party systems that create contacts directly in Voyado, Omnium needs to know which field it should use as customer Id in Omnium. This ensures unique customers. Supported options are Email and Phone. |
-| SyncDelete | A delete operation in Omnium should also delete the corresponding Voyado contact |  |
+| CustomerUniqueIdentifier | Specifies the field that constitutes the unique identifier for a customer | In a case with a 2-way customer sync between Omnium and Voyado and 3rd party systems that create contacts directly in Voyado, Omnium needs to know which field it should use as customer Id in Omnium. This ensures unique customers. Supported options are Phone, Email and OmniumId. To match on several identifiers, see [Customer Lookup](voyado.md#customer-lookup). |
+| ExportDeletePrivateCustomer | A delete operation in Omnium should also delete the corresponding Voyado contact. Shown as **Sync delete** in the connector settings |  |
 | ConsentMapping | It is possible to configure custom mappings between customer consents in Omnium and Contact preferences and Consents in Voyado | When collecting consents from 3rd parties or migrating an existing solution, it is useful to map the collected consents to the corresponding consents configured in Voyado. |
 
 #### Sync of customers from Omnium to Voyado
 
-Sync of customers from Omnium to Voyado is done synchronously every time a customer is updated in Omnium. This is done by setting up the VoyadoExporter to implement IPrivateCustomerExporter, which creates a client exporting contacts to the Voyado Engage API. To relate customers in Omnium and Contacts in Voyado, Omnium stores the Voyado ContactId as an externalId on the private customer object in Omnium. Should the export of a customer fail, an error message will be displayed on the customer card in Omnium, with the option to inspect the error message returned from the Voyado Engage API.
+Sync of customers from Omnium to Voyado is done every time a customer is updated in Omnium, when the [customer setting](../../Customer/customer-config.md) `ExportPrivateCustomers` (**Export private customers**) is on. Customer club members are also exported when the customer club is enabled, independent of this setting. The export runs in the background right after the customer is saved, so the save does not wait for Voyado. This is done by setting up the VoyadoExporter to implement IPrivateCustomerExporter, which creates a client exporting contacts to the Voyado Engage API. To relate customers in Omnium and Contacts in Voyado, Omnium stores the Voyado ContactId as an externalId on the private customer object in Omnium. Should the export of a customer fail, an error message will be displayed on the customer card in Omnium, with the option to inspect the error message returned from the Voyado Engage API.
 
 ![Image](https://docs.omnium.no/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FvoyadoCustomer.2beaac62.png&w=3840&q=75)
 
@@ -66,7 +67,27 @@ The following table shows the various operations used in syncing data from Omniu
 
 #### Sync of customers from Voyado to Omnium
 
-Sync of customers from Voyado to Omnium is performed asynchronously by polling the endpoint /api/v2/contacts/changes in the Voyado Engage API at regular intervals. This process is configured through the scheduled task VoyadoContactSync, where you can specify the frequency of the polls. The minimum allowed interval is once every minute.
+Sync of customers from Voyado to Omnium is performed asynchronously by polling the endpoint /api/v2/contacts/changes in the Voyado Engage API at regular intervals. This process is configured through the scheduled task `VoyadoContactSyncScheduledTask`, where you can specify the frequency of the polls. The minimum allowed interval is once every minute.
+
+Selecting **Two-way** in **Sync type** on the connector's **Customers** tab adds the scheduled task to the tenant, running every minute. With **One-way**, Omnium is the master: the task does not import contact changes from Voyado, even when it is set up.
+
+The sync reads contacts that are created, updated and deleted in Voyado. When a contact is deleted in Voyado, Omnium removes the link to the contact from the customer. The customer is no longer a customer club member, and the tier from this connector is removed.
+
+* * *
+
+### Customer Lookup
+
+Omnium uses the settings in the **Customer lookup** panel on the connector's **Customers** tab to find the Voyado contact that belongs to an Omnium customer, and the Omnium customer that belongs to a Voyado contact. The panel is shown when the export of private or business customers is enabled.
+
+By default the lookup uses one identifier, chosen in **Customer ID field** (`CustomerUniqueIdentifier`): Phone, Email or OmniumId.
+
+To match on several identifiers, enable **Support multiple identifier lookup**. The **Customer ID field** is then replaced by these settings:
+
+| Setting | Description |
+| --- | --- |
+| **Identifiers** | Comma-separated list of the identifiers to match on. Options: `Phone`, `Email`, `SocialSecurityNumber`, `CustomKey`. |
+| **Custom key** | Required when `CustomKey` is in the list. Must be `OmniumId` or `MemberNumber`. |
+| **Allow multiple matches** | When the lookup finds several contacts in Voyado, connect to the first one. |
 
 * * *
 
@@ -96,15 +117,26 @@ Omnium stores every mapped value as text. Values that are not text in Voyado are
 
 For example, the mapping `PrimaryStore` → `currentStore` stores the id of the customer's current store, such as `S032`, on the `PrimaryStore` property.
 
-#### Member level mapping
+* * *
 
-Voyado exposes the customer's loyalty member level as a `memberlevel` object on the contact. To sync it into Omnium, add a property mapping that points to the desired field on that object using dot notation. For example, to store the level name on a `memberLevel` property in Omnium:
+### Member level as the tier
 
-| Omnium property | Voyado field |
+The contact sync stores the Voyado member level as the customer's **tier**. This is automatic: you need no property mapping or customer group for it. Omnium uses this tier when its own customer club is off.
+
+| Voyado field | Tier field in Omnium |
 | --- | --- |
-| `memberLevel` | `memberlevel.levelName` |
+| `memberlevel.levelId` | `tierId` |
+| `memberlevel.levelName` | `name` |
+| `memberlevel.latestChange` | `tierStart` |
+| `memberlevel.expires` | `tierEnd` |
+| `memberlevel.basedOnRewardPoints` | `qualifyingAmount` |
+| `memberlevel.remainingToUpgrade` | `amountToNextTier` |
 
-Any field on the `memberlevel` object can be mapped this way (for example `memberlevel.levelId` or `memberlevel.expires`); refer to the Voyado documentation for the available fields. Once mapped, the property is available on the customer in Omnium and can be highlighted on the customer card.
+The amounts are bonus points. When the contact has no member level, or is deleted in Voyado, the customer loses the tier.
+
+With several Voyado connectors, the customer has one tier per connector, and each tier counts only in the markets its connector serves. The connector prefix is the tier's `program`, empty without a prefix. The private customer API returns the tiers in `tiers`, read-only.
+
+The tier shows on the customer card in Omnium and in the In-Store App. To limit a promotion to member levels, turn on **Customer club** in the promotion and type the Voyado level names in **Member tiers**, for example `Gold`.
 
 * * *
 
@@ -112,13 +144,15 @@ Any field on the `memberlevel` object can be mapped this way (for example `membe
 
 When syncing customers **from Voyado to Omnium**, you can populate the customer's **customer groups** from a Voyado contact attribute.
 
-To set it up, enter the **name of the Voyado attribute** in the **Customer group field** (`CustomerGroupField`) setting in the Voyado connector settings — for example `membershipTier`.
+To set it up, enter the **name of the Voyado attribute** in the **Customer group field** (`CustomerGroupField`) setting in the Voyado connector settings — for example `membertype`.
 
 On each contact sync, Omnium reads that attribute on the contact and adds the customer to a customer group for each value it holds. For example, a contact with `membertype = ["employee", "member"]` is added to both the `employee` and `member` groups, while a contact with a single value is added to just that one group.
 
 The value becomes both the **id** and **name** of the group, and any group that does not yet exist in Omnium is **created automatically during the contact sync**. Attribute names are matched case-insensitively.
 
-Once populated, customer groups can be used to target promotions — a promotion that lists one or more customer groups applies only to customers belonging to at least one of them. This makes it possible to drive group-based campaigns (for example membership tiers such as Bronze/Silver/Gold) when the tier is delivered as a customer group attribute.
+Once populated, customer groups can be used to target promotions — a promotion that lists one or more customer groups applies only to customers belonging to at least one of them, for example a campaign for employees.
+
+Do not use customer groups for member levels such as Bronze, Silver and Gold. The member level is synced as the tier. See [Member level as the tier](voyado.md#member-level-as-the-tier).
 
 * * *
 
@@ -164,9 +198,9 @@ When `customerId` is provided
 3.  **Fallback 2: Try to find existing Omnium customer with matching `customerId`**
     If no matching customer has been found and `order.customerId` is set, Omnium tries to find an existing Omnium customer with the corresponding Id.
 
-4.  **Fallback 3: Look up contact in Voyado based on phone/email** If no matching customer has been found, Omnium attempts to locate a contact in Voyado based on phone/email. If `CustomerClubMemberId` is set on the order Omnium will search for a **Member** in Voyado, if not Omnium will seach for any contact.
+4.  **Fallback 3: Look up contact in Voyado based on phone/email** If no matching customer has been found, Omnium attempts to locate a contact in Voyado based on phone/email. With **Support multiple identifier lookup** enabled (see [Customer Lookup](voyado.md#customer-lookup)), Omnium uses the configured identifiers instead: phone, email and, with **Custom key** set to `MemberNumber`, the `CustomerClubMemberId` on the order. If `CustomerClubMemberId` is set on the order Omnium will search for a **Member** in Voyado, if not Omnium will seach for any contact.
 
-5.  **Fallback 4: Try to create Voyado contact** If neither lookup succeeds, Omnium will try to create the contact in Voyado and in Omnium based on the information available on the order.
+5.  **Fallback 4: Try to create Voyado contact** If neither lookup succeeds, Omnium will try to create the contact in Voyado and in Omnium based on the information available on the order. To skip this step, set the connector property `OnlyImportInGetOrCreateFromOrder` to `true`. Omnium then does not create a contact in Voyado. An order without a match gets an information message, and Omnium continues with fallback 5.
 
 6.  **Fallback 5: Default Omnium behavior**
     If no matching customer has been found, Omnium falls back to the default behavior of `GetOrCreateCustomerFromOrder` and gets or creates a customer in Omnium based on the provided `customerId`.
@@ -210,6 +244,8 @@ By default each shipment gets its own receipt. Enable **Export receipts for full
 
 An export step on the order status **Returned** in the order workflow does not send a return receipt.
 
+A return receipt contains every line of the return, with negative quantities, and its payment has the type `Other`. `ExcludeFromVoyadoReceipts` and `VoyadoExcludedSkuIds` only apply to order receipts, so they do not remove lines from a return receipt. `ExcludeFromVoyadoBonusPoints` applies to both.
+
 * * *
 
 ### Receipt Enrichment
@@ -218,8 +254,9 @@ Transaction objects (receipts) exported to Voyado are lightweight and contain li
 
 This is done via an **XML export** that includes all products in Omnium and sends them to Voyado. The export frequency is managed by the scheduled task:
 
-*   **Task**: `VoyadoProductDataExport`
-*   **Recommended Frequency**: Once daily
+*   **Task**: `VoyadoProductDataExportScheduledTask`
+*   **Recommended Frequency**: Once daily. Enabling **Export product feed** on the connector's **Orders & Products** tab adds the task to the tenant, running every night at 03:00.
+*   **Changed products only**: `VoyadoProductDataExportDeltaScheduledTask` exports only the products that have changed since its last run. Add it under scheduled tasks when you want changes to reach Voyado between the full exports.
 *   **Format Specification**: [Voyado Enrichment XML Format](https://developer.voyado.com/resources/Article_enrichment_example.xml)
 
 See section below for details on the xml product feed.
@@ -406,6 +443,8 @@ Products are skipped if any of the following fields are missing:
 
 Certain products can be **excluded** from appearing in receipts or from contributing to bonus point calculations in Voyado. This is achieved by adding specific custom properties to those products and ensuring these properties are enriched onto order lines, or by listing SKUs in the connector settings.
 
+The two ways to exclude lines from a receipt (1 and 3 below) apply to order receipts. A [return receipt](voyado.md#return-receipts) always contains every returned line.
+
 ### 1\. Exclude from Receipts
 
 To exclude products from receipts entirely:
@@ -587,7 +626,7 @@ An event the connector has not enabled is acknowledged and ignored, so nothing i
 
 ## Signing secret
 
-Every webhook request is verified before its payload is read. Voyado signs each request with the endpoint's signing secret, and Omnium recomputes the signature with the secret stored on the connector and compares the two. A request that cannot be verified, because the connector has no secret or the signature does not match, is rejected with `401 Unauthorized` and not processed.
+Every webhook request is verified before its payload is read. Voyado signs each request with the endpoint's signing secret, and Omnium recomputes the signature with the secret stored on the connector and compares the two. A request that cannot be verified, because the connector has no secret, the signature does not match, or the timestamp of the request is more than five minutes from the current time, is rejected with `401 Unauthorized` and not processed.
 
 If you change the secret in Voyado, paste the new one into the connector.
 
@@ -642,9 +681,9 @@ The SFTP voucher export does not include the Voyado voucher id, so vouchers impo
 
 ### Setup
 
-1.  Set **Vouchers** to **SFTP** on the connector's **Loyalty** tab.
+1.  Set **Vouchers** to **SFTP** on the connector's **Loyalty** tab. This also adds the scheduled task `VoyadoVoucherSyncScheduledTask` (every 5 minutes) to the tenant, and removes it again when the setting is changed.
 2.  Set up the **FTP Connection** on the **Connection** tab.
-3.  Set the DefaultCurrency-setting under Voyado order settings. This will determine the currency on imported vouchers and should be the same as the group currency in Voyado.
+3.  Set **Default currency** on the connector's **Orders & Products** tab (`VoyadoGroupCurrency`). This will determine the currency on imported vouchers and should be the same as the group currency in Voyado. Without it, imported vouchers get the currency `NOK`.
 4.  In Voyado the Voucher export file must be configured to contain contactId, this is required to connect the voucher to the correct customer in Omnium.
 
 ### How it works
@@ -819,11 +858,11 @@ The Omnium–Voyado integration operates by executing hooks in the Omnium order 
 
 Here's a step-by-step outline:
 
-1.  **Triggering the Export** When a configured workflow step executes the `ExportOrder` action, Omnium initiates an export to Voyado containing the specified order action as an embedded order action.
+1.  **Triggering the Export** When a configured workflow step executes the `ExportOrder` action, Omnium initiates an export to Voyado containing the specified order action as an embedded order action. Each shipment is exported as its own order in Voyado. The order id in Voyado is the Omnium order number, or the order id when the order has no order number. When the order has more than one shipment, the shipment id is added to it, as `<OrderNumber>_<ShipmentId>`.
 
-2.  **Polling for Completion** Omnium receives a job reference from Voyado and continuously polls the API to monitor the status of the order import job.
+2.  **Polling for Completion** Omnium receives a job reference from Voyado and polls the API to monitor the status of the order import job. Omnium checks the job right away, and then again after 5, 15, 30, 60, 120 and 120 seconds.
 
-3.  **Error Handling** If an error occurs (e.g., a failed import or API error), it is logged in Omnium and associated with the affected order. These errors are visible from both the **Order Detail Page** and the **Order List**.
+3.  **Error Handling** If an error occurs (e.g., a failed import or API error), it is logged in Omnium and associated with the affected order. These errors are visible from both the **Order Detail Page** and the **Order List**. If Voyado has not finished the job after the last check, Omnium stops checking and adds a warning to the order. The warning means that Omnium stopped watching the job, not that the export failed.
 
 > **Note:** Due to the asyncronous nature of this part of the integration Omnium will perform steps 2-3 asynchronously in the backgroud. The order workflow will continue to execute in the meantime, and there is no guarantee that action in Voyado is completed nor successful at time the next workflow step in Omnium is executed.
 
@@ -877,7 +916,7 @@ This is useful for guest checkouts where transactional emails in Voyado should s
     *   **Email** (required — if the order has no email, the export is skipped with a warning)
     *   **Name** (split into first and last name)
     *   **Mobile phone** (if present)
-*   If a contact with the same email already exists in Voyado, the existing contact is used instead.
+*   If a matching contact already exists in Voyado, for example one with the same email, the existing contact is used instead.
 *   The order export then proceeds normally using the resolved Voyado contact ID.
 *   No Omnium customer record is created.
 

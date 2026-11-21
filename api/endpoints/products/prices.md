@@ -28,6 +28,7 @@ NB! Only to be used when price index is enabled for tenant. Send email to suppor
 
 - 200: [`OmniumPriceOmniumResult`](../../schemas/OmniumPriceOmniumResult.md) — Success
 - 400: string — Bad Request
+- 404: string — Scroll does not exist or has expired
 
 ---
 

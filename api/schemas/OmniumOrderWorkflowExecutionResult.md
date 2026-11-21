@@ -7,6 +7,7 @@ Order workflow execution result
 - `orderActionExecutionResults`: List<[`OmniumOrderActionExecutionResult`](OmniumOrderActionExecutionResult.md)>, nullable, max length 250 — List of action results
 - `isAborted`: boolean — True if workflow failed and is aborted
 - `order`: [`OmniumOrder`](OmniumOrder.md)
+- `orderPatchResult`: [`OmniumOrderPatchUpdateResult`](OmniumOrderPatchUpdateResult.md)
 
 **Used directly by endpoints in:**
 

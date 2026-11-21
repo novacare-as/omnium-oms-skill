@@ -197,6 +197,7 @@ When a stock-taking transaction is completed in Sitoo, a webhook event is sent t
 2.  Omnium fetches the full transaction details from Sitoo
 3.  Counted quantities are mapped to Omnium inventory items
 4.  Inventory is updated with the new quantities
+5.  Every line with a counted quantity sets the [last counted date](../../../Inventory/inventory-api.md#last-counted-date) (`lastCounted`) of the inventory item, also a line where the count found no deviation
 
 ### Scheduled Import
 

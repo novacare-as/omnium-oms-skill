@@ -28,7 +28,9 @@ Without order locking there is no error, no warning, and no conflict response wh
 
 Order locking is disabled by default. It is enabled per tenant by Omnium; contact Omnium support to have it turned on for your environments.
 
-Once enabled, the lock applies to every locking endpoint listed below, to order status changes made in the Omnium UI, and to asynchronous workflow processing. It is not something a single API call opts into or out of.
+Once enabled, the lock applies to every locking endpoint listed below and to order status changes made in the Omnium UI. It is not something a single API call opts into or out of.
+
+Locking for [asynchronous workflow processing](order-locking.md#asynchronous-workflow-processing) is a separate option. Ask Omnium support to turn it on together with order locking when your integration uses `executeWorkFlowAsync` or `enqueue`.
 
 ## How the lock works
 
@@ -40,7 +42,9 @@ The lock is per order. Requests for different orders never block each other.
 
 ### Asynchronous workflow processing
 
-`UpdateStatus` with `executeWorkFlowAsync: true` and `OrderLinesUpdate` with `enqueue: true` return `202 Accepted` and process the update in the background. The background processing also takes the order lock. If the order is locked, or temporarily read-only because another workflow is still processing it, when the queued update is picked up, the update is retried with increasing delays (1, 3, 5, 10, and 20 seconds). If the order is still locked after the last retry, the update is not applied: an error is written on the order and an error event is emitted, so you can detect the failure through the order's `errors` list or an event subscription.
+`UpdateStatus` with `executeWorkFlowAsync: true` and `OrderLinesUpdate` with `enqueue: true` return `202 Accepted` and process the update in the background. The request itself holds the lock only while the update is queued. When locking for asynchronous processing is turned on for your tenant, the background processing also takes the order lock. If the order is locked, or temporarily read-only because another workflow is still processing it, when the queued update is picked up, the update is retried with increasing delays (1, 3, 5, 10, and 20 seconds). If the order is still locked after the last retry, the update is not applied: an error is written on the order and an error event is emitted, so you can detect the failure through the order's `errors` list or an event subscription.
+
+Without locking for asynchronous processing, the background update runs while other requests can still change the order, and the workflow result can overwrite their changes. For an `UpdateStatus` call with an `orderPatch`, Omnium detects this: the workflow result is still saved, and the event `111107` (WorkflowSaveConflict) is added to the order. See [event operation IDs](../Integrations/events.md#workflow-111x).
 
 ## Endpoints that lock the order
 
@@ -68,6 +72,10 @@ The following endpoints acquire the order lock when order locking is enabled for
 | DELETE | `/api/OrderShipments/{orderId}/DeleteShipments` | 30 s |
 | PUT | `/api/OrderShipments/{orderId}/AddOrderLinesToShipment` | 30 s |
 | PUT | `/api/OrderShipments/{orderId}/RemoveOrderLinesFromShipment` | 30 s |
+| POST | `/api/Returns/{orderId}/Return` | 300 s |
+| POST | `/api/Returns/{orderId}/UpdateStatus` | 300 s |
+| PATCH | `/api/Returns/{orderId}/{returnId}` | 30 s |
+| POST | `/api/Returns/CreateReplacementOrder` | 30 s |
 
 Order write endpoints not in this table, such as `POST /api/Orders/OrderLines/Cancel` for cancelling lines across several orders, do not take the lock. Read endpoints never take the lock and are never blocked by it.
 
@@ -97,14 +105,14 @@ When the order is locked by another operation, the response is `409 Conflict` wi
 | `operation` | string | The operation holding the lock, for example `UpdateStatusWorkflow`, `PatchOrder`, or `UpdateAndWorkflow`. Background processing reports `Queue:` followed by the queue name |
 | `resourceStatus` | string | The order status sent in the lock holder's request, when that request had one. Otherwise `null` |
 
-`409 Conflict` is also returned by `POST /api/Orders` when an order with the same ID already exists. That response has a plain-text body, not a JSON body with `error: "ResourceLocked"`. Check the body before treating a `409` as a lock conflict.
+`409 Conflict` is also returned by `POST /api/Orders` when an order with the same ID already exists, and by the order and return `UpdateStatus` endpoints with an `orderPatch` when the order kept changing while it was saved. These responses have a plain-text body, not a JSON body with `error: "ResourceLocked"`. Check the body before treating a `409` as a lock conflict.
 
 ## Handle order locking in your integration
 
 Whether or not locking is enabled for your tenant, the safest pattern is the same. Locking turns a silent overwrite into a visible error; it does not order your requests for you.
 
 *   **Send dependent writes in sequence.** Wait for the response to one write before sending the next write for the same order. This alone prevents the overwrite described above, with or without the lock.
-*   **Combine changes into one request where the API allows it.** `PatchOrder` accepts `status` together with `externalIds` and other fields, so an external order number and a status change can be written in a single patch without running any workflow steps. `UpdateStatus` accepts shipment information alongside the status.
+*   **Combine changes into one request where the API allows it.** `PatchOrder` accepts `status` together with `externalIds` and other fields, so an external order number and a status change can be written in a single patch without running any workflow steps. `UpdateStatus` accepts shipment information alongside the status, and an `orderPatch` that saves field changes together with a status change that runs the workflow. See [Update order fields and status in one call](api-reference/workflow.md#update-order-fields-and-status-in-one-call).
 *   **Retry on `ResourceLocked`.** When the body has `"error": "ResourceLocked"`, wait a short time (a few seconds, or up to `retryAfter` seconds) and send the same request again. Status updates and patches are safe to repeat.
 *   **Handle `409` as a possible lock conflict on every locking endpoint**, not only the workflow endpoints. A patch can be rejected because a workflow is running on the order, and a status update can be rejected because a user is changing the order status in the UI.
 *   **Verify critical fields after a status change.** If you write an external ID and then change the status in separate requests, read the order back after the status change and re-apply the external ID if it is missing. This protects you if a third party writes to the order at the same time.

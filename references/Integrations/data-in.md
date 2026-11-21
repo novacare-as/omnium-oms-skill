@@ -42,7 +42,7 @@ PUT /api/inventory/UpdateMany
 
 *   Ignores unchanged inventory items
 *   Only updates items with actual changes
-*   Handles up to 1000 items per batch
+*   Handles large batches. 1000 items per batch is the recommended size, not a limit of the API
 *   Automatically inserts new items or updates existing ones
 *   Automatically creates inventory transactions
 *   **Enriches existing inventory items** - preserves `reservedInventory` and other existing data
@@ -76,7 +76,7 @@ PATCH /api/products/PatchMany
 **Benefits:**
 
 *   Only updates fields that have actual changes
-*   Handles up to 1000 products per batch
+*   Handles large batches. Keep a batch at 1000 products or fewer as a recommendation. The API only enforces a limit of 1000 for patches that identify the product by `skuId` without `id`
 *   Optimal performance - skips unnecessary updates
 *   Preserves existing product data
 
@@ -251,7 +251,7 @@ Batch endpoints = performance, reliability, and fewer API calls.
 | Inventory | 1000 | Optimized for high volume |
 | Products | 500 | Reduce for complex product data |
 | Orders | 250–500 | Lower if orders have many lines |
-| Customers | 500 | Adjust for complex B2B data |
+| Customers | 100 | Maximum per call. A call with more than 100 customers is rejected |
 | Prices | 500–2000 | Larger batches OK for separate prices |
 
 💡 Tune batch sizes based on your own API timings and entity complexity.

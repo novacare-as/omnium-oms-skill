@@ -10,6 +10,7 @@ Inventory item for a specific SKU
 - `isVirtual`: boolean, nullable — Only in use with virtual stock locations in Omnium. Indicates that this is a virtual inventory item - representing a virtual allocation of physical inventory located at the PhysicalWarehouse.
 - `inventory`: number (decimal) — Number of items in stock
 - `reservedInventory`: number (decimal) — Number of reserved items
+- `priorityInventory`: number (decimal) — Number of items in stock that should be sold first, for example a return the store took in outside its assortment. Allocation prefers stores holding priority items, and any stock reduction uses them up before regular stock. Never more than Inventory. Only read when an item is created: updating an existing item with POST/PUT keeps the stored value, so set it with PATCH or adjust it with PriorityInventoryChange in ProcessInventoryTransactions.
 - `calculatedInventory`: number (decimal) — Calculated inventory (used for packages where available inventory is calculated from components)
 - `location`: string, nullable — Item (warehouse) location
 - `atp`: List<[`OmniumInventoryAtp`](OmniumInventoryAtp.md)>, nullable, max length 250 — List of ATP values (future deliveries)

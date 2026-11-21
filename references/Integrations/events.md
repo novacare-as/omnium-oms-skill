@@ -16,10 +16,11 @@ An event subscriber listens to events and sends a message to the type of subscri
 *   Azure Storage Queues
 *   Azure Service Bus
 *   Apache Kafka
+*   RabbitMQ
 
 ### Setting Up Subscriptions
 
-Event subscribers are registered in the Omnium UI. You will find it under **Configuration** => **Event subscriptions**. When registering a subscriber, you select which filters you want enabled for the current subscriber, ensuring that you only receive the event messages that interest you.
+Event subscribers are registered in the Omnium UI. You will find it under **Configuration** => **Event subscriptions**. You can also manage them with the API, with the endpoints under `/api/EventSubscriptions`. See the [swagger documentation](https://api.omnium.no/documentation/index.html). When registering a subscriber, you select which filters you want enabled for the current subscriber, ensuring that you only receive the event messages that interest you.
 
 The example below shows how you would register a webhook subscriber with the following options:
 
@@ -245,6 +246,8 @@ Event operation IDs follow a structured numbering system:
 *   `111103` - WorkflowRunningStep
 *   `111104` - WorkflowChangeStatus
 *   `111105` - WorkflowCompletedRunAfterOrderIsSaved
+*   `111106` - WorkflowAddedPropertiesToShipment
+*   `111107` - WorkflowSaveConflict
 
 #### Distribution (112x)
 
@@ -347,6 +350,18 @@ Event operation IDs follow a structured numbering system:
 *   `160101` - ReleasedProjectOnHold
 *   `160102` - ProjectCreated
 
+#### Cases (170x)
+
+Case events have the `className` `Case`, and the case number as the object number. See [Cases](../Customer/Cases/cases-api.md#events).
+
+*   `170100` - CaseCreated
+*   `170101` - CaseStatusChanged
+*   `170102` - CaseAssigned
+*   `170103` - CaseCommentAdded
+*   `170104` - CaseClosed (not raised; a closed case raises `170101`)
+*   `170105` - CaseDeleted
+*   `170106` - CaseInternalNoteAdded
+
 #### Analytics (181x)
 
 *   `181100` - IndexAnalyticsReorderSuggestions
@@ -377,6 +392,7 @@ Event operation IDs follow a structured numbering system:
 *   `196102` - NotificationIsSentForOrder
 *   `196103` - NotificationIsSentForProject
 *   `196104` - NotificationIsSentForPurchaseOrder
+*   `196105` - NotificationIsSentForCase (not raised)
 *   `196201` - NotificationIsSentForPayByLink
 
 ### Internal API Operations (2x xxxx)
@@ -688,6 +704,16 @@ Event operation IDs follow a structured numbering system:
 *   `260121` - GuiProjectRemoveContactPerson
 *   `260122` - GuiProjectProductsUpdated
 
+#### GUI Cases (265x)
+
+*   `265100` - GuiCaseCreated
+*   `265101` - GuiCaseUpdated
+*   `265102` - GuiCaseDeleted
+*   `265103` - GuiCaseAssigned
+*   `265104` - GuiCaseStatusChanged
+*   `265105` - GuiCaseBulkAssign
+*   `265106` - GuiCaseBulkStatusChange
+
 #### GUI Stores (270x)
 
 *   `270100` - GuiAddedStore
@@ -738,6 +764,9 @@ Event operation IDs follow a structured numbering system:
 *   `310105` - ApiOrderLineAddProperties
 *   `310106` - ApiOrderLineCancel
 *   `310107` - ApiOrderAddPayment
+*   `310108` - ApiOrderLinesUpdateQueuedError
+*   `310109` - ApiOrderWorkflowRetriesExhausted
+*   `310110` - ApiOrderUpdateStatusQueuedError
 
 #### API Invoice (313x)
 
@@ -929,6 +958,15 @@ Event operation IDs follow a structured numbering system:
 *   `360402` - ApiProjectTransactionsUpdate
 *   `360403` - ApiProjectTransactionsUpdateMany
 *   `360404` - ApiProjectTransactionsDelete
+
+#### API Cases (365x)
+
+*   `365100` - ApiCaseCreated
+*   `365101` - ApiCaseUpdated
+*   `365102` - ApiCasePatched
+*   `365103` - ApiCaseDeleted
+*   `365104` - ApiCaseAssigned
+*   `365105` - ApiCaseStatusChanged
 
 #### API Stores (370x)
 

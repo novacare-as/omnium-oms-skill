@@ -11,3 +11,4 @@ One way to serve the whole order: which warehouse sends which lines.
 - `deliveryProbability`: number (decimal) — 0 to 1. How likely every shipment can actually be picked, given stock depth
 - `isPartial`: boolean — True when the plan leaves some lines unplaced
 - `shipmentCount`: integer (int32) — Number of shipments the plan creates
+- `storeId`: string, nullable — The store a cart takes when this plan is accepted: the warehouse of the shipment an allocation rule with the SetStoreFromWarehouse effect chose. Null when no such rule matched. An order keeps its store.

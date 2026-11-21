@@ -12,6 +12,7 @@ A **posting** is a voucher: a header plus a set of **ledger lines** whose debits
 | --- | --- | --- |
 | `PosZReport` | Inline, when a register's Z-report is closed | One register's settlement: its sales, returns, tender, and gift cards. Counted cash, the opening float, and cash movements are not posted. |
 | `WebFulfillment` | A daily batch, per store and accounting day | The web / click & collect payment transactions of that store's orders on that day: captures book the sale, credits book the refund |
+| `SafeWithdrawal` | Inline, when a store manager registers cash from the store's safe to the bank in the In-Store app | One withdrawal: the amount moved from the cash account to cash in transit. See [Safe withdrawals](ledger-postings.md#safe-withdrawals). |
 
 A POS posting references the Z-report it was built from (`ZReportId`, `ZReportNumber`) and the register(s) it covers. A web-fulfillment posting covers a single store for a single posting date — and a single order type, when [per-order-type posting](ledger-config.md#posting-settings) is on — and references the contributing orders in `OrderIds`.
 
@@ -65,7 +66,7 @@ Every ledger line is classified with a category. Categories are how the [Chart o
 | `Tip` | Tip-pool liability (in markets that support tips) |
 | `Other` | Anything not covered above |
 
-Posting generation does not currently produce `Discount`, `PaymentProviderFee`, `CashFloat`, `CashInTransit`, `Tip`, or `Other` lines — discounts are netted into the sales amounts. `Rounding` is used only by the **Export bookkeeping file** under **Reports → Payments** and by **Payment Ledger** [custom reports](../../configuration/custom-reports.md). See [Categories and when they are used](ledger-chart-of-accounts.md#categories-and-when-they-are-used).
+Posting generation does not currently produce `Discount`, `PaymentProviderFee`, `CashFloat`, `Tip`, or `Other` lines, and produces `CashInTransit` lines only for [safe withdrawals](ledger-postings.md#safe-withdrawals) — discounts are netted into the sales amounts. `Rounding` is used only by the **Export bookkeeping file** under **Reports → Payments** and by **Payment Ledger** [custom reports](../../configuration/custom-reports.md). See [Categories and when they are used](ledger-chart-of-accounts.md#categories-and-when-they-are-used).
 
 ## How sales and VAT are split
 
@@ -78,6 +79,23 @@ POS postings are built from the Z-report, which totals VAT per rate and sales pe
 Payments get one `PaymentMethod` line per payment method, and refunds one `RefundPaymentMethod` line per method. On web-fulfillment postings, a method's payments taken at different stores get one line per store.
 
 When the chart of accounts has [entries per payment type](ledger-chart-of-accounts.md#accounts-per-payment-type) (`Nets|Visa`), each type with an entry gets a line of its own, described with the type in brackets (`Payment — Nets (Visa)`), and the method's line keeps the rest, so the lines still add up to the method's total. Without such entries the lines, and the [posting hash](ledger-postings.md#reposting-and-the-posting-hash), are the same as before.
+
+## Safe withdrawals
+
+With safe handling on in the POS configuration of a store, the In-Store app keeps a safe for the store: cash taken out of a till to the safe raises its balance, and a store manager counts the safe and registers cash from it to the bank. Only the withdrawal to the bank is posted. Each withdrawal makes one posting with source `SafeWithdrawal` and two lines:
+
+| Line | Category | Debit | Credit |
+| --- | --- | --- | --- |
+| Cash sent to the bank | `CashInTransit` | Amount |  |
+| Cash leaves the store | `PaymentMethod` (the `Cash` entry, the same account a Z-report debits for cash sales) |  | Amount |
+
+*   The posting belongs to the store (`StoreIds`) and has no register and no Z-report.
+*   It is dated with the day of the withdrawal in the accounting [time zone](ledger-config.md#general-settings).
+*   Both lines are described `Safe to bank`, followed by the comment the manager typed (often the number of the bank bag), so the comment follows the posting to the export.
+*   The move from cash in transit to the bank account, when the bank confirms the deposit, is booked in the ERP. Omnium does not post it.
+*   Moving cash from a till to the safe is not posted: till and safe share the cash account. Neither is a difference found when the safe is counted.
+
+A withdrawal is posted only when postings are enabled. If the chart of accounts has no `CashInTransit` entry, or no `PaymentMethod` entry for `Cash`, the withdrawal is still saved in the store and its posting is not made; the error is logged. Add the account, and the posting can then be made from the saved withdrawal.
 
 ## Gift cards
 

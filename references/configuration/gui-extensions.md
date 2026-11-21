@@ -148,6 +148,7 @@ Each extension is a JSON object in `TenantSettings.GuiSettings.GuiExtensions`:
 | WebhookRequestHeaders | List | Custom headers sent with webhook requests |
 | Properties | List | Custom key-value properties displayed in the panel |
 | Tags | List | Tags for [conditional display](gui-extensions.md#tag-based-filtering) |
+| MarketIds | List | Markets the extension shows in; empty shows it in all markets (see [Market-based filtering](gui-extensions.md#market-based-filtering)) |
 
 ### Minimal example
 
@@ -260,6 +261,8 @@ The `message` is the extension's name, and any custom `Properties` configured on
 
 Custom headers configured in `WebhookRequestHeaders` are included in the request, allowing you to pass API keys or other authentication tokens.
 
+The webhook URL, request headers and HTTP method stay on the server. The settings the backoffice loads for a user leave them out, and when a user triggers an extension, the server reads them from the stored extension with that name. Give each extension a unique `Name`: when two extensions share a name, the first one's webhook is called.
+
 ### Response format
 
 Your webhook endpoint can return a validation result that Omnium displays to the user:
@@ -319,6 +322,37 @@ The "B2B Credit Check" extension only appears on orders tagged with "B2B". The "
 
 * * *
 
+## Market-based filtering
+
+An extension with `MarketIds` only appears for those markets. An extension without markets appears in all markets, as before.
+
+*   When one or more markets are selected in the market selector, the extension appears when one of its markets is selected.
+*   When no market is selected, the extension appears for users with access to one of its markets. A user with access to all markets sees it.
+
+```json
+{
+  "Name": "Norwegian Fraud Check",
+  "GuiExtensionArea": "editorderSidebarLeft",
+  "MarketIds": ["NOR"],
+  "IframeUrl": "https://fraud.example.no/check?order={{dataObject.orderId}}"
+}
+```
+
+| Extension markets | Selected markets | User's market access | Shown |
+| --- | --- | --- | --- |
+| none | any | any | yes |
+| NOR | NOR, SWE | NOR, SWE | yes |
+| NOR | SWE | NOR, SWE | no |
+| NOR | none | NOR, SWE | yes |
+| NOR | none | SWE | no |
+| NOR, DNK | none | all markets | yes |
+
+The server leaves the extensions outside the user's market access out of the settings the backoffice loads. The backoffice then checks the selected markets, and a change in the market selector applies without a page reload. Extensions in the `settings` area are checked when the settings page opens.
+
+Market filtering applies on top of [tag-based filtering](gui-extensions.md#tag-based-filtering): an extension with both needs a matching tag and a matching market. It decides what a user sees; it is not access control for the webhook.
+
+* * *
+
 ## Showing an extension through a custom view
 
 A custom view can show one GUI extension instead of its grid of fields, or as an item in the grid (see [As an item in the grid](gui-extensions.md#as-an-item-in-the-grid)). To replace the grid, the view names the extension in its `guiExtensionName` field, set with the **Extension** picker in the custom view editor under **Configuration > Custom views**. When the field is empty the view shows its grid as before.
@@ -338,7 +372,7 @@ The extension replaces the grid in these places, with this event context:
 
 In the `OrderLineEnrichment` and `CreateConfigurableProduct` areas the extension is ignored and the view keeps its grid.
 
-The iframe URL takes the usual [URL templates](gui-extensions.md#url-templates), filled from the `dataObject` in the table — for example `https://stock.example.com/?sku={{dataObject.id}}` on a product view, or `{{dataObject.lineItemId}}` on an order line view. The [postMessage](gui-extensions.md#postmessage-api) payload and the [webhook request](gui-extensions.md#request-format) carry the `objectId` and `className` from the table. [Tag-based filtering](gui-extensions.md#tag-based-filtering) is not applied to an extension shown through a custom view.
+The iframe URL takes the usual [URL templates](gui-extensions.md#url-templates), filled from the `dataObject` in the table — for example `https://stock.example.com/?sku={{dataObject.id}}` on a product view, or `{{dataObject.lineItemId}}` on an order line view. The [postMessage](gui-extensions.md#postmessage-api) payload and the [webhook request](gui-extensions.md#request-format) carry the `objectId` and `className` from the table. [Tag-based filtering](gui-extensions.md#tag-based-filtering) is not applied to an extension shown through a custom view. Of the [market-based filtering](gui-extensions.md#market-based-filtering), only the user's market access applies: the selected markets do not, because the view has its own markets.
 
 ### As an item in the grid
 
@@ -460,7 +494,7 @@ Extensions are managed in the Omnium backoffice under **Configuration > Settings
 The admin panel provides:
 
 1.  **Extensions tab** — add, edit, reorder, and remove extensions
-    *   **Settings**: name, header, description, button text, area assignment, tags, icon
+    *   **Settings**: name, header, description, button text, area assignment, tags, markets, icon
     *   **Properties**: custom key-value pairs
     *   **IFrame**: iframe URL configuration
     *   **Webhook**: webhook URL, HTTP method, custom request headers

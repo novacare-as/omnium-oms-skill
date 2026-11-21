@@ -128,5 +128,4 @@ Run every 10-15 minutes (`*/10 * * * *`) to maintain current order line analytic
 
 ## Related Tasks
 
-*   [Add Stats Orders](add-stats-orders.md) - Order statistics queue
 *   [Analytics Interaction](analytics-interaction.md) - Customer interaction analytics

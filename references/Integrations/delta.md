@@ -25,7 +25,15 @@ The following API endpoints in Omnium support delta queries. Use these to retrie
 
 ### 1\. Prepare Your Request
 
-When making a request to the delta query endpoint, include a `timestamp` parameter indicating the point in time from which you want to retrieve changes. This could be the timestamp of the last successful synchronization.
+When making a request to the delta query endpoint, include the timestamp parameter indicating the point in time from which you want to retrieve changes. This could be the timestamp of the last successful synchronization.
+
+The name of the parameter depends on the resource:
+
+| Resource | Parameter |
+| --- | --- |
+| Orders, products, customers, stores, suppliers and promotions | `modifiedFrom`, with `modifiedTo` to set an end time |
+| Prices and inventory | `lastModified` |
+| Carts | `changedSince` |
 
 ### 2\. Process the Response
 
@@ -37,7 +45,7 @@ The response from Omnium will contain data that has changed since the specified 
 
 ### Example Workflow
 
-1.  **Send a Request:** Include the `timestamp` parameter in your API request.
+1.  **Send a Request:** Include the timestamp parameter of the resource, for example `modifiedFrom`, in your API request.
 2.  **Extract Data:** Process the response to extract the relevant information.
 3.  **Update Your System:** Apply changes, such as adding or updating records.
 

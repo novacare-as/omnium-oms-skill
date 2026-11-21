@@ -15,6 +15,14 @@ Common conventions and standard error responses (429, 500) are in `api/_INDEX.md
 
 Operation ID: `ProductsPatchMany`
 
+A patch with SkuId and no Id is applied to every product that has this SKU, in all languages. When a variant has the SKU, the patch is applied to that variant and not to its product.
+Set "Patch.Language" to apply it to one language only. Without "Patch.Language", values such as "Patch.Name" are written to all languages.
+A patch with both Id and SkuId identifies the product by Id, and SkuId is a value to update.
+A request cannot have both patches with Id and patches with SkuId and no Id. Such a request returns 400 and changes nothing.
+A request can have at most 1000 patches with SkuId and no Id. A patch with SkuId and no Id cannot set ProductId, or set Id, SkuId, ProductId or Language in "Patch.FieldsToForceNull".
+
+"ProductUpdateResultTotal.TotalCount" counts each product a SkuId patch was applied to.
+
 Patch of "Properties" is flexible and can be customized in several ways:
 
 - The "Patch.Properties" property contains the properties to be updated.
@@ -33,7 +41,7 @@ See property summary under schema for more information.
 |-------|----|------|----------|-------------|
 | `excludeProductExport` | query | boolean | No | If this is set to true, Omnium will not export products to external systems |
 
-**Request body:** List<[`OmniumProductPatch`](../../schemas/OmniumProductPatch.md)> — Patch requests. Id is required. If not set, the patch request will be skipped.
+**Request body:** List<[`OmniumProductPatch`](../../schemas/OmniumProductPatch.md)> — Patch requests. Id or SkuId is required. If neither is set, the patch request will be skipped.
 
 **Responses:**
 

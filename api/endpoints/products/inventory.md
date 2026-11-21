@@ -149,7 +149,7 @@ Operation ID: `InventoryUpdateMany`
 
 Operation ID: `InventoryUpdateManyWithMetadata`
 
-The reason text and the reason code are both optional. The reason code is stored as given. The transaction type is optional. When omitted, null or empty it defaults to Manual. Otherwise it must be one of PurchaseOrder, SalesOrder, InventoryCount, Manual, API, AtpCreated, LocationTransfer, Transfer or Cancellation (case-insensitive), and any other value is rejected with 400.
+The reason text and the reason code are both optional. The reason code is stored as given. The transaction type is optional. When omitted, null or empty it defaults to Manual. Otherwise it must be one of PurchaseOrder, SalesOrder, InventoryCount, Manual, API, AtpCreated, LocationTransfer, Transfer, Cancellation or Integration (case-insensitive), and any other value is rejected with 400.
 
 Example:
 {

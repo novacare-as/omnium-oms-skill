@@ -140,8 +140,10 @@ If both a general price (without `skuId`) and a variant-specific price (with `sk
 Price IDs follow this convention:
 
 ```json
-{CustomerId}_{CustomerGroup}_{VariantId}_{MarketId}_{MarketGroupId}_{CurrencyCode}_{SalesCode}_{PromotionId}_{StoreId}_{PriceListId}_{ValidUntil}_{ValidFrom}
+{CustomerId}_{CustomerGroup}_{VariantId}_{MarketId}_{MarketGroupId}_{CurrencyCode}_{SalesCode}_{PromotionId}_{StoreId}_{PriceListId}_sg-{StoreGroupId}_{ValidUntil}_{ValidFrom}_u-{Unit}
 ```
+
+The `{PromotionId}` part is left empty when the price has a `PriceListId`. The parts `_sg-{StoreGroupId}`, `_{ValidUntil}`, `_{ValidFrom}` and `_u-{Unit}` are only added when the price has that value.
 
 Override this convention using an `ExternalId` for prices fetched from external systems.
 

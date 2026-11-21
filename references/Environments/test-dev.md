@@ -11,9 +11,9 @@ Below are frequently asked questions about our Dev and Test environments.
 
 ## What is the purpose of the Dev and Test environments?
 
-**Dev** (dev.omnium.no / apidev.omnium.no) is continuously updated with the latest changes from our developers.
+**Dev** (`dev.omnium.no` / `<tenantId>.dev.api.omnium.no`) is continuously updated with the latest changes from our developers.
 
-**Test** (test.omnium.no / apitest.omnium.no) reflects the upcoming release to production and is therefore a stable environment for release validation.
+**Test** (`test.omnium.no` / `<tenantId>.test.api.omnium.no`) reflects the upcoming release to production and is therefore a stable environment for release validation.
 
 ## Why do we provide both environments?
 

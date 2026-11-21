@@ -38,6 +38,7 @@ Representing a shipment
 - `expectedDeliveryDate`: string (date-time), nullable — Expected/Requested delivery date for this shipment
 - `packages`: List<[`OmniumShipmentPackage`](OmniumShipmentPackage.md)>, nullable, max length 250 — Shipment packages, used by third party shipping providers
 - `expectedShipmentDate`: string (date-time), nullable — Calculated - Expected shipment date (based on ATP)
+- `completed`: string (date-time), nullable — Completed date
 - `shippingMethodProductId`: string, nullable — Shipping method product ID
 - `externalIds`: List<[`OmniumExternalId`](OmniumExternalId.md)>, nullable, max length 250 — List of external shipment IDs
 - `contactPerson`: [`OmniumContactPerson`](OmniumContactPerson.md)

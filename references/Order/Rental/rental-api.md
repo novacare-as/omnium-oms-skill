@@ -17,7 +17,7 @@ Authorization: Bearer {your-api-key}
 ## Base URL
 
 ```
-https://api.omnium.no/api/rentals
+https://<tenantId>.api.omnium.no/api/rentals
 ```
 
 * * *
@@ -225,19 +225,22 @@ POST /api/rentals/GetAvailability
 | `bookings[].customerName` | string | Customer name |
 | `bookings[].rentalFrom` | datetime | Booking start |
 | `bookings[].rentalTo` | datetime | Booking end |
-| `bookings[].reservedUntil` | datetime | When the instance is available again: the registered return, or `rentalTo` while the instance is out, plus `returnBufferMinutes`. Equal to `rentalTo` when the tenant has no return buffer. Use this, not `rentalTo`, to decide when the instance can be rented again. |
+| `bookings[].reservedUntil` | datetime | When the instance is available again: the registered return (the rental project is completed), or `rentalTo` until then, plus `returnBufferMinutes`. Equal to `rentalTo` when the tenant has no return buffer. Use this, not `rentalTo`, to decide when the instance can be rented again. |
 | `returnBufferMinutes` | integer | Minutes an instance stays reserved after it is returned. `0` when the tenant has no return buffer. |
 
 ### Reservation after return
 
 When the tenant sets **Reserve the unit after return (minutes)** in the order settings, each instance stays reserved for that many minutes after a rental, for example for checking and cleaning:
 
-*   Each booking reserves its instance from `rentalFrom` until `reservedUntil`. The buffer counts from the registered return once the rental project's workflow has ended or the project is completed, and from `rentalTo` until then. An early return frees the instance earlier, and a late return keeps it reserved until the buffer has passed after the actual return.
+*   Each booking reserves its instance from `rentalFrom` until `reservedUntil`. The buffer counts from the registered return once the rental project is completed, and from `rentalTo` until then. An early return frees the instance earlier, and a late return keeps it reserved until the buffer has passed after the actual return.
+*   A workflow that has ended is not a return. A rental project whose workflow has ended, but that is not completed, keeps its instance until `rentalTo` plus the buffer, as it does without a buffer.
+*   The return time is the time the project finished. When the workflow ended at an earlier step than the one that completes the project, the project keeps that earlier time, and the buffer counts from it. End the rental project type's workflow at the return step, and set **Complete project on this workflow step** on that step.
 *   The registered return time is used as it is, not rounded to the booked hour. With a 120-minute buffer, an instance booked until 15:00 and returned at 15:07 is reserved until 17:07.
 *   Until a late return is registered, the instance is available again from `rentalTo` plus the buffer, even if it is not back yet.
 *   `bookings` holds only the bookings that conflict with a rental from `from` to `to`: bookings that are reserved past `from` and start before `to` plus `returnBufferMinutes`. Bookings of completed rental projects are included while they are still reserved. A rental can start exactly at `reservedUntil`.
 *   `periods` shows a booked instance as unavailable until `reservedUntil`.
-*   Send `from` in the request. Without it, bookings of completed rental projects that are still inside their buffer are left out.
+*   Send `from` in the request. Without it, or with the earliest possible date, bookings of completed rental projects that are still inside their buffer are left out.
+*   A time with an offset, such as `Z`, is compared as that moment. A time without an offset is read as the tenant's local time. This applies both to the request and to the stored bookings, so bookings made with and without an offset are compared correctly.
 *   [Add Rental Product to Cart](rental-api.md#add-rental-product-to-cart) refuses an instance that is reserved in the requested period.
 
 * * *

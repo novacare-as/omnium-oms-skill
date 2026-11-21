@@ -49,13 +49,13 @@ Endpoints are divided by permission level:
 ## Base URL
 
 ```
-https://api.omnium.no/api/returns
+https://<tenantId>.api.omnium.no/api/returns
 ```
 
 For test environments:
 
 ```
-https://apitest.omnium.no/api/returns
+https://<tenantId>.test.api.omnium.no/api/returns
 ```
 
 * * *
@@ -392,6 +392,7 @@ POST /api/returns/{orderId}/UpdateStatus
 | userId | string | User performing the update |
 | skipRunWorkflow | boolean | If true, updates status without running workflow steps |
 | shipmentInfo | object | Shipment tracking information to update |
+| orderPatch | object | Order fields to change in the same call. See [Update Order Fields in the Same Call](return-api.md#update-order-fields-in-the-same-call) |
 
 ### Shipment Info Properties
 
@@ -408,6 +409,29 @@ POST /api/returns/{orderId}/UpdateStatus
   }
 }
 ```
+
+### Update Order Fields in the Same Call
+
+Set `orderPatch` to change fields on the order in the same call as the return status. The patch uses the same rules as [Patch order](../api-reference.md#patch-order). The field changes and the new return status are saved together, and the return workflow sees the changed values.
+
+```json
+{
+  "status": "Completed",
+  "returnId": "ret-12345",
+  "orderPatch": {
+    "customerReference": "RMA-12345",
+    "properties": [
+      { "key": "ErpReturnNumber", "value": "R-0042" }
+    ]
+  }
+}
+```
+
+*   Set the new return status with `status`. A request that sets a status inside the patch gets `400 Bad Request`: `orderPatch.status`, `orderPatch.orderForm.shipments[].orderStatus`, `orderPatch.returnOrderForms[].status` or `orderPatch.returnOrderForms[].shipments[].orderStatus`.
+*   When a part of `orderPatch` cannot be applied, the order is not changed, the return workflow does not run, and the call gets `400 Bad Request` with the patch error in the response body.
+*   The response contains `orderPatchResult`, the same result as [Patch order](../api-reference.md#patch-order) returns.
+*   When the return workflow aborts, the return status goes back to the previous status, but the field changes from `orderPatch` stay saved, because the return workflow steps ran on them.
+*   When the return already has the requested status, the return workflow does not run, but the field changes are still saved.
 
 ### Response
 
@@ -439,6 +463,14 @@ Returns workflow execution results:
   "order": {...}
 }
 ```
+
+### Error Responses
+
+| Status | Meaning |
+| --- | --- |
+| 400 | Missing `status` or `returnId`, a status is set inside `orderPatch`, a part of `orderPatch` cannot be applied, or `orderPatch` is set and the order is in a queued/read-only state |
+| 404 | Order not found, or no return with `returnId` on the order |
+| 409 | Order is locked by another operation (only when [order locking](../order-locking.md) is enabled for the tenant), or `orderPatch` is set and the order kept changing while it was saved |
 
 ### Workflow Status Meanings
 

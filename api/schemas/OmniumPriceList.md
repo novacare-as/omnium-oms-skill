@@ -47,6 +47,7 @@ Represents a price list in the OMS.
 - `storeCostPriceStoreGroupIds`: List<string>, nullable — Store group IDs for store cost price dimension
 - `promotionId`: string, nullable — Reference to the owning promotion.
 - `isMetadataOnly`: boolean — When true, this price list contains only planning/budget metadata and does not push prices to products.
+- `isWithheldFromAllStores`: boolean — When true, the price list prices no store at all, even though Omnium.Public.PriceLists.OmniumPriceList.StoreIds is empty (which otherwise means every store). Set by Omnium on the price list of a price list promotion that requires store approval while no store takes part in it. Read-only: the value sent with a price list is ignored. A list that is no longer linked to a promotion is released by the next save, to the stores sent or to every store.
 
 **Used directly by endpoints in:**
 

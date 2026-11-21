@@ -22,6 +22,11 @@ The **Customer Club** in Omnium (requires an additional license) provides a loya
     *   Use points as a payment method via the BonusPoints provider
     *   Award **sign-up points** to new customers
     *   Support birthday points and point-expiration rules
+*   **Member tiers**
+
+    *   Give members a tier, such as Silver or Gold, from what they bought for in a qualifying period
+    *   Give a tier a higher bonus %
+    *   Limit members-only promotions to tiers
 *   **Checkout and cart logic**
 
     *   Automatic evaluation of membership status and consents
@@ -44,6 +49,7 @@ The **Customer Club** in Omnium (requires an additional license) provides a loya
 
 *   Workflow steps for calculating, earning, canceling, and capturing bonus points
 *   Payment authorization and capture using the BonusPoints payment provider
+*   A scheduled task that keeps the member tiers up to date
 
 ## API Usage
 
@@ -98,4 +104,56 @@ Make sure to configure setting for **Default bonus level** and **Days in which p
 *   Add workflow step **Authorize payment** on your first order status as the first step. This will check the customers point balance and change the payment to "Authorization".
 *   The **BonusPoints** payment provider acts as a standard payment provider like Klarna, Adyen etc. So if you have added workflow step "Capture payment", bonus points will be capture when order is completed. Same for credit.
 
-* * *
+## Member tiers
+
+Members get a tier from what they bought for in a rolling period, for example Silver from 5 000 and Gold from 15 000 in the last 365 days. A tier can give a higher bonus %, and a members-only promotion can be limited to tiers.
+
+This section is about the tiers of Omnium's customer club. When the tenant uses an external customer club system such as Voyado, the tier comes from that system. See [Member level as the tier](../plugins/CRM/voyado.md#member-level-as-the-tier).
+
+### Set up tiers
+
+1.  In **Configuration → Settings**, open the customer club settings under the customer settings, and go to the **Tiers** tab.
+2.  Turn on **Enable tiers**.
+3.  Add a program with **Add program**:
+    *   Select the markets or market groups of the program. A program without markets applies to all other markets. Use separate programs for markets with different currencies, because amounts are not converted.
+    *   Set the **Qualifying period (days)**.
+    *   Add the tiers, each with a **Tier name**, a **Minimum amount** and an optional **Bonus %**.
+4.  Schedule the task [Update member tiers](../configuration/scheduled-tasks/customer-club/update-member-tiers.md) (`CustomerClubTierScheduledTask`).
+
+A member gets the highest tier whose minimum amount they reach. To give every member a base tier, add a tier with the minimum amount 0.
+
+### What counts toward the tier
+
+The qualifying amount is the sum of the member's orders in the qualifying period, incl. VAT and after discounts. Cancelled lines, returns, shipping, replacement orders and the part paid with bonus points do not count.
+
+### When the tier is updated
+
+The scheduled task [Update member tiers](../configuration/scheduled-tasks/customer-club/update-member-tiers.md) updates the tiers. A member whose membership ended loses their tier.
+
+### Bonus % from the tier
+
+A tier with a **Bonus %** gives its members that % instead of the customer club's **Bonus level (%)**, on purchases in the program's markets.
+
+### Promotions for tiers
+
+A promotion for customer club members can be limited to tiers: turn on **Customer club** in the promotion and select them in **Member tiers**, or set `customerClubTierIds` in the API. An empty list means every member.
+
+A promotion limited to tiers creates no product prices.
+
+### When tiers are turned off
+
+The tiers are ignored: no tier bonus %, and a promotion limited to tiers applies to no member. The tiers are kept, and show again when you turn tiers back on. The API still returns the stored tier.
+
+### The tier in the API
+
+[Get customer club member](https://api.omnium.no/documentation/index.html#/Customers%20%7C%20B2C/PrivateCustomersGetCustomerClubMember) returns the tier in `tier`:
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `tierId` | string | The id of the tier |
+| `name` | string | The name of the tier |
+| `tierStart` | datetime | When the member got the tier |
+| `qualifyingAmount` | decimal | The amount that counts toward the tier |
+| `amountToNextTier` | decimal | The amount left to the next tier. Empty on the highest tier |
+
+The task sets the tier. A tier set through the API is replaced the next time the task updates the member.

@@ -3,6 +3,7 @@
 **Fields:**
 
 - `id`: string, nullable — Event log item ID
+- `eventId`: string, nullable — Unique id of the event. It is the same in every webhook delivery of the event, so a receiver can use it to drop a retried delivery
 - `timestamp`: string (date-time) — Timestamp for when the event occured (UTC)
 - `eventLogModel`: [`OmniumEventLogModelType`](OmniumEventLogModelType.md)
 - `eventLogType`: [`OmniumEventLogType`](OmniumEventLogType.md)

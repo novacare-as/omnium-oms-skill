@@ -14,6 +14,7 @@ Omnium can be main source of inventory for smaller customers. Monitoring and con
 *   [Configuration](Inventory/inventory-config.md) — Inventory tracking, reservations, ATP providers, and warehouse allocation
 *   [Available-To-Promise (ATP)](Inventory/inventory-atp.md) — Forward-looking availability calculations and delivery date promises
 *   [Inventory Valuation](Inventory/inventory-value.md) — Default, average cost, and FIFO valuation methods
+*   [Reservation Reconciliation](Inventory/reservation-reconciliation.md) — Compare reserved inventory with open orders and find stale reservations
 *   [OmniStock](Inventory/omnistock.md) — Aggregate inventory across warehouses and stores for online product availability
 *   [Virtual Stock Locations](Inventory/virtual-stock-locations.md) — Partition physical warehouse inventory across virtual locations for different sales channels
 *   [Warehouse Locations](Inventory/warehouse-locations.md) — Track inventory at physical locations within warehouses for precise stock placement and picking

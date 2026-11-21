@@ -269,7 +269,6 @@ The workflow step in this example leaves out the fields that always have default
     }
   ],
   "includedOrderTypesForRevenueStats": ["Online", "Pos"],
-  "useStatsOrderQueues": true,
   "orderLineSettings": {
     "defaultProperties": [
       {
@@ -431,6 +430,8 @@ Workflow steps appear in `WorkflowSteps` on an order status and in `AvailableMan
 | `DisabledForStores` | array | Store IDs where the step is disabled. Overrides `EnabledForStores`. |
 | `EnabledForWarehouses` | array | Warehouses where the step is enabled. All warehouses when empty. |
 | `DisabledForWarehouses` | array | Warehouses where the step is disabled. Overrides `EnabledForWarehouses`. |
+| `EnabledForStoreRoles` | array | Store role IDs. The step runs for a shipment when the warehouse that sends it has at least one of these roles. All warehouses, with or without roles, when empty. See [store role filter](../Order/order-lifecycle.md#store-role-filter). |
+| `DisabledForStoreRoles` | array | Store role IDs. The step does not run for a shipment when the warehouse that sends it has one of these roles. Overrides `EnabledForStoreRoles`. |
 | `EnabledForShipmentOptions` | array | Shipment option names where the step is enabled. All shipment options when empty. |
 | `DisabledForShipmentOptions` | array | Shipment option names where the step is disabled. Overrides `EnabledForShipmentOptions`. |
 | `Properties` | array | Workflow step properties. See [Property item](settings-api.md#property-item). |
@@ -497,7 +498,6 @@ The response contains the order settings below. See [order settings](../Order/or
 | `DefaultReplacementOrderType` | string | If set, replacement orders get this order type. If not set, the type is inherited from the order that was replaced. |
 | `TagSettings` | array | Available order tags. See [Tag settings](settings-api.md#tag-settings). Not returned when empty. |
 | `IncludedOrderTypesForRevenueStats` | array | Order types included in key numbers, average order values and revenue stats. If not set, the order types `Pos` and `Online` are used. |
-| `UseStatsOrderQueues` | bool | When `true`, orders are copied to the stats order index for analytics and reporting. |
 | `OrderLineSettings` | object | Order line settings. See [Order line settings](settings-api.md#order-line-settings). Not returned when not configured. |
 | `IsInvoiceOriginal` | bool | When `true`, invoices are marked as original. When `false`, invoices are marked as a copy. |
 

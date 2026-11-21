@@ -8,6 +8,7 @@ Order form, containing shipments, payments and line items for order
 - `lineItems`: List<[`OmniumOrderLine`](OmniumOrderLine.md)>, nullable, max length 1000 — All order lines / products
 - `discounts`: List<[`OmniumDiscount`](OmniumDiscount.md)>, nullable, max length 1000 — All discounts
 - `payments`: List<[`OmniumPayment`](OmniumPayment.md)>, nullable, max length 250 — All order payments
+- `relatedEntities`: List<[`OmniumRelatedEntity`](OmniumRelatedEntity.md)>, nullable, max length 250 — Typed links to entities the cart or order depends on: on a POS cart or order, the orders added to the sale (type "PaysFor", entity "Order", id = order ID); on such an order, the POS order that paid for it (type "PaidBy").
 - `shippingDiscountTotal`: number (decimal) — Calculated:Total shipping discounts
 - `shippingSubTotal`: number (decimal) — Calculated: Shipping cost without discounts
 - `shippingSubTotalExclTax`: number (decimal) — Calculated: shipping cost without discounts excl tax

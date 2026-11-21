@@ -13,6 +13,7 @@ Search request for event log items
 - `storeIds`: List<string>, nullable — Events created in context of given stores
 - `marketIds`: List<string>, nullable — Events created in context of given markets
 - `eventLogItemId`: string, nullable — ID of OmniumEventLogItem
+- `eventId`: string, nullable — Unique id of the event, as sent in the webhook payload
 - `objectId`: string, nullable — ID of the object that the event occured for
 - `status`: string, nullable — Status of the object
 - `user`: string, nullable — The ID of the user who triggered the event

@@ -43,6 +43,7 @@ Purchase order line
 - `purchaseOrderId`: string, nullable — ID of the purchase order associated with the line item
 - `deliveryId`: string, nullable — ID of the delivery associated with the line item
 - `estimatedTimeOfArrival`: string (date-time), nullable — Estimated time of arrival for the line item
+- `deliveredDate`: string (date-time), nullable — Date the line item was delivered. Set by Omnium when the line is delivered, read-only
 - `isPackage`: boolean — Specifies whether the line item is a package
 - `components`: List<[`OmniumProductComponent`](OmniumProductComponent.md)>, nullable, max length 250 — Used for specification of package products
 - `packageName`: string, nullable — Name of the package

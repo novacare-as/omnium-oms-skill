@@ -42,4 +42,4 @@ Unlike traditional pagination, which returns results in discrete pages (using pa
 *   Use the scroll API in situations where you need to retrieve **all** documents for a specific query, rather than for paginated browsing.
 *   Always finish a scroll to avoid leaving open operations that consume resources unnecessarily.
 *   Be aware of the stricter rate limits on scroll endpoints and avoid concurrent scroll requests to stay within those limits.
-*   Limit the duration of a scroll session, as `scrollId`s may expire after 5 minutes of inactivity.
+*   Limit the duration of a scroll session, as a `scrollId` expires after a period of inactivity: 10 minutes for orders and products, 5 minutes for carts and inventory.

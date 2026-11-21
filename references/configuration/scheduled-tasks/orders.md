@@ -16,6 +16,7 @@ The Order scheduled tasks manage the entire order lifecycle, from inventory allo
 | [Cancel Orders with Expired Pickup Deadline](orders/cancel-orders-with-expired-pickup-deadline.md) | Cancel orders where the customer pickup deadline has passed | Delta |
 | [Create Draft Purchase Orders](orders/create-draft-purchase-orders.md) | Create and refresh one draft purchase order per supplier from reorder suggestions | Delta |
 | [Delete Old Orders](orders/delete-old-orders.md) | Permanently remove orders older than the configured retention period | Delta |
+| [Extend Payment Authorization](orders/extend-payment-authorization.md) | Extend payment authorizations that expire within five days | Delta |
 | [Order Automation](orders/order-automation.md) | Automatically transition order status based on configurable conditions | Delta |
 | [Payment Settlements](orders/payment-settlements.md) | Retrieve and record payment settlement data from payment providers | Delta |
 | [Try Reallocate Orders](orders/try-reallocate-orders.md) | Process orders past their reallocation deadline | Delta |

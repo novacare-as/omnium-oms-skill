@@ -11,7 +11,7 @@ This is the full endpoint reference for the Omnium Order API. For conceptual gui
 All Order API endpoints are available at:
 
 ```
-https://api.omnium.no/api/Orders
+https://<tenantId>.api.omnium.no/api/Orders
 ```
 
 Full Swagger reference: [Omnium Orders API Documentation](https://api.omnium.no/documentation/index.html#/Orders)

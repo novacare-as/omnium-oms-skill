@@ -27,6 +27,7 @@ The **Inventory Validator** is the primary inventory validation mechanism. It ch
 4.  Fetches product data and inventory data in parallel
 5.  For each line item:
     *   Skips virtual products, backorder products, and products in the "service" catalog
+    *   Skips a variant with `IsBackorder` set to `true`. The other variants of the same product are still checked. When the product itself has `IsBackorder` set, all its variants are skipped
     *   Skips products where the category has `IsInventoryValidationDisabled` set to `true`
     *   Skips non-promotion products if `IsInventoryValidationDisabledForNonPromotions` is enabled
     *   Filters inventory by assortment (product `StoreIds`) unless the order type is in `IgnoredOrderTypesForAssortmentInventoryValidator`

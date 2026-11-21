@@ -12,8 +12,11 @@ The Omnium API is a RESTful JSON API that gives you full access to your order ma
 
 | Environment | API Base URL | Swagger Documentation |
 | --- | --- | --- |
-| **Test** | `https://apitest.omnium.no` | [https://apitest.omnium.no/documentation](https://apitest.omnium.no/documentation) |
-| **Production** | `https://api.omnium.no` | [https://api.omnium.no/documentation](https://api.omnium.no/documentation) |
+| **Dev** | `https://<tenantId>.dev.api.omnium.no` | [https://apidev.omnium.no/documentation](https://apidev.omnium.no/documentation) |
+| **Test** | `https://<tenantId>.test.api.omnium.no` | [https://apitest.omnium.no/documentation](https://apitest.omnium.no/documentation) |
+| **Production** | `https://<tenantId>.api.omnium.no` | [https://api.omnium.no/documentation](https://api.omnium.no/documentation) |
+
+Replace `<tenantId>` with your tenant id, and use the base URL only with API users of that tenant.
 
 The Swagger documentation is also available segmented by domain:
 
@@ -89,7 +92,7 @@ To check when a token expires, decode the JWT and read the `exp` claim, or track
 
 ```
 var client = _httpClientFactory.CreateClient();
-client.BaseAddress = new Uri("https://apitest.omnium.no");
+client.BaseAddress = new Uri("https://<tenantId>.test.api.omnium.no");
 
 // Request token
 var response = await client.PostAsync(
@@ -116,11 +119,11 @@ DateTime expiresUtc = jwt.ValidTo;
 ```
 # Get token
 TOKEN=$(curl -s -X POST \
-  "https://apitest.omnium.no/api/token?clientId=YOUR_ID&clientSecret=YOUR_SECRET")
+  "https://<tenantId>.test.api.omnium.no/api/token?clientId=YOUR_ID&clientSecret=YOUR_SECRET")
 
 # Use token
 curl -H "Authorization: Bearer $TOKEN" \
-  https://apitest.omnium.no/api/orders/ORD-001
+  https://<tenantId>.test.api.omnium.no/api/orders/ORD-001
 ```
 
 * * *
@@ -151,6 +154,7 @@ Each resource domain has a **Read** and **Admin** role. Read grants GET/Search a
 | Promotions | `PromotionRead` | `PromotionAdmin` |
 | Stores | `StoreRead` | `StoreAdmin` |
 | Projects | `ProjectRead` | `ProjectAdmin` |
+| Cases | `CaseRead` | `CaseAdmin` |
 | Suppliers | `SupplierRead` | `SupplierAdmin` |
 | Purchase Orders | `PurchaseOrderRead` | `PurchaseOrderAdmin` |
 | Settings | `SettingsRead` | `SettingsAdmin` |
@@ -282,8 +286,8 @@ All search endpoints return the same wrapper:
 
 | Parameter | Description | Limits |
 | --- | --- | --- |
-| `take` | Number of items per page | Max **100** |
-| `page` | Page number (0-based) | Max offset: `take * page` must not exceed **10,000** |
+| `take` | Number of items per page | Max **100**. Product search allows up to **1,000** |
+| `page` | Page number (0-based) | Max offset: `take * page` must not exceed **10,000**. For product search it must be below **20,000** |
 
 **Example — page 3 with 25 items per page:**
 
@@ -480,7 +484,7 @@ PATCH /api/products/PatchMany
 ]
 ```
 
-Bulk endpoints handle up to **1000 items per request** and automatically skip items with no actual changes.
+Keep bulk requests at **1000 items or fewer** as a recommendation. Some endpoints enforce a lower limit, for example 100 customers per call. Bulk endpoints automatically skip items with no actual changes.
 
 * * *
 
@@ -603,7 +607,7 @@ PATCH /api/products/PatchMany
 
 **Limits:**
 
-*   Up to **1000 items** per batch request
+*   Up to **1000 items** per batch request is the recommended size. The product and inventory batch endpoints do not enforce it. The customer batch endpoints reject more than 100 customers per call
 *   Max **4 concurrent** batch operations (per API user)
 *   Items with no actual changes are automatically skipped
 
@@ -673,14 +677,14 @@ See [Data Out](../Integrations/data-out.md) and [Events](../Integrations/events.
 ```
 # 1. Get a token
 TOKEN=$(curl -s -X POST \
-  "https://apitest.omnium.no/api/token?clientId=YOUR_ID&clientSecret=YOUR_SECRET")
+  "https://<tenantId>.test.api.omnium.no/api/token?clientId=YOUR_ID&clientSecret=YOUR_SECRET")
 
 # 2. Search for orders
 curl -X POST \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"take": 5, "page": 0, "sortOrder": "CreatedDescending"}' \
-  https://apitest.omnium.no/api/orders/Search
+  https://<tenantId>.test.api.omnium.no/api/orders/Search
 ```
 
 ### Common Endpoints

@@ -89,4 +89,3 @@ Run monthly at most (`0 2 1 * *` - 2:00 AM on the 1st of each month), and keep d
 ## Related Tasks
 
 *   [Add Stats Customers](add-stats-customers.md) - Incremental updates (preferred)
-*   [Add Stats Orders](add-stats-orders.md) - Order statistics queue

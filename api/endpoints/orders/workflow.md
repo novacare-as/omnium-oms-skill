@@ -39,6 +39,29 @@ Example on how you would set status for an existing shipment (with shipmentId "1
          }
      }
 
+Set "orderPatch" to change order fields in the same call, with the same rules as PATCH /api/orders/{orderId}/PatchOrder.
+The changes and the new status are saved together, and the workflow sees the changed values. Set the new status with "status":
+a request where "orderPatch.status", "orderPatch.orderForm.shipments[].orderStatus", "orderPatch.returnOrderForms[].status" or
+"orderPatch.returnOrderForms[].shipments[].orderStatus" is set gets 400 Bad Request.
+When a part of "orderPatch" cannot be applied, the order is not changed and the call gets 400 Bad Request.
+The 200 response contains "orderPatchResult". When the workflow aborts, the status goes back to the previous status, but the
+changes from "orderPatch" stay saved, because the workflow steps ran on them, and the response is 400 Bad Request.
+With "executeWorkFlowAsync:true", the call gets 202 Accepted with no body. When a part of "orderPatch" cannot be applied there,
+the order is not changed, and the order gets an error "OrderUpdateStatusQueueError".
+With "skipRunWorkflow:true", the order is saved with a concurrency check, and the call gets 409 Conflict when the order keeps changing.
+Example on how you would set status to "Completed" and update the customer reference and a property in the same call:
+
+     POST /api/orders/{orderId}/UpdateStatus
+     {
+         "status": "Completed",
+         "orderPatch": {
+              "customerReference": "PO-12345",
+              "properties": [
+                  { "key": "erp.sales_order.order_no", "value": "0100011592" }
+              ]
+         }
+     }
+
 | Param | In | Type | Required | Description |
 |-------|----|------|----------|-------------|
 | `orderId` | path | string | Yes | The ID of the order |

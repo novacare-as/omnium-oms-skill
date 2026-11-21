@@ -28,6 +28,26 @@ Operation ID: `ReturnsGetClaimTypes`
 
 Operation ID: `ReturnsUpdateStatus`
 
+Set "orderPatch" to change order fields in the same call, with the same rules as PATCH /api/orders/{orderId}/PatchOrder.
+The changes and the new return status are saved together, and the return workflow sees the changed values. Set the new status with "status":
+a request where "orderPatch.status", "orderPatch.orderForm.shipments[].orderStatus", "orderPatch.returnOrderForms[].status" or
+"orderPatch.returnOrderForms[].shipments[].orderStatus" is set gets 400 Bad Request.
+When a part of "orderPatch" cannot be applied, the order is not changed and the call gets 400 Bad Request.
+The response contains "orderPatchResult". When the return workflow aborts, the return status goes back to the previous status,
+but the changes from "orderPatch" stay saved, because the return workflow steps ran on them.
+
+     POST /api/returns/{orderId}/UpdateStatus
+     {
+         "status": "Completed",
+         "returnId": "1",
+         "orderPatch": {
+              "customerReference": "RMA-12345",
+              "properties": [
+                  { "key": "erp.return_no", "value": "R-0042" }
+              ]
+         }
+     }
+
 | Param | In | Type | Required | Description |
 |-------|----|------|----------|-------------|
 | `orderId` | path | string | Yes | The ID of the order |
@@ -39,6 +59,7 @@ Operation ID: `ReturnsUpdateStatus`
 - 200: [`OmniumOrderWorkflowExecutionResult`](../../schemas/OmniumOrderWorkflowExecutionResult.md) — Success
 - 400: Bad Request
 - 404: Not Found
+- 409: Conflict
 
 ---
 

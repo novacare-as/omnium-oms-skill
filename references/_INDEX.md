@@ -7,13 +7,13 @@ Search this file for a keyword or jump to a topic, then read only the pages you 
 ## Topics
 
 - [Carts](#carts) (21 pages)
-- [Configuration](#configuration) (92 pages)
+- [Configuration](#configuration) (93 pages)
 - [Connectors & Plugins](#connectors--plugins) (76 pages)
 - [Customers](#customers) (14 pages)
 - [Getting Started, API Conventions & Security](#getting-started-api-conventions--security) (21 pages)
 - [Integrations](#integrations) (12 pages)
-- [Inventory](#inventory) (14 pages)
-- [Orders](#orders) (223 pages)
+- [Inventory](#inventory) (15 pages)
+- [Orders](#orders) (222 pages)
 - [Prices](#prices) (25 pages)
 - [Products](#products) (60 pages)
 - [Projects](#projects) (13 pages)
@@ -103,7 +103,6 @@ Platform settings, scheduled tasks, GUI extensions, reports, and other configura
 ### configuration/scheduled-tasks/analytics
 
 - [Add Stats Customers](configuration/scheduled-tasks/analytics/add-stats-customers.md) — Queue changed customers for asynchronous statistics processing
-- [Add Stats Orders](configuration/scheduled-tasks/analytics/add-stats-orders.md) — Queue changed orders for asynchronous statistics processing
 - [Analytics Interaction](configuration/scheduled-tasks/analytics/analytics-interaction.md) — Index customer interaction analytics from orders
 - [Analytics Inventory](configuration/scheduled-tasks/analytics/analytics-inventory.md) — Index inventory analytics data for reporting and dashboards
 - [Analytics Order Line](configuration/scheduled-tasks/analytics/analytics-order-line.md) — Index order line analytics for sales reporting and analysis
@@ -127,6 +126,7 @@ Platform settings, scheduled tasks, GUI extensions, reports, and other configura
 - [Newsletter](configuration/scheduled-tasks/customer-club/newsletter.md) — Process and send scheduled newsletters to customer segments
 - [Point Balance Notification](configuration/scheduled-tasks/customer-club/point-balance-notification.md) — Notify customer club members when their point balance reaches a threshold
 - [Set Interests Special](configuration/scheduled-tasks/customer-club/set-interests-special.md) — Automatically assign special interests to new customer club members based on their registration store
+- [Update Member Tiers](configuration/scheduled-tasks/customer-club/update-member-tiers.md) — Give customer club members a tier from what they bought for in the qualifying period, and keep the tiers up to date
 
 ### configuration/scheduled-tasks/events
 
@@ -155,6 +155,7 @@ Platform settings, scheduled tasks, GUI extensions, reports, and other configura
 - [Cancel Orders with Expired Pickup Deadline](configuration/scheduled-tasks/orders/cancel-orders-with-expired-pickup-deadline.md) — Automatically cancel orders where the customer pickup deadline has passed.
 - [Create Draft Purchase Orders](configuration/scheduled-tasks/orders/create-draft-purchase-orders.md) — Automatically create and refresh one draft purchase order per supplier from the current reorder suggestions
 - [Delete Old Orders](configuration/scheduled-tasks/orders/delete-old-orders.md) — Permanently remove orders older than the configured retention period
+- [Extend Payment Authorization](configuration/scheduled-tasks/orders/extend-payment-authorization.md) — Automatically extend payment authorizations that are about to expire so you can still capture the payment
 - [Order Automation](configuration/scheduled-tasks/orders/order-automation.md) — Automatically transition order status based on configurable conditions
 - [Payment Settlements](configuration/scheduled-tasks/orders/payment-settlements.md) — Retrieve and record payment settlement data from payment providers
 - [Try Reallocate Orders](configuration/scheduled-tasks/orders/try-reallocate-orders.md) — Process orders that have passed their reallocation deadline
@@ -336,12 +337,12 @@ Manage private (B2C) and business (B2B) customers in Omnium — profiles, loyalt
 
 ### Customer/Cases
 
-- [API Reference](Customer/Cases/cases-api.md) — Public API endpoints for managing cases — create, search, update, assign, change status, and delete.
-- [Configuration](Customer/Cases/cases-config.md) — Enable and configure the Cases module — statuses, priorities, tags, case numbering, and support email settings.
-- [Dashboard & Analytics](Customer/Cases/cases-dashboard.md) — Cases dashboard with key stats, charts by status, priority, assignee, source, and tag, plus filtering options.
-- [Inbound Email](Customer/Cases/cases-inbound-email.md) — Automatically create cases from incoming customer emails using SendGrid Inbound Parse — setup, email flow, reply tracking, and troubleshooting.
-- [Managing Cases](Customer/Cases/cases-management.md) — Working with cases in the Omnium UI — list view, creating, editing, assigning, status changes, bulk operations, and linking to other entities.
-- [Notes & Communication](Customer/Cases/cases-notes-and-communication.md) — Public and internal case notes, email and SMS notifications, file attachments, and reply templates.
+- [API Reference](Customer/Cases/cases-api.md) — Public API endpoints for managing cases — create, search, update, assign, change status, and delete, with the update rules, errors and case events.
+- [Configuration](Customer/Cases/cases-config.md) — Enable and configure the Cases module — statuses, priorities, priority rules, tags, case numbering, customer emails, note and case list defaults, and formatted replies with signatures.
+- [Dashboard & Analytics](Customer/Cases/cases-dashboard.md) — Cases dashboard with key numbers, charts by status, priority, assignee, source, tag, SKU and product, filtering, and the My cases panel on My page.
+- [Inbound Email](Customer/Cases/cases-inbound-email.md) — Automatically create cases from incoming customer emails using SendGrid Inbound Parse — setup, email flow, case priority, reply tracking, and troubleshooting.
+- [Managing Cases](Customer/Cases/cases-management.md) — Working with cases in the Omnium UI — list view, creating cases from the list, orders and order lines, editing, assigning, status changes, linking, deleting, and the AI assistant.
+- [Notes & Communication](Customer/Cases/cases-notes-and-communication.md) — Public and internal case notes, sending notes by email and SMS, attachments, @mentions, drafts, reply templates, case notifications, and email threading.
 - [Overview & Concepts](Customer/Cases/cases-overview.md) — What cases are, key concepts, data model, status lifecycle, and how cases relate to other Omnium entities.
 
 ## Getting Started, API Conventions & Security
@@ -425,6 +426,7 @@ Inventory management in Omnium — stock levels, ATP calculations, inventory val
 - [Inventory Value](Inventory/inventory-value.md) — Understanding inventory valuation methods and how Omnium calculates inventory cost values
 - [OmniStock](Inventory/omnistock.md) — Aggregate inventory across multiple warehouses and stores to determine online product availability.
 - [Priority Stock](Inventory/priority-stock.md) — Mark units in a store's inventory as priority stock so allocation sells them first, for example a return the store took in for a product it does not carry.
+- [Reservation Reconciliation](Inventory/reservation-reconciliation.md) — Compare the reserved quantity on the inventory with what open orders and internal transfers reserve, and find orders that hold a stale reservation.
 - [Stock Buffer](Inventory/stock-buffer.md) — Hold back a fixed number of units from available inventory so they are not sold through normal cart or order flows.
 - [Virtual Stock Locations](Inventory/virtual-stock-locations.md) — Learn how to configure virtual stock locations in Omnium.
 - [Warehouse Locations](Inventory/warehouse-locations.md) — Track inventory at specific physical locations within warehouses. Assign stock to locations, transfer between locations, set default locations for fulfillment and returns.
@@ -615,7 +617,6 @@ Order management in Omnium — lifecycle, workflows, returns, click & collect, a
 
 ### Order/workflow-steps/customers
 
-- [Customer Club Calculate And Update Tier For Member](Order/workflow-steps/customers/customer-club-calculate-and-update-tier-for-member.md) — Calculate and update the loyalty tier for a customer club member.
 - [Customer Club Calculate New Points On Hold](Order/workflow-steps/customers/customer-club-calculate-new-points-on-hold.md) — Calculate loyalty points for a new order and place them on hold.
 - [Customer Club Calculate Points On Hold And Move To Earned](Order/workflow-steps/customers/customer-club-calculate-points-on-hold-and-move-to-earned.md) — Calculate loyalty points and immediately move them to earned status in one step.
 - [Customer Club Cancel New Points On Hold](Order/workflow-steps/customers/customer-club-cancel-new-points-on-hold.md) — Cancel loyalty points that were placed on hold when an order is cancelled.
@@ -771,7 +772,7 @@ How prices work in Omnium — price levels, promotions, price lists, prioritizat
 - [Prices](Prices.md) — How prices work in Omnium — price levels, promotions, price lists, prioritization, and tax handling.
 - [Campaigns](Prices/Campaigns.md) — Plan, execute, and measure promotional campaigns in Omnium — group promotions, set revenue targets, and track performance in real time.
 - [Lowest price history](Prices/lowest-price.md) — Automatically tracks the lowest valid price for products over a set period to ensure compliance with pricing regulations such as the EU Omnibus Directive.
-- [Price list](Prices/PriceLists.md) — Create price lists to manage prices
+- [Price list](Prices/PriceLists.md) — Create price lists in the Omnium UI or with the API, add price list items, activate them to publish prices to products, and lock base prices that an ERP owns
 - [Price prioritization rules](Prices/PricePrioritization.md) — Before adding prices to a product, it's important to understand how prices are prioritized. This includes filtering, sorting and selecting defaults based on the contextual input and available price configurations.
 - [Prices and Tax](Prices/PricesAndTax.md) — How tax is stored on prices, how it flows through the cart and POS, and how to configure tax groups for VAT reporting.
 - [Pricing and Promotions Overview](Prices/pricing-and-promotions.md) — How pricing works in Omnium — the relationship between price creation, price storage, promotions, and how the right price reaches your customer.

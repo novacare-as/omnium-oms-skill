@@ -74,7 +74,8 @@ A chart without type entries books exactly as before, so adding the first one is
 | `OverShort` | A till discrepancy or any other auto-balancing line is booked | Blank |
 | `InternalTransferIn` / `InternalTransferOut` | The cost of goods is moved between stores of the same store group on a cross-store return | Blank |
 | `Rounding` | Rounding differences in the **Export bookkeeping file** under **Reports → Payments** and in **Payment Ledger** [custom reports](../../configuration/custom-reports.md). Not used by postings. | Blank |
-| `PaymentProviderFee`, `Discount`, `CashFloat`, `CashInTransit`, `Tip`, `Other` | Not booked today. Discounts are already netted into the sales amounts. | — |
+| `CashInTransit` | Cash is registered from a store's safe to the bank in the In-Store app ([safe withdrawals](ledger-postings.md#safe-withdrawals)) | Blank |
+| `PaymentProviderFee`, `Discount`, `CashFloat`, `Tip`, `Other` | Not booked today. Discounts are already netted into the sales amounts. | — |
 
 ## How an account is resolved
 

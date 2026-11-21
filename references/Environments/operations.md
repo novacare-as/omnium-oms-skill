@@ -118,9 +118,9 @@ Omnium provides three environments:
 
 | Environment | URL | Updated | Purpose |
 | --- | --- | --- | --- |
-| **Production** | omnium.no / api.omnium.no | Tuesdays | Live environment |
-| **Test** | test.omnium.no / apitest.omnium.no | Tuesdays (after production) | Release validation |
-| **Dev** | dev.omnium.no / apidev.omnium.no | Continuously | Early feature testing |
+| **Production** | `omnium.no` / `<tenantId>.api.omnium.no` | Tuesdays | Live environment |
+| **Test** | `test.omnium.no` / `<tenantId>.test.api.omnium.no` | Tuesdays (after production) | Release validation |
+| **Dev** | `dev.omnium.no` / `<tenantId>.dev.api.omnium.no` | Continuously | Early feature testing |
 
 Key operational notes:
 

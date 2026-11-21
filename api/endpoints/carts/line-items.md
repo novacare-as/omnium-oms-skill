@@ -25,12 +25,13 @@ For non-bundle products, only the individual line item quantity is updated.
 | `skuId` | path | string | Yes | Product SKU id. (Required) |
 | `quantity` | path | number (decimal) | Yes | Quantity to set. Defaults to 0 if less than 0. (Required) |
 | `stopOnValidationError` | query | boolean | No | If true, the validators configured for the cart's order type and market run against the cart with the new quantity before it is saved, and nothing is saved when a validator reports an error. These include validators that check that a cart is ready for checkout, such as payments. The response is then 422 with the validation errors and the cart as it is stored. Validation warnings do not stop the change. |
+| `allowNoPriceItems` | query | boolean | No | Allow a product without a price (the line gets price = 0), such as a line added with allowNoPriceItems. If false, a product without a price is rejected with 404. |
 
 **Responses:**
 
 - 200: [`OmniumCart`](../../schemas/OmniumCart.md) — Quantity updated and cart is returned
 - 400: string — Bad Request
-- 404: string — Not Found
+- 404: string — Cart not found, or the product does not have a price and allowNoPriceItems is false. Nothing is saved
 - 422: [`OmniumCartOmniumValidationResult`](../../schemas/OmniumCartOmniumValidationResult.md) — stopOnValidationError is true and a validator reported an error. Nothing is saved
 
 ---
@@ -52,12 +53,13 @@ For non-bundle products, only the individual line item quantity is updated.
 | `quantity` | path | number (decimal) | Yes | Quantity to set. Defaults to 0 if less than 0. (Required) |
 | `keepPrice` | query | boolean | No | If false, the price will be updated to the current product price. If true, the current price will be kept, and is only recalculated with new quantity. Note: For bundle products, this parameter is ignored as bundle pricing follows specific business rules. |
 | `stopOnValidationError` | query | boolean | No | If true, the validators configured for the cart's order type and market run against the cart with the new quantity before it is saved, and nothing is saved when a validator reports an error. These include validators that check that a cart is ready for checkout, such as payments. The response is then 422 with the validation errors and the cart as it is stored. Validation warnings do not stop the change. |
+| `allowNoPriceItems` | query | boolean | No | If true and keepPrice is false, a product without a price keeps the current price of the line, such as the price 0 of a line added with allowNoPriceItems, and only the quantity changes. If false, a product without a price is rejected with 404. |
 
 **Responses:**
 
 - 200: [`OmniumCart`](../../schemas/OmniumCart.md) — Quantity updated and cart is returned
 - 400: string — Bad Request
-- 404: string — Cart or order line was not found
+- 404: string — Cart or order line was not found, or the product does not have a price, keepPrice is false and allowNoPriceItems is false
 - 422: [`OmniumCartOmniumValidationResult`](../../schemas/OmniumCartOmniumValidationResult.md) — stopOnValidationError is true and a validator reported an error. Nothing is saved
 
 ---
@@ -75,6 +77,7 @@ Operation ID: `CartUpdateCartSelectedUnitQuantityBySku`
 | `selectedUnit` | path | string | Yes | Selected unit of measure (Required) |
 | `selectedUnitQuantity` | path | number (decimal) | Yes | Quantity to set. Defaults to 0 if less than 0. (Required) |
 | `selectedUnitConversionFactor` | query | number (decimal) | No | Conversion factor between selected unit of measure and default UOM (Default is 1:1) |
+| `allowNoPriceItems` | query | boolean | No | Allow adding the product without a price (it gets price = 0) when the SKU is not in the cart. If false, a product without a price is rejected with 404. |
 
 **Responses:**
 

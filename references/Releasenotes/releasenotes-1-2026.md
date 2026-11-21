@@ -4,9 +4,83 @@ Source: https://docs.omnium.no/docs/Releasenotes/releasenotes-1-2026
 
 > Key updates, bug fixes, and improvements for Omnium in 2026, detailed week by week.
 
-**Black week**: We will freeze deploy after November 17th and until December 8th to ensure that Black Friday/Week/Month will go as smooth as possible. This means that new features must be ready in dev by November 6th in order to make it to the test period.
+**Black week and Christmas**: We will freeze deploy during the last part of November and of December to ensure a stable environment during the important periods.
 
-## Upcoming Release 2026-38
+| Release | Development period | Release date |
+| --- | --- | --- |
+| 2026-39 | Nov 2 – Nov 8 | Nov 17, 2026 |
+| 2026-40 | Nov 9 – Nov 29 | Dec 8, 2026 |
+| 2026-41 | Nov 30 – Dec 6 | Dec 15, 2026 |
+| 2026-42 | Dec 7 – Dec 13 | Dec 22, 2026 |
+| 2026-43 | Dec 14 – Jan 3 | Jan 12, 2027 |
+
+## Upcoming Release 2026-39
+
+Release date: Nov 17, 2026
+
+### Main focus areas
+
+This release expands analytics and reporting capabilities, improves the In-Store App configuration experience, and introduces new marketplace integration support. It also adds more flexible inventory and allocation controls, strengthens API functionality, and introduces Microsoft 365 email delivery through Microsoft Graph.
+
+### Key changes and improvements
+
+#### Analytics & Reporting
+
+*   Sales in the order line report can now be converted to the order currency using the exchange rate from the order date, keeping historical figures consistent over time. Older orders receive the applicable rate when their order lines are re-indexed.
+*   Analytics order lines can now include the lowest general price on the order date and the additional discount applied below that price. This makes it easier to distinguish generally available discounts, such as campaigns and member prices, from customer-specific discounts, such as staff discounts.
+
+#### In-Store App
+
+*   The dashboard editor now offers ten predefined layouts for different roles and workflows, including pickup counters, picker tablets, store managers and chain overviews. Existing default profiles can also be selected and customized.
+*   The home items editor now offers ten predefined start page layouts, ranging from simple express registers to full-featured pages. Existing default profiles can also be used as a starting point.
+
+#### Inventory & Allocation
+
+*   OmniStock stores can now reserve a stock buffer for ship-from-store warehouses, with selected warehouses such as central warehouses optionally excluded. Product pages can optionally show the exact OmniStock quantity, and the Inventory Validator can validate carts against OmniStock using the `UseOmniStock` property.
+*   Allocation profiles now support a stock depth factor for the Chance of delivering objective. Higher values make allocation prefer stores with deeper stock. Saving allocation profiles has also been fixed to avoid conflicts caused by concurrent changes.
+*   The reservation reconciliation report can now be exported to Excel. The export includes all SKUs matching the current filters, with a row for each warehouse and for each order and internal transfer that reserves the item.
+
+#### Campaigns & Price Lists
+
+*   Price list promotions can now require store approval. The linked price list then only applies its prices to selected stores that have approved the promotion and not opted out, and it is updated as stores approve, reject or opt out. At least one store must be selected.
+
+#### APIs & Order Management
+
+*   The product `PatchMany` endpoint can now identify products and variants by `SkuId` when `Id` is not provided. Patches can apply across all languages or to a specific language using `Language`. Each request must consistently use either `Id` or `SkuId` for all patches.
+*   Cart quantity endpoints now accept `allowNoPriceItems`, allowing quantities to be changed for items added without a price through `AddItemsToCart`.
+*   The public API now returns `DeliveredDate` on purchase order lines and delivery lines.
+*   The order `UpdateStatus` endpoint now accepts an optional `orderPatch`, allowing order fields and status to be updated together in a single request. Both changes are saved together.
+*   The Create and send gift cards (v2) workflow step now marks gift card order lines as delivered. Exports based on the delivered quantity, such as the Voyado receipt, now include the gift card lines.
+*   With VisionPoint, items handed in at a store that are already registered for return in the web shop now complete and refund that return, with the store set as the return store. If fewer items are handed in, the return is adjusted before it is completed.
+
+#### Marketplace Integrations
+
+*   Omnium now integrates with ChannelEngine. Marketplace orders are received in Omnium, while shipments, products, prices and stock are sent from Omnium to ChannelEngine.
+
+#### Email & Communication
+
+*   Omnium can now send email through Microsoft 365 using the Microsoft Graph API instead of SMTP username and password authentication. Configure the Entra application and sender mailbox under the email settings, then use a test email to verify the setup.
+
+| Type | Issue No | Domain | Description |
+| --- | --- | --- | --- |
+| Feature | #DEV-26073 | VisionPoint Connector | VisionPoint: When a customer hands in items in a store that are already registered for return in the web shop, Omnium now completes that return and refunds it, with the store set as return store. If fewer items are handed in, the return is updated to match before it is completed. |
+| Feature | #DEV-26027 | Inventory | You can now export the reservation reconciliation report to Excel. The export includes all SKUs that match your filters, with a row for each warehouse and for each order and internal transfer that reserves the item. |
+| Feature | #DEV-26016 | Core | Omnium can now send e-mail through Microsoft 365 with the Microsoft Graph API, instead of SMTP with a username and password. Choose Microsoft 365 (Graph API) under the e-mail settings, enter the details of your Entra app and the sender mailbox, and send a test e-mail to check the setup. |
+| Feature | #DEV-26015 | Core | A new setting under Order settings > Statistics and analytics converts sales in other currencies in the order line report at the exchange rate on the order date, so figures for earlier periods stay the same from day to day. Earlier orders get the order date's rate when their order lines are indexed again. |
+| Feature | #DEV-26014 | Core | Analytics order lines can now show the lowest general price on the order date and the extra discount a line got below it. Reports can then tell discounts anyone could get, such as campaigns and member prices, from extra discounts given to one customer, such as staff discounts. Turn it on under Order settings > Statistics and analytics. |
+| Feature | #DEV-26006 | Core | The workflow step Create and send gift cards (v2) now marks the gift card order lines as delivered when it creates and sends the gift cards. Exports that use the delivered quantity, for example the Voyado receipt, now include the gift card lines. |
+| Feature | #DEV-25996 | Core | The In-Store App dashboard editor now offers predefined setups. Pick one of ten built-in dashboards, from a pickup counter or a picker tablet to a store manager or chain overview, or one of your own default profiles configured in Omnium, and adjust it from there. |
+| Feature | #DEV-25995 | Core | The In-Store App home items editor now offers predefined start page setups. Pick one of ten built-in layouts, from a simple express register to a full-featured page, or one of your own default profiles configured in Omnium, and adjust it from there. |
+| Feature | #DEV-25982 | Product | The PatchMany endpoint for products can now find products and variants by SkuId when a patch has no Id. The patch is applied in all languages, or in one language when you set Language. A request must use either Id or SkuId for all patches. |
+| Feature | #DEV-25957 | Cart | The cart quantity endpoints now accept allowNoPriceItems. You can change the quantity of an item without a price that you added with AddItemsToCart. |
+| Feature | #DEV-25938 | undefined Connector | Omnium can now connect to ChannelEngine. Marketplace orders arrive in Omnium, and Omnium sends shipments, products, prices, and stock to ChannelEngine. |
+| Feature | #DEV-25915 | Core | You can now set the stock depth factor on the Chance of delivering objective in an allocation profile. A higher factor makes the profile keep preferring the store with the deepest stock. Saving allocation profiles no longer fails with 'The stored value was changed by someone else'. |
+| Feature | #DEV-25854 | Api | The public API now returns the DeliveredDate field on purchase order lines and on the lines of a delivery. |
+| Feature | #DEV-25822 | Order management | The UpdateStatus endpoint now accepts an optional orderPatch. You can change order fields and the order status in 1 call, and both changes are saved together. |
+| Feature | #DEV-25659 | Inventory | OmniStock stores can now hold back a buffer on the stock of their ship-from-store warehouses, with chosen warehouses such as the central warehouse excluded so they can be sold out, can optionally show the exact OmniStock quantity on products, and the Inventory Validator can validate carts against OmniStock with the `UseOmniStock` property. |
+| Feature | #DEV-25296 | Price list | Price list promotions can now require store approval: the linked price list only gives its prices to the selected stores that have approved the promotion and not opted out, it is updated as stores approve, reject or opt out, and at least one store must be selected. |
+
+## Release 2026-38
 
 Release date: Nov 10, 2026
 

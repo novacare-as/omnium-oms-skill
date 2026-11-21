@@ -16,6 +16,9 @@ A product is exposed only when it passes every rule that is set; rules that are 
 - `excludedProductIds`: List<string>, nullable, max length 5000 — Products with any of these product ids are not exposed
 - `profitabilityThreshold`: number (decimal), nullable — Minimum margin (unit price minus cost) a product must have to be exposed. Evaluated in CurrencyCode against the store's market with that currency; ignored when null or zero.
 - `currencyCode`: string, nullable — Currency ProfitabilityThreshold is expressed in. Required for the threshold to take effect.
+- `omniStockBuffer`: number (decimal), nullable — Set on an OmniStock store (a sales channel): this many units are held back from the channel's OmniStock quantity, taken from the stock of warehouses that are not excluded from the buffer. Null or 0 holds back nothing.
+- `isOmniStockQuantityEnabled`: boolean, nullable — Set on an OmniStock store: the products carry the store's exact OmniStock quantity next to the stock level. The quantity changes with almost every stock change, so products are updated far more often when this is on.
+- `isExcludedFromOmniStockBuffer`: boolean, nullable — Set on a warehouse: its stock always counts in full towards OmniStock, and the sales channel's OmniStockBuffer is never taken from it, so the warehouse can be sold out online.
 - `isCentralWarehouse`: boolean, nullable — Marks the store as a central warehouse for allocation. Falls back to the tenant's central warehouse codes when not set.
 - `isExcludedFromAllocation`: boolean, nullable — The allocation engine never sources from this store, whatever it holds in stock.
 - `minimumAvailableQuantity`: number (decimal), nullable — The store only becomes an allocation candidate for a line once it holds at least this quantity, so a shelf with a single copy is not treated as a reliable source.

@@ -77,4 +77,3 @@ Run every 15 minutes (`*/15 * * * *`) to maintain near real-time interaction ana
 ## Related Tasks
 
 *   [Analytics Order Line](analytics-order-line.md) - Complementary order analytics
-*   [Add Stats Orders](add-stats-orders.md) - Order statistics queue

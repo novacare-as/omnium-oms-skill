@@ -72,7 +72,7 @@ Authorization: Bearer {token}
 Here’s an example of how to request a token and use it in your API calls:
 
 ```
-var client = new HttpClient { BaseAddress = new Uri("https://apitest.omnium.no") };
+var client = new HttpClient { BaseAddress = new Uri("https://<tenantId>.test.api.omnium.no") };
 var formContent = new FormUrlEncodedContent(new[]
 {
     new KeyValuePair<string, string>("grant_type", "client_credentials"),
@@ -88,7 +88,7 @@ client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bear
 
 ```
 var client = _httpClientFactory.CreateClient();
-client.BaseAddress = new Uri("https://apitest.omnium.no");
+client.BaseAddress = new Uri("https://<tenantId>.test.api.omnium.no");
 var formContent = new FormUrlEncodedContent(new[]
 {
     new KeyValuePair<string, string>("grant_type", "client_credentials"),

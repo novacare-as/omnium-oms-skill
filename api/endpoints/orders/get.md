@@ -45,6 +45,26 @@ Operation ID: `OrderGetVersion`
 
 ---
 
+## `GET /api/Orders/Versions/{orderId}`
+
+**Get the versions of an order, newest first, one page at a time.**
+
+Operation ID: `OrderGetVersions`
+
+| Param | In | Type | Required | Description |
+|-------|----|------|----------|-------------|
+| `orderId` | path | string | Yes | Order ID |
+| `take` | query | integer (int32) | No | Number of versions on the page, from 1 to 100. Defaults to 20. |
+| `continuationToken` | query | string | No | The continuationToken from the previous page. Leave it out for the first page. |
+
+**Responses:**
+
+- 200: [`OmniumVersionListResult`](../../schemas/OmniumVersionListResult.md) — A page of versions. The response has no continuationToken on the last page.
+- 400: string — Bad Request
+- 404: string — Not Found
+
+---
+
 ## `GET /api/Orders/GetOrders`
 
 **Returns a list of orders, support paging**

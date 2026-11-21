@@ -60,6 +60,8 @@ Or directly:
 POST /api/orders → Order (Status: New)
 ```
 
+`POST /api/orders` requires an `id` or an `orderNumber` in the request. To let Omnium generate the order number, use `PUT /api/orders`.
+
 When an order is created, the system:
 
 *   Assigns an order number (auto-generated or explicit)
@@ -384,8 +386,45 @@ Each step can be restricted to run only for specific contexts:
 | **EnabledForMarkets** / **DisabledForMarkets** | Only capture payment for Norwegian orders |
 | **EnabledForStores** / **DisabledForStores** | Only export to ERP for online store |
 | **EnabledForWarehouses** / **DisabledForWarehouses** | Only print labels for central warehouse |
+| **EnabledForStoreRoles** / **DisabledForStoreRoles** | Only tag orders that a physical store packs. See [Store Role Filter](order-lifecycle.md#store-role-filter) |
 | **EnabledForShipmentOptions** / **DisabledForShipmentOptions** | Different steps for express vs standard shipping |
 | **EnabledForTags** / **DisabledForTags** | Skip payment capture for zero-amount orders |
+
+### Store Role Filter
+
+`EnabledForStoreRoles` and `DisabledForStoreRoles` (**Enabled for store roles** and **Disabled for store roles** in the workflow step editor) restrict a step to shipments sent from warehouses with certain [store roles](../Stores/store-config.md#store-roles). The values are store role IDs (`StoreRoleId`) from the store settings, and a warehouse gets its roles from its `StoreRoleIds`.
+
+The filter looks at the roles of the warehouse that sends the shipment, which is the shipment's `WarehouseCode`. It does not look at the order's store, the pick-up warehouse or the virtual warehouse.
+
+| Sending warehouse | Step runs for the shipment |
+| --- | --- |
+| Has at least one role in `EnabledForStoreRoles` and none in `DisabledForStoreRoles` | Yes |
+| Has a role in `DisabledForStoreRoles` | No, also when it has an enabled role as well. A disabled role wins |
+| Has none of the roles in `DisabledForStoreRoles`, and the step has no `EnabledForStoreRoles` | Yes |
+| None, or a warehouse without roles | No when the step has `EnabledForStoreRoles`. Yes when the step only has `DisabledForStoreRoles` |
+
+With both lists empty, the filter does not apply. The workflow step editor hides the two selectors when the tenant has no store roles in its store settings, unless the step already has role values.
+
+**When the filter is checked.** Omnium checks the store role filter for each shipment when the step runs, together with the warehouse filter (`EnabledForWarehouses` / `DisabledForWarehouses`), and one shipment must pass both. Because the warehouse is read when the step runs, a step placed after a step that reallocates the shipment sees the new warehouse. On an order with several shipments, the step runs once for each shipment that passes, and it is skipped when no shipment passes. When a workflow runs for one shipment, only that shipment is checked.
+
+On an order with more than one shipment, a step with a store role or warehouse filter runs once per shipment. Steps that work only on the whole order, such as `TryReallocateEntireOrderToSpecificWarehouse`, end with an error when they run for a single shipment, so they only work with these filters on orders with one shipment.
+
+**Store roles or store groups.** The store group filter (`EnabledForStoreGroups` / `DisabledForStoreGroups`) is checked once per workflow run, before any step runs. It matches the store groups of the order's store and of the sending and pick-up warehouses of all shipments, or only of that shipment's when the workflow runs for one shipment. It therefore cannot tell the shipments of an order apart, and it does not see a reallocation made by an earlier step for the same status. Use store groups when the step depends on which part of the business the order belongs to. Use store roles when the step depends on what kind of location packs and sends each shipment.
+
+**Example: tag orders packed in a physical store.** Give the physical stores a role such as `physical-store`, and add an `AddCustomTags` step that is enabled for that role. Orders sent from a central warehouse do not get the tag.
+
+```json
+{
+  "Name": "AddCustomTags",
+  "Active": true,
+  "EnabledForStoreRoles": ["physical-store"],
+  "Properties": [
+    { "Key": "AddTag", "Value": "PackedInStore" }
+  ]
+}
+```
+
+**Example: guard a step that moves store-packed orders back to the central warehouse.** Set `EnabledForStoreRoles` to `["physical-store"]` on the reallocation step, so it runs only for shipments that a physical store would send. Shipments already sent from the central warehouse skip the step. Place the step after any step that allocates the order, so the filter sees the warehouse that allocation chose. This filter is separate from the `storeRoles` property that some allocation steps have, which limits the warehouses those steps can choose.
 
 ### Conditions
 

@@ -15,7 +15,7 @@ products (skuId/GTIN), deliveries and orders - inventory quantities never depend
 - `skuId`: string, nullable — SKU code of the product the tag is attached to. Resolved from the GTIN when omitted.
 - `brand`: string, nullable — Product brand. Resolved from the product when omitted - enables fetching all EPCs for one brand.
 - `productName`: string, nullable — Product name for display purposes. Resolved from the product when omitted.
-- `status`: string, nullable — Lifecycle status. Well-known values: Announced, Received, InStock, Sold, Missing, Deactivated. Custom values are allowed.
+- `status`: string, nullable — Status of the tag. Unvalidated, Active, Distributor and Unknown classify a scanned tag; only Active tags are the store's own stock. Announced, Received, Sold, Missing and Deactivated describe where the tag is in its life. Custom values are allowed. On an upsert, a tag sent without status or as Unvalidated keeps its stored status, and a new tag without status is stored as Unvalidated.
 - `storeId`: string, nullable — Current/home store of the tagged item.
 - `created`: string (date-time) — Created date. Managed by Omnium when omitted.
 - `modified`: string (date-time) — Modified date. Managed by Omnium.

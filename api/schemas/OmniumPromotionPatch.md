@@ -32,6 +32,7 @@ Request for adding a promotion
 - `canBeCombinedWithOtherPromotions`: boolean, nullable — Promotion can be combined with other promotions on the same orderLine (e.g. 10% off + 5$ off).
 - `alwaysApply`: boolean, nullable — Promotion can be combined also with promotions that have are canBeCombinedWithOtherPromotions = false.
 - `customerClubMembersOnly`: boolean, nullable — Promotion is valid only for customers that are members of the customer club.
+- `customerClubTierIds`: List<string>, nullable, max length 250 — Limits a members-only or bonus point promotion to members with one of these customer club tiers. Empty means every member.
 - `isBonusPointsReward`: boolean, nullable — Is reward given in bonus points instead of discount (CustomerClub and CategoryOrBrand promotions only).
 - `orderTypes`: List<string>, nullable, max length 250 — Promotion is valid only for these order types (e.g. online, clickAndCollect, pos).
 - `tags`: List<string>, nullable, max length 250 — Tag for filtering promotions. E.g. "BlackFriday"

@@ -124,7 +124,6 @@ Every schema with its description. Search this file for a name or keyword, then 
 - [OmniumCustomerClubMemberPatchRequest](OmniumCustomerClubMemberPatchRequest.md) — Used to update a customerClub member, with consents and interests
 - [OmniumCustomerClubMemberSearchRequest](OmniumCustomerClubMemberSearchRequest.md) — Customer club member search request
 - [OmniumCustomerClubMemberTier](OmniumCustomerClubMemberTier.md)
-- [OmniumCustomerClubMemberTierSummary](OmniumCustomerClubMemberTierSummary.md)
 - [OmniumCustomerClubPointsSummary](OmniumCustomerClubPointsSummary.md) — Summary for customer club member. Balance, used points, reserved points etc
 - [OmniumCustomerClubValidPoints](OmniumCustomerClubValidPoints.md) — Class with information about valid points, and expire date
 - [OmniumCustomerCommentRequest](OmniumCustomerCommentRequest.md) — Request model for adding a comment to a customer
@@ -168,6 +167,7 @@ Every schema with its description. Search this file for a name or keyword, then 
 - [OmniumEpcTagCountGroup](OmniumEpcTagCountGroup.md) — Counts for one GroupBy field.
 - [OmniumEpcTagCountRequest](OmniumEpcTagCountRequest.md) — Counts the EPC tags matching a filter, grouped by one or more fields. Only counts are returned, no tags - use it for reconciliation tables and facets.
 - [OmniumEpcTagCountResult](OmniumEpcTagCountResult.md) — Result of an EPC tag count.
+- [OmniumEpcTagIssuerSerials](OmniumEpcTagIssuerSerials.md) — Numeric serials of one issuer, e.g. the single tags of a cluster result that carry its company prefix.
 - [OmniumEpcTagObservation](OmniumEpcTagObservation.md) — The latest observation of a tag: when and where it was last seen, and by what.
 - [OmniumEpcTagOmniumResult](OmniumEpcTagOmniumResult.md) — Generic query result
 - [OmniumEpcTagPatch](OmniumEpcTagPatch.md) — EPC tag patch model for partial updates. Only the values present in the request are updated. Derived fields (scheme, GTIN-14, company prefix) are managed by Omnium and not patchable.
@@ -340,6 +340,7 @@ Every schema with its description. Search this file for a name or keyword, then 
 - [OmniumPrivateCustomerOmniumSearchResult](OmniumPrivateCustomerOmniumSearchResult.md) — Generic class for receiving search results with facets
 - [OmniumPrivateCustomerOmniumVersion](OmniumPrivateCustomerOmniumVersion.md)
 - [OmniumPrivateCustomerPatch](OmniumPrivateCustomerPatch.md) — Private customer patch request
+- [OmniumPrivateCustomerTier](OmniumPrivateCustomerTier.md) — A tier from an external customer club system (CRM)
 - [OmniumPrivateCustomerViewModel](OmniumPrivateCustomerViewModel.md) — Info about customer and customer club membership
 - [OmniumProduct](OmniumProduct.md)
 - [OmniumProductAlert](OmniumProductAlert.md) — Class for product alert, for sending notifications to users when a product is back in stock
@@ -458,6 +459,7 @@ Every schema with its description. Search this file for a name or keyword, then 
 - [OmniumPromotionTypePatch](OmniumPromotionTypePatch.md) — Promotion type data
 - [OmniumPromotionTypeRequest](OmniumPromotionTypeRequest.md) — Promotion type data
 - [OmniumPropertyItem](OmniumPropertyItem.md) — Generic property item (key values)
+- [OmniumPropertyItemValue](OmniumPropertyItemValue.md) — One value of a property's Items: a key and a value, with the value type.
 - [OmniumPropertyOption](OmniumPropertyOption.md) — A single value belonging to a centrally managed dropdown option group.
 - [OmniumPropertyOptionOmniumResult](OmniumPropertyOptionOmniumResult.md) — Generic query result
 - [OmniumPropertyOptionSearchRequest](OmniumPropertyOptionSearchRequest.md) — Search request for property options.
@@ -487,6 +489,7 @@ Every schema with its description. Search this file for a name or keyword, then 
 - [OmniumRatingOmniumSearchResult](OmniumRatingOmniumSearchResult.md) — Generic class for receiving search results with facets
 - [OmniumRatingReply](OmniumRatingReply.md) — Class for creating a comment/answer to a rating/review
 - [OmniumRecommendationsResult](OmniumRecommendationsResult.md)
+- [OmniumRelatedEntity](OmniumRelatedEntity.md) — A typed link from a cart or order to another entity it depends on, e.g. an order added to a POS sale ("PaysFor") and, on that order, the POS order that paid for it ("PaidBy").
 - [OmniumRelatedProduct](OmniumRelatedProduct.md) — Representing a collection of related product items by a given key. A key could be "Siblings", "Accessories", etc
 - [OmniumRelatedProductItem](OmniumRelatedProductItem.md)
 - [OmniumRentalAvailabilityPeriod](OmniumRentalAvailabilityPeriod.md) — A time period specifying which products are available for rental
@@ -495,6 +498,11 @@ Every schema with its description. Search this file for a name or keyword, then 
 - [OmniumRentalBooking](OmniumRentalBooking.md) — A booking for a rental product
 - [OmniumRentalProductCreateRequest](OmniumRentalProductCreateRequest.md) — Request for creation of rental products from existing product
 - [OmniumRentalProductCreateResult](OmniumRentalProductCreateResult.md) — Result of rental product creation
+- [OmniumReorderSuggestion](OmniumReorderSuggestion.md) — Reorder suggestion for a SKU in a warehouse, calculated by Omnium from inventory levels and sales history.
+- [OmniumReorderSuggestionOmniumResult](OmniumReorderSuggestionOmniumResult.md) — Generic query result
+- [OmniumReorderSuggestionPatch](OmniumReorderSuggestionPatch.md) — Reorder suggestion patch model for partial updates. Only the values present in the request are updated. Changes to fields involved in the calculation trigger a recalculation of the suggestion.
+- [OmniumReorderSuggestionSearchRequest](OmniumReorderSuggestionSearchRequest.md) — Search and filtering of reorder suggestions
+- [OmniumReorderSuggestionUpdateResult](OmniumReorderSuggestionUpdateResult.md) — Result of a reorder suggestion patch operation
 - [OmniumReplacementRequestModel](OmniumReplacementRequestModel.md) — Request model for replacement order
 - [OmniumReplacementSettings](OmniumReplacementSettings.md)
 - [OmniumReturnCharge](OmniumReturnCharge.md) — Return charge
@@ -576,6 +584,7 @@ Every schema with its description. Search this file for a name or keyword, then 
 - [OmniumVatGroup](OmniumVatGroup.md) — Represents sales grouped by VAT rate or tax code.
 - [OmniumVatGroupRefund](OmniumVatGroupRefund.md) — Represents refunds/returns grouped by VAT rate.
 - [OmniumVersionListItem](OmniumVersionListItem.md)
+- [OmniumVersionListResult](OmniumVersionListResult.md) — One page of versions, newest first.
 - [OmniumVirtualWarehouseAllocation](OmniumVirtualWarehouseAllocation.md) — Virtual Warehouse Allocation
 - [OmniumVirtualWarehouseAllocationToSplit](OmniumVirtualWarehouseAllocationToSplit.md) — Virtual Warehouse Allocation identifier for split operations. Use either Id or WarehouseCode to identify which allocation to split.
 - [OmniumVisitingaddress](OmniumVisitingaddress.md)

@@ -33,6 +33,7 @@
 - `canBeCombinedWithOtherPromotions`: boolean
 - `alwaysApply`: boolean
 - `customerClubMembersOnly`: boolean
+- `customerClubTierIds`: List<string>, nullable, max length 250
 - `tenantId`: string, nullable
 - `indexIdentifier`: string, nullable, read-only
 - `createdDate`: string (date-time), nullable
