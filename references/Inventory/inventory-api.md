@@ -230,6 +230,7 @@ Deviations found by inventory counts in the Omnium UI and the In-Store app are l
     *   Automatically creates inventory items if they don't already exist.
     *   Skips updates for unchanged items to maintain high performance, even with a large amount of inventory items.
     *   Will only create inventory transactions for actual changes, so the transaction list stays clean and relevant.
+    *   Does not recalculate the stock of packages and bundles that contain the updated items, unless [inventory rules are applied to API inventory updates](virtual-stock-locations.md#applying-rules-to-api-inventory-updates) and the request changes a quantity. If you use packages or bundles, enable the [Package Inventory Recalculation](../configuration/scheduled-tasks/inventory/package-inventory-recalculation.md) scheduled task.
 *   Use batch sizes of 1000 for stability and performance.
 
 *   If reservations are **managed externally** (i.e., outside Omnium):

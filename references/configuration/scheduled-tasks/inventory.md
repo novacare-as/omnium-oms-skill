@@ -18,6 +18,7 @@ The Inventory scheduled tasks are responsible for managing stock levels, trackin
 | [Product Cost in Default Currency](inventory/product-cost-default-currency.md) | Calculate and update product cost in the default currency | Delta |
 | [Supplier Reorder Suggestions](inventory/supplier-reorder-suggestions.md) | Update supplier records with reorder recommendations | Delta |
 | [Resolve Over-Reserved Inventory](inventory/resolve-over-reserved-inventory.md) | Detect and remove inventory reservations that exceed available stock using FIFO order priority | Delta |
+| [Package Inventory Recalculation](inventory/package-inventory-recalculation.md) | Recalculate the calculated inventory of packages and bundles whose component stock changed through bulk inventory updates | Delta |
 
 * * *
 
@@ -87,6 +88,7 @@ Enable the Supplier Reorder Suggestions task to aggregate reorder recommendation
 | Overallocated Inventory | `*/5 * * * *` (every 5 minutes) | Frequent checks to prevent overselling |
 | Cost sync tasks | `0 3 * * *` (daily at 3 AM) | Cost changes are typically infrequent |
 | Supplier Reorder Suggestions | `0 4 * * *` (daily at 4 AM) | Procurement planning typically done daily |
+| Package Inventory Recalculation | `*/5 * * * *` (every 5 minutes) | Package stock follows bulk stock feeds within minutes |
 
 * * *
 
@@ -102,3 +104,4 @@ Some inventory tasks have dependencies on other tasks or features:
 | Overallocated Inventory | Unallocated Inventory task must run first |
 | Product Cost in Default Currency | Default cost currency configured in tenant settings |
 | Supplier Reorder Suggestions | Analytics reorder suggestions data |
+| Package Inventory Recalculation | `HasPackages` enabled in the product settings |

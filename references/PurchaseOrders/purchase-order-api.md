@@ -157,6 +157,19 @@ Each purchase order contains a `PurchaseOrderForm` with a list of `LineItems`. A
 | **PlacedPriceExclTax** | decimal | Unit cost price excluding tax |
 | **Currency** | string | Price currency |
 
+### Despatch advice fields on the line
+
+A [despatch advice](Deliveries/despatch-advice.md) can find a line by the buyer's line number, and can add lines for items that were not ordered.
+
+| Property | Type | Description |
+| --- | --- | --- |
+| LineNumber | string | The buyer's own line number on the order, such as `103`. Can be written with `PUT` and `PATCH`. |
+| Origin | string | Empty for a line that was ordered. `AddedByDespatchAdvice` for a line a despatch advice added. Read-only. |
+| AddedDate | DateTime? | When a line that was not ordered was added. Read-only. |
+| ReceptionDeviationReasonCode | string | Read-only. Empty on the order line itself; the reason codes of a despatch advice are on the content rows of its units. The lines of a unit, read from the Delivery API, carry the code of each row. |
+
+Your ERP does not know the lines a despatch advice added, so an update keeps them: `PUT`, `UpdateAndRunWorkflow`, `UpdateMany` and `PATCH` with `KeepExistingOrderLines` set to `false` put back every stored line with `Origin` `AddedByDespatchAdvice` that the request leaves out. `Origin`, `AddedDate` and `ReceptionDeviationReasonCode` always come from the stored line with the same `LineItemId`.
+
 ### Quantity tracking
 
 These fields track the fulfillment progress of each line:

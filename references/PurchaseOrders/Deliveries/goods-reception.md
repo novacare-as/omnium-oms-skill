@@ -35,6 +35,7 @@ Each goods reception line represents a single product received at a warehouse.
 | `GoodsReceptionId` | `string` | No | Idempotency key to prevent duplicate processing. Recommended for API integrations |
 | `ReceiveAsUnallocated` | `bool` | No | VSL only. If `true`, inventory is added to the physical warehouse without distributing to virtual stock locations |
 | `AllocateBasedOnRules` | `bool?` | No | VSL only. Overrides the purchase order line setting. If `true`, uses inventory rules to distribute across virtual warehouses |
+| `ReceptionDeviationReasonCode` | `string` | No | Only for a reception on a unit of a despatch advice: why the quantity differs from the advised quantity. Stored on the content row of the unit as it is sent |
 
 * * *
 
@@ -61,6 +62,10 @@ POST /api/Deliveries/ProcessGoodsReception
 Processes goods reception for line items across any delivery. The line items are resolved to their deliveries automatically based on the purchase order data.
 
 Both endpoints accept the same request body: an array of goods reception lines.
+
+### Units of a Despatch Advice
+
+When `deliveryId` in the delivery-scoped endpoint is a unit of a [despatch advice](despatch-advice.md) (a pallet or carton with an SSCC), the lines are the counted content of that unit. A content row the lines leave out is received with 0. The goods are booked on the order lines of the top delivery, at most what is open on them unless you add `?confirmOverDelivery=true`, and the answer is the reception result of the unit, with `409` when the unit was not received. To receive whole units as advised, use `POST /api/Deliveries/{deliveryId}/Receive`. See [Receiving by SSCC](sscc-reception.md).
 
 ### Validation
 

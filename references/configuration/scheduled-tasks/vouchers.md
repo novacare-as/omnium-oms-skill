@@ -2,43 +2,34 @@
 
 Source: https://docs.omnium.no/docs/configuration/scheduled-tasks/vouchers
 
-> Background jobs for voucher lifecycle management, expiration, and reactivation
+> Background job that keeps the status of the vouchers up to date
 
-The Voucher scheduled tasks manage voucher status transitions, including marking vouchers as expired when they pass their expiry date and reactivating vouchers that are no longer in use.
+The Voucher scheduled task keeps the status of the vouchers up to date. It releases vouchers that a sale no longer holds, and marks vouchers as expired when they pass their expiry date.
 
 ## Available Tasks
 
 | Task | Description | Type |
 | --- | --- | --- |
-| [Voucher Expiration](vouchers/voucher-expiration.md) | Mark available vouchers as expired when past their expiry date | Delta |
-| [Voucher Reactivation](vouchers/voucher-reactivation.md) | Reactivate applied vouchers that are no longer on active carts or orders | Delta |
-
-* * *
-
-## Overview
-
-Voucher tasks work together to manage voucher availability:
-
-1.  **Expiration** - Automatically expire vouchers that are past their valid date
-2.  **Reactivation** - Restore vouchers to available status when orders are cancelled or carts abandoned
+| [Update Voucher Status](vouchers/voucher-expiration.md) | Release vouchers that a sale no longer holds, and mark available vouchers as expired when past their expiry date | Delta |
 
 * * *
 
 ## Common Use Cases
 
-### Automated Expiration
-
-Use Voucher Expiration to automatically invalidate vouchers past their expiry date, preventing customers from using outdated promotional codes.
-
 ### Voucher Recovery
 
-Enable Voucher Reactivation to automatically make vouchers available again when the associated order is cancelled or the cart is abandoned, ensuring customers can reuse their vouchers.
+A voucher that is added to a cart is reserved for that sale. When the sale is not completed, or the order is cancelled, the task makes the voucher available again, so the customer can use it in another sale.
+
+A voucher on a cart that has not changed for 24 hours is taken off the cart and released. Set the task property `ReleaseVoucherFromCartAfterHours` to change the number of hours, or to `0` to keep vouchers on carts. See [Configuration Properties](vouchers/voucher-expiration.md#configuration-properties).
+
+### Automated Expiration
+
+The task marks vouchers past their expiry date as expired.
 
 * * *
 
-## Recommended Schedules
+## Recommended Schedule
 
-| Task Type | Recommended Schedule | Reason |
+| Task | Recommended Schedule | Reason |
 | --- | --- | --- |
-| Expiration tasks | `0 0 * * *` (daily at midnight) | Expire vouchers at the start of each day |
-| Reactivation tasks | `*/30 * * * *` (every 30 minutes) | Timely recovery of unused vouchers |
+| Update Voucher Status | `0 * * * *` (every hour) | Release unused vouchers soon after the configured number of hours |

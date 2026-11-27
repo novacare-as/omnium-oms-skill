@@ -1412,7 +1412,7 @@ This release focuses on enhancing configurability, tag-based visibility logic, a
 | Feature | #DEV-18163 | GUI | GUI extensions can now be filtered based on the tags applied to the selected object in the UI. |
 | Feature | #DEV-17316 | Settings | Number options - new option "CustomNumberOptions". |
 | Feature | #DEV-17314 | Carts | Support creation of configurable products, standalone custom order lines without a linked product. |
-| Feature | #DEV-18081 | Carts | New API-endpoint for deleting shipments /api/Cart/{cartId}/DeleteShipments. |
+| Feature | #DEV-18081 | Carts | New API-endpoint for deleting shipments `/api/Cart/{cartId}/DeleteShipments`. |
 | Feature | #DEV-17918 | Purchase Orders | Purchase order statuses now support included and excluded tag filters, enabling tag-based visibility control in the workflow. |
 | Feature | #DEV-18162 | Purchase orders | Tags are now shown in the list views for purchase orders and deliveries. Tag filters are available in both the UI and API, including support for included and excluded tag filtering. |
 | Feature | #DEV-17835 | Settings | Order statuses can now define included and excluded tags, enabling tag-based visibility control in the order workflow. |
@@ -1706,7 +1706,7 @@ This release brings a wide range of functional enhancements across carts, produc
 | Feature | #DEV-17568 | Carts | New quick edit mode for the 'Cost' tab. |
 | Feature | #DEV-16720 | Carts | Adding new quick edit mode for order lines which can be activated from the "Order Details" and "Cost" tabs. |
 | Feature | #DEV-16215 | Carts | Order lines can now be excluded from the promotion engine to allow manual discounting by sales representatives. |
-| Feature | #DEV-17288 | GUI | Added GuiExtensionArea to Order-Orderlinedetails. Use {{order.id}} in url to get details from order in url. |
+| Feature | #DEV-17288 | GUI | Added GuiExtensionArea to Order-Orderlinedetails. Use `{{order.id}}` in url to get details from order in url. |
 | Feature | #DEV-17528 | GUI | Improved texts in the settings UI and added support for Finnish, French, Dutch, Polish, Spanish, and Italian. |
 | Feature | #DEV-17027 | Projects | New API-endpoint for reactivating projects on hold and cancelled projects. |
 | Feature | #DEV-17481 | Orders | New Workflow Step for Delayed Order Processing. |

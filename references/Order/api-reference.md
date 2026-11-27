@@ -1160,6 +1160,7 @@ The order form contains the commercial content of the order.
 | Properties | List<OmniumPropertyItem> | Custom properties (max 250) |
 | IsPriority | bool? | Whether the order is marked as priority |
 | FullRefund | bool | Whether the order is fully refunded |
+| RelatedEntities | List<[OmniumRelatedEntity](api-reference.md#related-entity-model)\> | Typed links to other entities, for example from a POS order to the orders it pays for (max 250) |
 
 #### Calculated totals
 
@@ -1178,6 +1179,29 @@ The order form contains the commercial content of the order.
 | AuthorizedPaymentTotal | decimal | Total authorized payment amount |
 | CapturedPaymentTotal | decimal | Total captured payment amount |
 | CreditPaymentTotal | decimal | Total credited/refunded amount |
+
+* * *
+
+### Related entity model
+
+A typed link from a cart or an order to another entity. The links are on the order form, in `orderForm.relatedEntities`.
+
+| Property | Type | Description |
+| --- | --- | --- |
+| Type | string | How the linked entity relates to the cart or order. See [link types](api-reference.md#link-types). |
+| Entity | string | Kind of entity: `Order` |
+| Id | string | ID of the linked entity |
+| Reference | string | Display text, for example the order number |
+| Created | DateTime? | When the link was created |
+
+#### Link types
+
+| Type | Entity | Description |
+| --- | --- | --- |
+| `PaysFor` | `Order` | On a POS cart or order: an order added to the sale. The POS order pays for the shipments that were copied from it. |
+| `PaidBy` | `Order` | On an order added to a POS sale: the POS order that paid for its shipments |
+
+A list that you send replaces all the links. If you leave `relatedEntities` out, `POST /api/Orders/Update` keeps the links, and `PUT /api/Orders/Update` removes them.
 
 * * *
 

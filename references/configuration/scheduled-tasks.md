@@ -49,7 +49,7 @@ Omnium scheduled tasks are organized into functional groups:
 | [Products](scheduled-tasks/products.md) | Product data maintenance, pricing, assortment, and inventory status | 11 |
 | [Inventory](scheduled-tasks/inventory.md) | Stock levels, allocation tracking, valuation, and reorder suggestions | 7 |
 | [Carts](scheduled-tasks/carts.md) | Shopping cart maintenance and conversion | 2 |
-| [Vouchers](scheduled-tasks/vouchers.md) | Voucher lifecycle and reactivation | 2 |
+| [Vouchers](scheduled-tasks/vouchers.md) | Voucher status: release and expiration | 1 |
 | [Prices](scheduled-tasks/prices.md) | Price data cleanup and maintenance | 2 |
 | [Projects](scheduled-tasks/projects.md) | Project lifecycle and anonymization | 2 |
 | [Ratings](scheduled-tasks/ratings.md) | Product rating verification | 1 |

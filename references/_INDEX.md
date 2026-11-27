@@ -8,7 +8,7 @@ Search this file for a keyword or jump to a topic, then read only the pages you 
 
 - [Carts](#carts) (21 pages)
 - [Configuration](#configuration) (93 pages)
-- [Connectors & Plugins](#connectors--plugins) (76 pages)
+- [Connectors & Plugins](#connectors--plugins) (77 pages)
 - [Customers](#customers) (14 pages)
 - [Getting Started, API Conventions & Security](#getting-started-api-conventions--security) (21 pages)
 - [Integrations](#integrations) (12 pages)
@@ -17,7 +17,7 @@ Search this file for a keyword or jump to a topic, then read only the pages you 
 - [Prices](#prices) (25 pages)
 - [Products](#products) (60 pages)
 - [Projects](#projects) (13 pages)
-- [Purchase Orders](#purchase-orders) (22 pages)
+- [Purchase Orders](#purchase-orders) (25 pages)
 - [Release notes](#release-notes) (8 pages)
 - [Stores & Markets](#stores--markets) (6 pages)
 - [Tutorials](#tutorials) (4 pages)
@@ -93,7 +93,7 @@ Platform settings, scheduled tasks, GUI extensions, reports, and other configura
 - [Rating Scheduled Tasks](configuration/scheduled-tasks/ratings.md) — Background jobs for product rating notifications and verification
 - [Store Scheduled Tasks](configuration/scheduled-tasks/stores.md) — Background jobs for store data maintenance and cleanup
 - [Subscription Scheduled Tasks](configuration/scheduled-tasks/subscriptions.md) — Background jobs for subscription order processing and management
-- [Voucher Scheduled Tasks](configuration/scheduled-tasks/vouchers.md) — Background jobs for voucher lifecycle management, expiration, and reactivation
+- [Voucher Scheduled Tasks](configuration/scheduled-tasks/vouchers.md) — Background job that keeps the status of the vouchers up to date
 
 ### configuration/scheduled-tasks/accounting
 
@@ -137,6 +137,7 @@ Platform settings, scheduled tasks, GUI extensions, reports, and other configura
 - [Add Cost and Currency to Inventory](configuration/scheduled-tasks/inventory/add-cost-currency-to-inventory.md) — Propagate cost and currency from products to inventory items
 - [Inventory Value](configuration/scheduled-tasks/inventory/inventory-value.md) — Create daily snapshots of inventory valuation by warehouse and currency
 - [Overallocated Inventory](configuration/scheduled-tasks/inventory/overallocated-inventory.md) — Detect and correct overallocated virtual stock to prevent overselling
+- [Package Inventory Recalculation](configuration/scheduled-tasks/inventory/package-inventory-recalculation.md) — Recalculate the calculated inventory of packages and bundles whose component stock changed through bulk inventory updates
 - [Product Cost in Default Currency](configuration/scheduled-tasks/inventory/product-cost-default-currency.md) — Calculate and update product cost in the default currency
 - [Product Unallocated Inventory](configuration/scheduled-tasks/inventory/product-unallocated-inventory.md) — Sync unallocated inventory data to product records
 - [Resolve Over-Reserved Inventory](configuration/scheduled-tasks/inventory/resolve-over-reserved-inventory.md) — Automatically detect and remove inventory reservations that exceed available stock using FIFO order priority
@@ -202,8 +203,7 @@ Platform settings, scheduled tasks, GUI extensions, reports, and other configura
 
 ### configuration/scheduled-tasks/vouchers
 
-- [Voucher Expiration](configuration/scheduled-tasks/vouchers/voucher-expiration.md) — Automatically mark available vouchers as expired when past their expiry date
-- [Voucher Reactivation](configuration/scheduled-tasks/vouchers/voucher-reactivation.md) — Automatically reactivate applied vouchers that are no longer on active carts or orders
+- [Update Voucher Status](configuration/scheduled-tasks/vouchers/voucher-expiration.md) — Release vouchers that a sale no longer holds, and mark available vouchers as expired when their expiry date has passed
 
 ## Connectors & Plugins
 
@@ -254,6 +254,7 @@ Pre-built integrations maintained by the Omnium team — payment providers, ship
 - [Avarda](plugins/Payments/avarda.md) — Configure Avarda payment provider with Omnium for flexible payment options.
 - [Bonus Points](plugins/Payments/bonusPoints.md) — Configure Bonus Points loyalty payment with Omnium for customer club point redemption.
 - [Dintero](plugins/Payments/dintero.md) — Learn all you need to know about our Dintero plugin
+- [Dintero Discounts (Deal Engine)](plugins/Payments/dintero-discounts.md) — Get the best price for a cart from Dintero Discounts (Deal Engine) and send the final sale and return receipts to Deal Engine
 - [Generic Payment](plugins/Payments/genericPayment.md) — Configure Generic Payment provider for custom webhook-based payment integrations.
 - [Kustom Checkout](plugins/Payments/klarnav3.md) — Configure Kustom Checkout (formerly Klarna Checkout v3) with Omnium to process payments.
 - [Netaxept](plugins/Payments/netaxept.md) — Configure Netaxept (Nets) payment provider with Omnium for card payments in the Nordics.
@@ -937,8 +938,11 @@ Manage procurement in Omnium — create purchase orders, track supplier deliveri
 
 ### PurchaseOrders/Deliveries
 
+- [API Reference](PurchaseOrders/Deliveries/delivery-api.md) — Reference for the Delivery API in Omnium - read, search, create, update and delete deliveries, perform goods reception, take in despatch advices and receive their units by SSCC.
 - [Configuration](PurchaseOrders/Deliveries/delivery-config.md) — Configure delivery settings in Omnium — delivery numbering, goods reception behavior, shipment status updates, automatic status calculation, and delivery exports.
+- [Despatch Advice (ASN)](PurchaseOrders/Deliveries/despatch-advice.md) — Send a despatch advice (ASN, DESADV) to Omnium so a delivery is built with one unit per pallet and carton that the store receives by scanning the SSCC label.
 - [Goods Reception](PurchaseOrders/Deliveries/goods-reception.md) — How goods reception works in Omnium — receiving delivered goods into warehouse inventory, releasing order reservations, and handling partial deliveries.
+- [Receiving by SSCC](PurchaseOrders/Deliveries/sscc-reception.md) — Read the units of a despatch advice, receive pallets and cartons by SSCC through the API, and get the receiving advice with received, short, oversupplied and rejected quantities for a RECADV.
 
 ### PurchaseOrders/Suppliers
 

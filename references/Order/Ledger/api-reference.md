@@ -279,7 +279,7 @@ Responses return `source` and `category` as numbers, while the swagger documenta
 
 **OmniumAccountCategory**
 
-`Sales` (0), `OutputVat` (1), `PaymentMethod` (2), `Shipping` (3), `Discount` (4), `Rounding` (5), `RefundPaymentMethod` (6), `InternalTransferOut` (7), `InternalTransferIn` (8), `Receivable` (9), `GiftCardLiability` (10), `PaymentProviderFee` (11), `Other` (12), `CashFloat` (13), `CashInTransit` (14), `OverShort` (15), `Tip` (16), `DepositLiability` (17).
+`Sales` (0), `OutputVat` (1), `PaymentMethod` (2), `Shipping` (3), `Discount` (4), `Rounding` (5), `RefundPaymentMethod` (6), `InternalTransferOut` (7), `InternalTransferIn` (8), `Receivable` (9), `GiftCardLiability` (10), `PaymentProviderFee` (11), `Other` (12), `CashFloat` (13), `CashInTransit` (14), `OverShort` (15), `Tip` (16), `DepositLiability` (17), `CashReason` (19).
 
 See [Account categories](ledger-postings.md#account-categories) for what each represents. Lines booked to a `RentalSales` account are returned with category `Other`; filtering ledger lines by `Other` does not include them.
 

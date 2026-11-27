@@ -72,6 +72,8 @@ When a package product is saved, Omnium recalculates its inventory based on curr
 
 When any component's inventory changes, Omnium identifies all packages that include that component and recalculates their availability.
 
+The inventory Excel import saves component stock without recalculating the packages. So do the bulk endpoints `PUT /api/Inventory/UpdateMany` and `PUT /api/Inventory/UpdateManyWithMetadata`, unless [inventory rules are applied to API inventory updates](../../Inventory/virtual-stock-locations.md#applying-rules-to-api-inventory-updates) and the request changes a quantity. Enable the [Package Inventory Recalculation](../../configuration/scheduled-tasks/inventory/package-inventory-recalculation.md) scheduled task to recalculate those packages in batches.
+
 ### Triggering Conditions
 
 Recalculation is triggered when:

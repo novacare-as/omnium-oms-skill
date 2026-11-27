@@ -183,7 +183,14 @@ The CRM integration is used at the following points in Sitoo POS:
 
 ### Customer Club Members and Price List Access
 
-When a customer is synced to Sitoo via the CRM SPI, customer club members automatically receive the password configured with key `OmniumCustomerClubMemberPassword` in their Sitoo profile (`voucher_passwords`). This grants them access to any Sitoo voucher or price list protected by that password.
+When Sitoo reads a customer through the CRM SPI, a customer club member gets two voucher passwords in the response (`voucher_passwords`). A voucher protected by one of them applies when the member is added to the cart.
+
+| Password | Unlocks |
+| --- | --- |
+| `member` | The vouchers Omnium exports: promotions with `CustomerClubMembersOnly` and no coupon code, and customer club price lists. No setup in Sitoo is needed. |
+| `OmniumCustomerClubMemberPassword` | A member voucher created by hand in Sitoo with this text as its password. |
+
+This applies to private customers and business customers. See [Who a promotion applies to](Promotions.md#who-a-promotion-applies-to) and [Customer Club Price Lists](Prices.md#customer-club-price-lists).
 
 ### Customer Transactions
 

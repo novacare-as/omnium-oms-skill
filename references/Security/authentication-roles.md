@@ -79,7 +79,7 @@ If you have separate environments, add the corresponding URIs for each. Omnium r
 
 Each environment should have its own App Registration, or you can add all redirect URIs to a single registration if you prefer a shared setup.
 
-Using the Omnium-managed subdomains above is the simplest option and is recommended for dev and test environments. The trade-off is that Omnium-managed subdomains route through Azure Front Door, so any Front Door disruption requires Omnium to update more DNS records to restore access. Production can use a custom domain instead — contact [Omnium Support](mailto:support@omnium.no) with your identity provider details to set this up.
+Using the Omnium-managed subdomains above is the simplest option and is recommended for dev and test environments. The trade-off is that Omnium-managed subdomains route through Azure Front Door, so any Front Door disruption requires Omnium to update more DNS records to restore access. Production can use a custom domain instead — create a ticket with [Omnium Support](https://help.omnium.no/hc/en-us/requests/new) and include your identity provider details to set this up.
 
 #### Client Secret
 
@@ -123,6 +123,8 @@ See [Automatic User Management with SCIM 2.0](scim.md) for setup instructions.
 ## Auth0
 
 Omnium supports **Single Sign-On (SSO)** with Auth0 through **OpenID Connect (OIDC)**.
+
+[Create a ticket](https://help.omnium.no/hc/en-us/requests/new) with Omnium Support before you plan to use Auth0. Auth0 sign-in requires changes on Omnium's side.
 
 ### Setup
 

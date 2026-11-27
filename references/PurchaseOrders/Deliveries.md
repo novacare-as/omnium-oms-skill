@@ -32,6 +32,14 @@ The delivery type is determined automatically based on the purchase order. If th
 
 * * *
 
+## Despatch Advices and Units
+
+When a supplier sends a despatch advice (ASN), Omnium builds a tree of deliveries from it. The **top delivery** stands for the shipment and holds the purchase order lines, as any delivery does. Each pallet or carton with an SSCC label, or with a carrier's package ID, becomes a **unit**: a delivery under the top delivery that lists its content and points at the order lines of the top delivery. The store receives a unit by scanning its SSCC label, which books its content on the order lines of the top delivery.
+
+Units stay out of delivery lists unless you ask for them, and they are never exported. See [Despatch advice (ASN)](Deliveries/despatch-advice.md) for the intake and [Receiving by SSCC](Deliveries/sscc-reception.md) for the reception and the receiving advice. The fields of the tree are listed in the [delivery model](Deliveries/delivery-api.md#delivery-model) of the API reference.
+
+* * *
+
 ## Delivery Lifecycle
 
 ### Statuses

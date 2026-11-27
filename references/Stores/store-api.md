@@ -232,6 +232,29 @@ How the two lists behave in the API:
 
 A store has opening hours for every day of the week as separate properties (e.g., `mondayOpeningHours`, `tuesdayOpeningHours`, etc.). You can also create special opening hours for public holidays or other exceptions.
 
+#### More than one opening period in a day
+
+If a store closes during the day, for example for lunch, set the first period in `openFrom` and `openTo`, and the later periods in `extraIntervals` (max 10):
+
+```
+"mondayOpeningHours": {
+  "isOpen": true,
+  "openFrom": "09:00:00",
+  "openTo": "12:00:00",
+  "extraIntervals": [
+    { "openFrom": "13:00:00", "openTo": "17:00:00" }
+  ]
+}
+```
+
+*   On a day with extra intervals, each period must close after it opens, and the periods must not overlap. Otherwise, the request returns `400`.
+*   Omnium sorts the periods, so `openFrom` and `openTo` always hold the earliest one.
+*   Special opening hours use the same model.
+
+When you patch a store, leave `extraIntervals` out to keep the current periods, send an empty list to remove them, or send a list to replace them.
+
+To change the periods of a day with a patch, send `isOpen`, `openFrom`, `openTo`, and `extraIntervals` together. Omnium validates only the values in the request, and joins periods that overlap the stored ones.
+
 For more details, refer to the [Opening Hours Model documentation](https://api.omnium.no/documentation/index.html#/model-OmniumOpeningHours).
 
 ### Special Opening Hours Model

@@ -474,7 +474,7 @@ When using an external bonus points provider, ensure the appropriate connector i
 
 ## PunchOut settings (B2B)
 
-PunchOut settings configure B2B procurement integrations using OCI (Open Catalog Interface) or cXML protocols. These settings enable e-procurement systems to "punch out" to Omnium for catalog browsing and cart creation.
+PunchOut settings hold data for B2B procurement integrations that use the OCI (Open Catalog Interface) or cXML protocols. Omnium stores the settings and returns them through the API. Omnium does not send or receive OCI or cXML messages: the web shop or the integration that runs the punch-out session reads the settings and applies them.
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |

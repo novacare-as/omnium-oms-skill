@@ -70,6 +70,8 @@ Role properties:
 *   **Store access** — Which stores the user can work with (`AllStores` or specific stores)
 *   **Market access** — Which markets the user can work with (`AllMarkets` or specific markets)
 
+Store and market access limits orders, projects and stores. It does not limit products, except local products for UI users. See [What store and market scoping covers](Security/api-security.md#what-store-and-market-scoping-covers).
+
 For detailed role configuration, see [Roles, access rights, and users](https://help.omnium.no/hc/en-us/articles/22603831968017-Roles-access-rights-and-users).
 
 * * *

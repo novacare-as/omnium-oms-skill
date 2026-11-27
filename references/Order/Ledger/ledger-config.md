@@ -82,6 +82,8 @@ The **Validation** tab checks the accounting settings currently on screen — in
 | Duplicate tax group code | Error | Two tax groups share a code. Also reported for groups that share a code with non-overlapping validity windows, which is the valid way to [change a rate](ledger-tax-groups.md#validity-windows-and-rate-changes); in that case you can ignore it. |
 | Time zone, currency, cutoff hour | Warning / Error | **Posting enabled** is on and the time zone or default currency is empty (warning), the time zone is not a recognised ID (error), or the cutoff hour is outside 0–23 (error). |
 | Balance tolerance is 0 or less | Warning | **Posting enabled** is on and **Balance tolerance** is `0` or negative. The message says auto-balancing is disabled; in fact `0` balances every difference, so ignore it when `0` is intended. |
+| No CashReason account for a cash reason code | Warning | A cash reason code under **In-Store App → Cash in and cash out** has no `CashReason` entry with its ID and no catch-all. Its cash ins and cash outs are not posted. |
+| CashReason entry doesn't match any cash reason code | Warning | A `CashReason` entry's discriminator is not the ID of a cash reason code. IDs are case-sensitive. |
 | Posting exclusion problems | Info / Warning / Error | Active rules exist while web-fulfillment posting is off (info), an active rule has no filters, or a rule references an unknown market, market group, store group, order type, order status, or payment method (warning), or a rule has an unknown transaction type (error). |
 
 ## Permissions
