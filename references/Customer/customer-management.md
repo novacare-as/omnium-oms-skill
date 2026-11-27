@@ -15,7 +15,7 @@ Omnium manages two distinct customer types: **private customers** (B2C) for indi
 | **Financial** | Bonus points (loyalty) | Credit management (balance, limit, per market) |
 | **Product access** | Shared catalog | Restricted assortment per customer |
 | **Discounts** | Coupons, customer club promotions | Price groups, discount groups |
-| **Procurement** | N/A | PunchOut / OCI / cXML support |
+| **Procurement** | N/A | PunchOut data (domain, unit conversion list, property overrides) stored for an external OCI or cXML integration |
 | **Privacy** | GDPR anonymization | Standard deletion |
 | **Loyalty** | Customer club membership, tiers, points | N/A |
 
@@ -74,7 +74,7 @@ In addition to the common fields:
 | `priceGroups` | Assigned price groups |
 | `isAssortmentRestricted` | Whether the customer sees a restricted product catalog |
 | `assortmentCodes` | Codes defining which product categories are visible |
-| `punchOutDomain` | e-Procurement domain for OCI/cXML integration |
+| `punchOutDomain` | Domain of the customer's e-procurement system. Stored for an external OCI or cXML integration to read |
 
 * * *
 

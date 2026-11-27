@@ -78,6 +78,24 @@ If the user should access everything, assign `AllStores` and `AllMarkets`.
 
 Store and market scoping is particularly useful for integrations that should only see data from specific locations — for example, a warehouse system that only needs orders destined for its warehouse.
 
+#### What store and market scoping covers
+
+Store and market scoping limits data that belongs to a store. The roles decide which areas the API user can use, and the stores and markets decide which records it sees within some of those areas.
+
+| Data | Limited by stores and markets | How |
+| --- | --- | --- |
+| Orders | Yes | Getting an order or its versions, updating or deleting it, and adding or crediting payments require that the order's store, or the warehouse or pickup warehouse on one of its shipments, is one of the user's stores. A search returns only orders in the user's stores and markets. |
+| Projects | Yes | A search returns only projects in the user's stores. |
+| Stores | Yes | A search returns only the user's stores in the user's markets. Getting or updating a store requires access to that store. |
+| Products | No | Only the role (`ProductRead` / `ProductAdmin`) controls access. |
+| Prices, inventory, customers, carts and other data | No | Only the role for the area controls access. |
+
+Products are shared by the whole tenant. The `marketIds` of a product say which markets the product is sold in. They do not limit who can read the product, so an API user scoped to one market can still get a product that is only sold in another market.
+
+On a tenant with [local products](../Product/local-products/access-control.md), users in the Omnium UI see only the local products of their stores. This filter does not apply to API users: an API user with product access sees all local products, whatever stores it has.
+
+To limit an integration to the products of one market, filter on `marketIds` in the [product search](../Product.md) request. The API user's stores and markets will not do it for you.
+
 ### Role Inheritance
 
 Roles follow a hierarchy. Higher-level roles automatically include the permissions of lower-level roles:

@@ -37,6 +37,7 @@ The **discriminator** is what distinguishes two entries that share the same cate
 *   For **`PaymentMethod`** and **`RefundPaymentMethod`**, the discriminator is the **payment method name** — the name configured on the payment method for web orders (for example `klarna_kco`), or the payment method recorded by the register for POS. Matching is case-sensitive. To book one payment type of a method on its own account, write the method name, a vertical bar and the type: `Nets|Visa` — see [Accounts per payment type](ledger-chart-of-accounts.md#accounts-per-payment-type).
 *   For **`GiftCardLiability`**, the discriminator is `GiftCard`.
 *   For **`DepositLiability`**, use `Deposit`, or leave it blank.
+*   For **`CashReason`**, the discriminator is the **ID of the cash reason code**, as set under **Settings → In-Store App → Cash in and cash out**. Matching is case-sensitive.
 
 Discriminators are compared as exact text, so `25`, `0,25`, and `0.10` never match a rate. An entry with **no discriminator** acts as the catch-all for its category.
 
@@ -75,6 +76,7 @@ A chart without type entries books exactly as before, so adding the first one is
 | `InternalTransferIn` / `InternalTransferOut` | The cost of goods is moved between stores of the same store group on a cross-store return | Blank |
 | `Rounding` | Rounding differences in the **Export bookkeeping file** under **Reports → Payments** and in **Payment Ledger** [custom reports](../../configuration/custom-reports.md). Not used by postings. | Blank |
 | `CashInTransit` | Cash is registered from a store's safe to the bank in the In-Store app ([safe withdrawals](ledger-postings.md#safe-withdrawals)) | Blank |
+| `CashReason` | A cash in or cash out in the In-Store app has a cash reason code, in the Z-report posting ([cash in and cash out with a reason code](ledger-postings.md#cash-in-and-cash-out-with-a-reason-code)) | Cash reason code ID, or blank for all codes |
 | `PaymentProviderFee`, `Discount`, `CashFloat`, `Tip`, `Other` | Not booked today. Discounts are already netted into the sales amounts. | — |
 
 ## How an account is resolved
@@ -110,6 +112,7 @@ The **Chart of accounts** card offers these actions:
 | **Insert accounts from → Insert Norwegian / Swedish / Danish account chart** | Appends the country preset. Entries whose category, discriminator, currency, and tax group already exist are skipped, and a summary shows how many were added and skipped. |
 | **Insert accounts from → Generate accounts from payment methods** | Adds a `PaymentMethod` and a `RefundPaymentMethod` entry for each configured payment method that does not have one, with the payment method name as discriminator and an empty account number for you to fill in. |
 | **Insert accounts from → Generate accounts for payment types** | Opens a dialog listing, per configured payment method, the [payment types](ledger-chart-of-accounts.md#accounts-per-payment-type) its POS and order payments carried in the last 90 days, with counts. For a card terminal it also lists the other known card schemes. Types that already have both entries are marked. **Other payment type** adds a type the list does not show. **Add accounts** adds a `PaymentMethod` and a `RefundPaymentMethod` entry (`Nets|Visa`) per selected type, with an empty account number. |
+| **Insert accounts from → Generate accounts for cash reason codes** | Shown when the tenant has cash reason codes. Adds a `CashReason` entry for each code, with the code's ID as discriminator, its text as name, and an empty account number. Codes that already have an entry are skipped. |
 | Delete icon | Removes the entry. |
 
 The presets follow common national charts (NS 4102, BAS, Standardkontoplan). Verify every account number against your own accounting system before going live.

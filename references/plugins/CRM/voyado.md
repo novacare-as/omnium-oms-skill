@@ -273,6 +273,7 @@ See section below for details on the xml product feed.
 | `number` | `Product.ProductId` |
 | `name` | `Variant.Name` |
 | `maincategory` | `ProductCategory.Name` |
+| `awardsbonus` | `false` when the parent product has `ExcludeFromVoyadoBonusPoints = true`, otherwise `true` |
 | `brand` | `Brand` |
 | `color` | `Color` |
 | `size` | `Size` |
@@ -366,6 +367,12 @@ The parent row uses the parent's `ProductId` as `sku`, or its `Ean` when `UseEan
 
 * * *
 
+### Bonus Flag (`awardsbonus`)
+
+Every article is sent with `awardsbonus = true`, unless the parent product has the custom property `ExcludeFromVoyadoBonusPoints = true`. Then every variant of the product is sent with `awardsbonus = false`. The product export does not read the property on a variant.
+
+* * *
+
 ### Custom Fields (`spare1`–`spare10`)
 
 Custom properties are mapped to `spare1` through `spare10` fields based on connector configuration.
@@ -455,11 +462,13 @@ When present on an order line, **Omnium will omit that line** from the exported 
 
 ### 2\. Exclude from Bonus Point Calculation
 
-To exclude products from bonus point rewards:
+To exclude products from bonus point rewards on receipts:
 
 *   **Custom Property**: `ExcludeFromVoyadoBonusPoints = true`
 
-When present, **Voyado will ignore the order line** when calculating bonus points.
+When the property is on the order line, the receipt line gets `awardsBonus = false`. An order line without the property gets `awardsBonus = true`.
+
+The same property on the parent product also sets the bonus flag in the product data export, see [Bonus Flag](voyado.md#bonus-flag-awardsbonus).
 
 ### 3\. Exclude by SKU List
 
@@ -503,6 +512,10 @@ To ensure custom product properties are copied to order lines:
 *   Under **"Enrich order line from products"**, add the necessary custom properties (`ExcludeFromVoyadoReceipts` and/or `ExcludeFromVoyadoBonusPoints`)
 
 All properties listed here will be copied from products to the corresponding order line items automatically.
+
+Only order lines whose product has the property get it. Omnium reads the property on the variant first, and then on the parent product.
+
+Order lines are enriched when the order is created from an Omnium cart, or by the **Enrich order from products** workflow step. Orders that are sent to Omnium as finished orders through the Order API need this step in their workflow.
 
 * * *
 
@@ -659,7 +672,7 @@ Voyado converts accumulated bonus points into reward vouchers (bonus checks). In
 
 1.  Set **Vouchers** to **Webhook** or **SFTP** on the connector's **Loyalty** tab, and complete the setup for that import below.
 2.  Add the payment type **Voucher** in Omnium settings. The only thing that needs to be set in the payment type settings is Vue-template = `voucher-payment`.
-3.  Set up the scheduled task `VoucherExpirationScheduledTask` to enforce the expiration dates on vouchers. It is sufficient for this task to run once a day. Only vouchers with status **Available** are affected by this task, so vouchers that are applied before the expiration date can still be captured after it.
+3.  Set up the scheduled task [Update voucher status](../../configuration/scheduled-tasks/vouchers/voucher-expiration.md) (`VoucherExpirationScheduledTask`) to run every hour. It releases vouchers that a sale no longer holds, such as a voucher on a cart that has not changed for 24 hours, and marks vouchers past their expiry date as expired. A voucher on an order that is not cancelled keeps its status, so a voucher applied before the expiration date can still be captured after it.
 
 ## Import over webhook
 

@@ -171,6 +171,7 @@ The `Dimensions` field on ledger lines is not filled by Omnium.
 | 15 |  | `OverShort` |
 | 16 |  | `Tip` |
 | 17 |  | `DepositLiability` |
+| 19 |  | `CashReason` |
 
 The swagger documentation also lists `RentalSales`, but the API never returns it: rental revenue lines come back as `Other` (12).
 

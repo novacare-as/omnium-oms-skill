@@ -44,6 +44,8 @@ User requests product access
 └────────────────────────────┘
 ```
 
+"Admin" covers the `Administrators` and `Admin` roles and API users (`ApiUser` and `ApiOwner`). An API user with product access sees and edits all local products, whatever stores and markets it has. See [What store and market scoping covers](../../Security/api-security.md#what-store-and-market-scoping-covers).
+
 * * *
 
 ## Access Levels

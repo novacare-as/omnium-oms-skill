@@ -10,7 +10,7 @@ A **posting** is a voucher: a header plus a set of **ledger lines** whose debits
 
 | Source | When it is built | Scope |
 | --- | --- | --- |
-| `PosZReport` | Inline, when a register's Z-report is closed | One register's settlement: its sales, returns, tender, and gift cards. Counted cash, the opening float, and cash movements are not posted. |
+| `PosZReport` | Inline, when a register's Z-report is closed | One register's settlement: its sales, returns, tender, and gift cards, and its cash ins and cash outs that carry a [cash reason code](ledger-postings.md#cash-in-and-cash-out-with-a-reason-code). Counted cash, the opening float, and cash movements without a code are not posted. |
 | `WebFulfillment` | A daily batch, per store and accounting day | The web / click & collect payment transactions of that store's orders on that day: captures book the sale, credits book the refund |
 | `SafeWithdrawal` | Inline, when a store manager registers cash from the store's safe to the bank in the In-Store app | One withdrawal: the amount moved from the cash account to cash in transit. See [Safe withdrawals](ledger-postings.md#safe-withdrawals). |
 
@@ -38,6 +38,8 @@ Each ledger line records an amount as either a **debit** or a **credit** against
 | Rental deposit taken | `DepositLiability` |  | ✓ |
 | Rental deposit refunded | `DepositLiability` | ✓ |  |
 | Cost of goods returned to another store in the same store group | `InternalTransferIn` / `InternalTransferOut` | ✓ (in) | ✓ (out) |
+| Cash taken out of the till with a reason code | `CashReason` | ✓ |  |
+| Cash put into the till with a reason code | `CashReason` |  | ✓ |
 
 Sales and output VAT are **credited** when goods are sold and **debited** when goods are returned; tender is **debited** when money comes in and refunds are **credited** when money goes out. The two sides meet so that the voucher balances.
 
@@ -62,6 +64,7 @@ Every ledger line is classified with a category. Categories are how the [Chart o
 | `DepositLiability` | Refundable customer deposit, such as a rental deposit (a liability, not revenue) |
 | `CashFloat` | Opening / closing till float (a balance-sheet asset) |
 | `CashInTransit` | Cash deposited to the bank but not yet cleared |
+| `CashReason` | Cash taken out of or put into a till in the In-Store app for a cash reason code, such as a purchase paid from the till. See [Cash in and cash out with a reason code](ledger-postings.md#cash-in-and-cash-out-with-a-reason-code). |
 | `OverShort` | Cash discrepancy (suspense). Postings book only [auto-balancing](ledger-postings.md#auto-balancing) residuals here: a Z-report's counted cash is not posted. |
 | `Tip` | Tip-pool liability (in markets that support tips) |
 | `Other` | Anything not covered above |
@@ -96,6 +99,27 @@ With safe handling on in the POS configuration of a store, the In-Store app keep
 *   Moving cash from a till to the safe is not posted: till and safe share the cash account. Neither is a difference found when the safe is counted.
 
 A withdrawal is posted only when postings are enabled. If the chart of accounts has no `CashInTransit` entry, or no `PaymentMethod` entry for `Cash`, the withdrawal is still saved in the store and its posting is not made; the error is logged. Add the account, and the posting can then be made from the saved withdrawal.
+
+## Cash in and cash out with a reason code
+
+A tenant can give the cash ins and cash outs of the In-Store app reason codes, under **Settings → In-Store App → Cash in and cash out**. Each code is for cash in, cash out, or both. When a direction has codes, the cashier must pick one, and anything typed is kept as a comment. Each code gets its account from a `CashReason` entry in the [Chart of Accounts](ledger-chart-of-accounts.md), with the code's ID as discriminator.
+
+The Z-report posting books the coded cash ins and cash outs of the register: one pair of lines per code and direction, at the total amount of those movements.
+
+| Movement | Line | Category | Debit | Credit |
+| --- | --- | --- | --- | --- |
+| Cash out (money leaves the till) | The code's account | `CashReason` | Amount |  |
+|  | Cash | `PaymentMethod` (the `Cash` entry) |  | Amount |
+| Cash in (money comes into the till) | The code's account | `CashReason` |  | Amount |
+|  | Cash | `PaymentMethod` (the `Cash` entry) | Amount |  |
+
+*   Both lines are described `Cash out — <reason>` or `Cash in — <reason>`, where the reason is the code's text as the cashier saw it.
+*   The amount is gross. Omnium does not split VAT off a cash out for a purchase; book input VAT from the supplier's receipt. A VAT code on the `CashReason` entry is copied onto the line, as on other lines.
+*   The pair balances itself, so it never adds an [auto-balancing](ledger-postings.md#auto-balancing) line.
+*   These movements are not posted: those without a code (including every movement from an In-Store app release without reason codes), a cash out to the safe, and the settlement take-out, which asks for no code.
+*   A code with no `CashReason` entry, and no catch-all `CashReason` entry, is not posted, and the posting gets a warning naming the code and amount. Without a `PaymentMethod` entry for `Cash`, no coded movement is posted and the posting gets a warning. The [Validation](ledger-config.md#validation) tab lists codes without an account.
+
+A Z-report without coded cash movements gets no `CashReason` lines, so its lines and [posting hash](ledger-postings.md#reposting-and-the-posting-hash) do not depend on whether the tenant has reason codes.
 
 ## Gift cards
 

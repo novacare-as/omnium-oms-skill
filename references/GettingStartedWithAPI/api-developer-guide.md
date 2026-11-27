@@ -166,6 +166,8 @@ Each resource domain has a **Read** and **Admin** role. Read grants GET/Search a
 
 API users can be scoped to specific stores or markets using the roles `AllStores` and `AllMarkets`, or by assigning store/market-specific roles (e.g., `store-oslo-downtown`, `market-nor`).
 
+Scoping limits orders, projects and stores. It does not limit products, prices, inventory, customers or carts: there, only the role controls access. See [What store and market scoping covers](../Security/api-security.md#what-store-and-market-scoping-covers).
+
 * * *
 
 ## REST Patterns

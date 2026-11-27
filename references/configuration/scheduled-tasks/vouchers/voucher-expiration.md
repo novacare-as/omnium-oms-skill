@@ -1,12 +1,14 @@
-# Voucher Expiration
+# Update Voucher Status
 
 Source: https://docs.omnium.no/docs/configuration/scheduled-tasks/vouchers/voucher-expiration
 
-> Automatically mark available vouchers as expired when past their expiry date
+> Release vouchers that a sale no longer holds, and mark available vouchers as expired when their expiry date has passed
 
 ## Overview
 
-This task identifies vouchers with status "Available" that have passed their expiry date and updates their status to "Expired". This prevents customers from using promotional codes or gift cards that are no longer valid.
+This task keeps the status of the vouchers up to date. In each run it first releases the vouchers that a sale no longer holds, and then marks the available vouchers whose expiry date has passed as "Expired".
+
+A voucher gets the status "Applied" when it is added to a cart as a payment. If the sale is not completed, the voucher stays "Applied" and the customer cannot use it in another sale. This task releases it again.
 
 ## Identifier
 
@@ -20,22 +22,19 @@ This task identifies vouchers with status "Available" that have passed their exp
 
 ## When to Use
 
-Enable this task when you need:
+Enable this task when the tenant uses vouchers, for example vouchers imported from Voyado:
 
-*   Automatic expiration of time-limited promotional codes
-*   Enforcement of gift card validity periods
-*   Compliance with voucher terms and conditions
-*   Clean voucher inventory management
+*   Release vouchers left on carts that are not completed, such as a parked sale in the In-Store App or an abandoned checkout
+*   Release vouchers on cancelled orders
+*   Mark vouchers as expired after their expiry date
 
 * * *
 
 ## Configuration Properties
 
-This task has no configurable properties. It processes vouchers based on:
-
-*   Voucher status is "Available"
-*   Expiry date has passed (less than or equal to current UTC time)
-*   Expiry date is within the delta window (changed since last run)
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `ReleaseVoucherFromCartAfterHours` | number | `24` | The number of hours a cart can stay unchanged before the task takes its vouchers off. `0` keeps the vouchers on the cart. An empty or invalid value uses the default. |
 
 * * *
 
@@ -43,22 +42,27 @@ This task has no configurable properties. It processes vouchers based on:
 
 ### What It Does
 
-1.  Queries for vouchers with "Available" status
-2.  Filters for vouchers with expiry dates between the last run and now
-3.  Updates each matching voucher's status to "Expired"
-4.  Saves the updated vouchers in batch
-5.  Reports the number of vouchers expired
+1.  Finds the vouchers with status "Applied".
+2.  Releases each voucher that a sale no longer holds:
+    *   A voucher that is on no cart and no order.
+    *   A voucher on an order with a cancelled status.
+    *   A voucher on a cart that has not changed for the number of hours in `ReleaseVoucherFromCartAfterHours`. The task takes the voucher payment off the cart, in the same way as when a user removes the voucher.
+3.  Sets a released voucher to "Available", or to "Expired" when its expiry date has passed.
+4.  Finds the vouchers with status "Available" whose expiry date has passed since the last run, and sets them to "Expired".
+5.  Reports the number of released and expired vouchers.
+
+A voucher on an order that is not cancelled stays "Applied". The order redeems it when the payment is captured.
 
 ### Prerequisites
 
-*   Vouchers must have an expiry date set
-*   Voucher search service must be operational
+*   Order statuses must have the cancelled status flag set, so the task can find cancelled orders.
 
 ### Side Effects
 
-*   Changes voucher status from "Available" to "Expired"
-*   Expired vouchers cannot be applied to carts or orders
-*   Status change is logged for audit purposes
+*   Changes the status of the vouchers from "Applied" to "Available" or "Expired", and from "Available" to "Expired".
+*   Takes a voucher off a cart that has not changed for the configured number of hours. The cart is recalculated, so the amount left to pay goes up. If the customer resumes the sale, the voucher must be added again.
+*   Before the task takes a voucher off a cart, it reads the cart again. A cart that changed in the meantime, or that no longer holds the voucher, is not changed.
+*   An expired voucher cannot be added to a cart.
 
 * * *
 
@@ -67,8 +71,11 @@ This task has no configurable properties. It processes vouchers based on:
 ```json
 {
     "ImplementationType": "VoucherExpirationScheduledTask",
-    "Schedule": "0 0 * * *",
-    "IsDisabled": false
+    "Schedule": "0 * * * *",
+    "IsDisabled": false,
+    "Properties": [
+        { "Key": "ReleaseVoucherFromCartAfterHours", "Value": "24" }
+    ]
 }
 ```
 
@@ -76,10 +83,4 @@ This task has no configurable properties. It processes vouchers based on:
 
 ## Recommended Schedule
 
-Run daily at midnight (`0 0 * * *`) to expire vouchers at the start of each day. This aligns with typical business expectations for voucher validity periods.
-
-* * *
-
-## Related Tasks
-
-*   [Voucher Reactivation](voucher-reactivation.md) - Restore vouchers that are no longer in use
+Run every hour (`0 * * * *`). A voucher on an unchanged cart is then released between 24 and 25 hours after the last change of the cart.

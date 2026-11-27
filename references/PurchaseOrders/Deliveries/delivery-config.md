@@ -96,6 +96,40 @@ When disabled, only the status value is updated without running the workflow. Th
 
 * * *
 
+## Despatch advice reception
+
+These settings control how the units of a [despatch advice](despatch-advice.md) (the pallets and cartons with an SSCC label) are received. They are part of `PurchaseOrderSettings` and configured in **Configuration → Settings → Products → Purchase orders**: **Require content check** on the **Settings** tab, in the **Goods reception** card, and the reason codes on the **Deviation reasons** tab.
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `RequireContentCheck` | `string` | `No` | Whether the content of a unit must be counted before it is received. `No`: the user chooses for each unit whether to receive it as advised or to check its content. `ExternalSuppliers`: the units of a despatch advice from a supplier must be checked; the units of an internal transfer need not. `All`: every unit must be checked. An empty value counts as `No`. |
+| `ReceptionDeviationReasonCodes` | `List<object>` | empty | The reasons a user picks from in the In-Store App when a counted quantity in a unit differs from the advised one. Each code has an `Id`, which is stored with the count, and a `TranslationKey`, which gives the name that is shown. With no codes, no reason is asked for. |
+
+A despatch advice that is sent with `IsContentCheckRequired` set is always checked, whatever `RequireContentCheck` says. A delivery counts as an internal transfer when its order type is `InternalTransfer` or it has a `SupplierWarehouseCode`.
+
+### What the settings change in the API
+
+*   When the content must be checked, `POST /api/Deliveries/{deliveryId}/Receive` does not receive a unit as advised: a unit without counted lines is left open with the result `ContentCheckRequired`. Counted units, units marked `Missing`, `Damaged` or `Refused`, and the content of a unit received with `ProcessGoodsReception` are taken as always. See [Receive units](sscc-reception.md#receive-units).
+*   A reason code in a reception request is stored on the content row as it is sent. It is not checked against `ReceptionDeviationReasonCodes`, so a code your ERP sends does not need to be in the list.
+*   Saving the settings is refused when a reason code has no ID, when two codes have the same ID in any case, or when `RequireContentCheck` has another value than `No`, `ExternalSuppliers` or `All`, written exactly so. An empty value is accepted.
+
+On the **Deviation reasons** tab, **Add suggested codes** adds five codes while the list is empty: `Short`, `Over`, `Damaged`, `WrongItem` and `Other`, with the text keys `ReceptionDeviationReason_Short`, `ReceptionDeviationReason_Over`, `ReceptionDeviationReason_Damaged`, `ReceptionDeviationReason_WrongItem` and `ReceptionDeviationReason_Other`.
+
+### Sample
+
+```
+"PurchaseOrderSettings": {
+  "RequireContentCheck": "ExternalSuppliers",
+  "ReceptionDeviationReasonCodes": [
+    { "Id": "Short", "TranslationKey": "ReceptionDeviationReason_Short" },
+    { "Id": "Over", "TranslationKey": "ReceptionDeviationReason_Over" },
+    { "Id": "Damaged", "TranslationKey": "ReceptionDeviationReason_Damaged" }
+  ]
+}
+```
+
+* * *
+
 ## Estimated time of arrival
 
 | Property | Type | Default | Description |
@@ -206,7 +240,12 @@ Below is a comprehensive example showing all delivery-related settings configure
     "SetEstimatedTimeOfArrivalFromPurchaseOrder": true,
     "CreateInternalTransfersForPickUpWarehouses": true,
     "CreateInternalTransfersForPickUpWarehousesStatus": "New",
-    "OrderTypesWithAutomaticLineSplitting": ["Online", "ClickAndCollect"]
+    "OrderTypesWithAutomaticLineSplitting": ["Online", "ClickAndCollect"],
+    "RequireContentCheck": "ExternalSuppliers",
+    "ReceptionDeviationReasonCodes": [
+      { "Id": "Short", "TranslationKey": "ReceptionDeviationReason_Short" },
+      { "Id": "Damaged", "TranslationKey": "ReceptionDeviationReason_Damaged" }
+    ]
   }
 }
 ```

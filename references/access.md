@@ -6,7 +6,7 @@ Source: https://docs.omnium.no/docs/access
 
 ## Invitations
 
-To get access to Omnium, an invitation is required. Contact your systems administrator or the [Omnium team](mailto:support@omnium.no). The account invitation process involves creating an invitation through the admin UI with specified access rights to stores, markets, and roles.
+To get access to Omnium, an invitation is required. Contact your systems administrator or create a ticket with the [Omnium team](https://help.omnium.no/hc/en-us/requests/new). The account invitation process involves creating an invitation through the admin UI with specified access rights to stores, markets, and roles.
 
 ### Create Invitation
 
