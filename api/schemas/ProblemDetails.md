@@ -1,0 +1,38 @@
+# ProblemDetails
+
+Type: Dictionary<string, object>
+
+**Used directly by endpoints in:**
+
+- [Accounting | Ledger Lines](../endpoints/accounting/ledger-lines.md)
+- [Accounting | Postings](../endpoints/accounting/postings.md)
+- [Carts | Checkout](../endpoints/carts/checkout.md)
+- [Carts | Get](../endpoints/carts/get.md)
+- [Carts | Other](../endpoints/carts/other.md)
+- [Carts | Templates](../endpoints/carts/templates.md)
+- [Carts | Update](../endpoints/carts/update.md)
+- [Cases](../endpoints/cases.md)
+- [Customers | B2B](../endpoints/customers/b2b.md)
+- [Customers | B2C](../endpoints/customers/b2c.md)
+- [Insights](../endpoints/insights.md)
+- [Obsolete](../endpoints/obsolete.md)
+- [Orders | Batch Updates](../endpoints/orders/batch-updates.md)
+- [Orders | Payments](../endpoints/orders/payments.md)
+- [Orders | Update](../endpoints/orders/update.md)
+- [Orders | Workflow](../endpoints/orders/workflow.md)
+- [Products](../endpoints/products.md)
+- [Products | Assets](../endpoints/products/assets.md)
+- [Products | Categories](../endpoints/products/categories.md)
+- [Products | Get](../endpoints/products/get.md)
+- [Products | Inventory](../endpoints/products/inventory.md)
+- [Products | Price List Items](../endpoints/products/price-list-items.md)
+- [Products | Price Lists](../endpoints/products/price-lists.md)
+- [Products | Update](../endpoints/products/update.md)
+- [Products | Variants](../endpoints/products/variants.md)
+- [Projects](../endpoints/projects.md)
+- [Projects | Assets](../endpoints/projects/assets.md)
+- [Promotions](../endpoints/promotions.md)
+- [Promotions | Campaigns](../endpoints/promotions/campaigns.md)
+- [Settings | Event Subscriptions](../endpoints/settings/event-subscriptions.md)
+- [Settings | Property Options](../endpoints/settings/property-options.md)
+- [Stores](../endpoints/stores.md)

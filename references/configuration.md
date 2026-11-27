@@ -1,10 +1,24 @@
-# Configuration & Operations
+# Configuration
 
----
+Source: https://docs.omnium.no/docs/configuration
 
-## Sub-files
+> Platform settings, scheduled tasks, GUI extensions, reports, and other configuration options in Omnium.
 
-- **`configuration.md`**: Configuration, [In this section](#in-this-section), Security Overview, [Security Architecture](#security-architecture), [In this section](#in-this-section), [For API Developers](#for-api-developers), [For Administrators](#for-administrators), [How Roles Work](#how-roles-work), [Tenant Isolation](#tenant-isolation), [Encryption and Data Protection](#encryption-and-data-protection), [Webhook Security](#webhook-security), [Security Checklist](#security-checklist), Authentication - UI, [Overview](#overview), [Azure AD B2C (Default)](#azure-ad-b2c-default), [Entra ID](#entra-id), [Auth0](#auth0), [User and Role Management via API](#user-and-role-management-via-api), [Security Model](#security-model), [Forced Sign-In Frequency](#forced-sign-in-frequency), SCIM 2.0 (beta), [Overview](#overview), [How It Works With Omnium](#how-it-works-with-omnium), [Setup](#setup), [Migrating to SCIM](#migrating-to-scim), [Attribute Mappings](#attribute-mappings), [Provider Examples](#provider-examples), [Troubleshooting](#troubleshooting), [Support](#support), Custom Reports, [Overview](#overview)
-- **`configuration-model-configuration-model.md`**: [Configuration Model](#configuration-model), [Report Types](#report-types), [ProductSales Report Type](#productsales-report-type), [Report Areas](#report-areas), [Data Types](#data-types), [Optional Data](#optional-data), [Role-Based Access Control](#role-based-access-control), [UI Configuration](#ui-configuration), [Example Configuration](#example-configuration-1), [How Reports Work](#how-reports-work), [Best Practices](#best-practices), [Related Documentation](#related-documentation), GUI Extensions, [What Are GUI Extensions?](#what-are-gui-extensions)
-- **`how-extensions-work-how-extensions-work.md`**: [How Extensions Work](#how-extensions-work), [Extension Areas](#extension-areas), [Extension Model](#extension-model), [Iframe Extensions](#iframe-extensions), [Webhook Extensions](#webhook-extensions), [Tag-Based Filtering](#tag-based-filtering), [Custom Properties](#custom-properties), [Help Menu Items](#help-menu-items), [Common Patterns](#common-patterns), [Configuring in the UI](#configuring-in-the-ui), [Related Documentation](#related-documentation), Generic Concepts, [External IDs](#external-ids), [Properties](#properties), [Date Time Formats](#date-time-formats), [Comments](#comments), [File info](#file-info), Number Options, Rounding Settings, [Overview](#overview), [Configuration Model](#configuration-model), [Rounding Methods](#rounding-methods), [How Rounding Works](#how-rounding-works)
-- **`ui-configuration-ui-configuration.md`**: [UI Configuration](#ui-configuration), [Example Configurations](#example-configurations), [Best Practices](#best-practices), [Related Documentation](#related-documentation), Scheduled Tasks, [Cron Schedule Format](#cron-schedule-format), [Task Groups](#task-groups), [Task Types](#task-types), [Configuration](#configuration), [Plugin Scheduled Tasks](#plugin-scheduled-tasks), [Best Practices](#best-practices)
+The Configuration section allows you to adjust Omnium to meet your business needs. From here, you can modify core settings, set up background jobs, extend the UI, and configure reporting.
+
+![Image](https://docs.omnium.no/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconfig-nav.c097e88a.png&w=3840&q=75)
+
+* * *
+
+## In this section
+
+*   [GUI Extensions](configuration/gui-extensions.md) — Extend the Omnium UI with custom iframes, webhook actions, and panels
+*   [Embedded Applications](configuration/embedded-applications.md) — Embed your own application in the UI, receive context, and authenticate the user
+*   [Scheduled Tasks](configuration/scheduled-tasks.md) — Background jobs for analytics, inventory, orders, notifications, and more
+*   [Custom Reports](configuration/custom-reports.md) — Data export reports with flexible column mapping and role-based access
+*   [Generic Concepts](configuration/generic.md) — External IDs, custom properties, and other cross-cutting concepts
+*   [Number Options](configuration/numberoptions.md) — Auto-generated ID sequences for orders, carts, and other entities
+*   [Property Options](configuration/property-options.md) — Centrally managed dropdown value lists shared across custom property dropdowns
+*   [Rounding Settings](configuration/rounding-settings.md) — Price rounding policies with range-based rules and rounding methods
+*   [Email Client Settings](configuration/email-client-settings.md) — Send email through SendGrid, an SMTP server or Microsoft 365 with the Microsoft Graph API
+*   [Settings API](configuration/settings-api.md) — Read order types, order statuses, order settings and customer settings through the API

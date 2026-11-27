@@ -1,61 +1,160 @@
-# Purchase Orders & Suppliers — API Endpoints
+# Purchase Orders
 
-See `schemas/purchase-orders.md` for field definitions.
+Source: https://api.omnium.no/documentation
 
-## Contents
+> Purchase orders
 
-### Purchase Orders
-
-- `GET /api/PurchaseOrders/{purchaseOrderId}`
-- `PATCH /api/PurchaseOrders/{purchaseOrderId}`
-- `POST /api/PurchaseOrders/Search`
-- `POST /api/PurchaseOrders/Scroll`
-- `GET /api/PurchaseOrders/Scroll/{id}`
-- `POST /api/PurchaseOrders`
-- `PUT /api/PurchaseOrders`
-- `PUT /api/PurchaseOrders/UpdateMany`
-- `DELETE /api/PurchaseOrders/{id}`
-- `POST /api/PurchaseOrders/{id}`
-- `POST /api/PurchaseOrders/{purchaseOrderId}/AddPublicPurchaseOrderComment`
-- `POST /api/PurchaseOrders/{purchaseOrderId}/AddInternalPurchaseOrderComment`
-- `GET /api/PurchaseOrders/Extended/{purchaseOrderId}`
-- `POST /api/PurchaseOrders/{purchaseOrderId}/OrderLines/Split`
-- `POST /api/PurchaseOrders/{purchaseOrderId}/OrderLines/{lineItemId}/Cancel`
-
-### Purchase Orders | Deliveries
-
-- `GET /api/Deliveries/{deliveryId}`
-- `PATCH /api/Deliveries/{deliveryId}`
-- `GET /api/Deliveries/{deliveryId}/PurchaseOrderLines`
-- `POST /api/Deliveries/Search`
-- `POST /api/Deliveries/CreateDelivery/{purchaseOrderId}`
-- `PUT /api/Deliveries`
-- `PUT /api/Deliveries/UpdateMany`
-- `POST /api/Deliveries/{deliveryId}/AddPublicDeliveryComment`
-- `POST /api/Deliveries/{deliveryId}/AddInternalDeliveryComment`
-- `POST /api/Deliveries/ProcessGoodsReception`
-- `POST /api/Deliveries/{deliveryId}/ProcessGoodsReception`
-- `DELETE /api/Deliveries/{id}`
-
-### Purchase Orders | Workflows
-
-- `POST /api/PurchaseOrders/UpdateAndRunWorkflow`
-- `POST /api/PurchaseOrders/{purchaseOrderId}/UpdateStatus`
-
-### Suppliers
-
-- `GET /api/Suppliers/{supplierId}`
-- `GET /api/Suppliers/{supplierId}/{versionId}`
-- `POST /api/Suppliers/Search`
-- `PUT /api/Suppliers`
-- `PUT /api/Suppliers/UpdateMany`
-- `DELETE /api/Suppliers/{id}`
+Generated from the Omnium OpenAPI spec by `scripts/sync-api.ts` — do not edit by hand.
+Common conventions and standard error responses (429, 500) are in `api/_INDEX.md`.
 
 ---
 
-## Purchase Orders
+## `POST /api/PurchaseOrders/Query`
 
-### `GET /api/PurchaseOrders/{purchaseOrderId}`
+**🧪 [Preview] Query purchase orders. Returns full purchase order models with explicit control over filters, sorting, pagination and field selection.**
+
+Operation ID: `PurchaseOrderQueryQuery` · **Preview**
+
+> **🧪 Preview** — early access! This endpoint is fully functional, but its shape may still change while we finalize it.
+
+Primary endpoint for fetching purchase orders: single lookups, filtered lists, and
+paginated UI queries. Pagination is capped at offset (Take * Page) of 10,000 — past that,
+use POST /api/PurchaseOrders/Query/Scroll.
+
+All filter fields are documented on the request schema below.
+
+### Default values are omitted
+
+To keep responses small, a field is left out when it holds its default value: `false`, `0`,
+`null`, the empty date `0001-01-01T00:00:00`, the empty id
+`00000000-0000-0000-0000-000000000000`, or an enum's first value. **A missing field means
+that value, not "unknown".** `""` and `[]` are real values and are always returned.
+
+A field marked `nullable` in the schema has `null` as its default, so it is left out only
+when it is null — a nullable boolean holding `false`, or a nullable number holding `0`, is
+still returned.
+
+### Examples
+
+**1. Specific purchase orders by ID.**
+```json
+{
+  "purchaseOrderIds": ["PO-123", "PO-456"]
+}
+```
+
+**2. Filtered list with a tight payload** (recommended). Order lines are usually the bulk
+of the document — exclude them when you only need header data.
+```json
+{
+  "take": 50,
+  "page": 1,
+  "statuses": ["Sent"],
+  "storeIds": ["store-1"],
+  "sort": [{ "field": "created", "direction": "desc" }],
+  "fields": { "exclude": ["purchaseOrderForm.lineItems"] }
+}
+```
+
+**3. Only the fields you need.** The document `id` is always returned.
+```json
+{
+  "supplierId": "SUPPLIER-1",
+  "fields": { "include": ["purchaseOrderNumber", "status", "total"] }
+}
+```
+
+**Request body:** [`OmniumPurchaseOrderQueryRequest`](../schemas/OmniumPurchaseOrderQueryRequest.md) — Query request with filters, pagination, and field selection
+
+**Responses:**
+
+- 200: [`OmniumPurchaseOrderOmniumQueryResult`](../schemas/OmniumPurchaseOrderOmniumQueryResult.md) — Query successful
+- 400: string — Invalid request parameters
+
+---
+
+## `POST /api/PurchaseOrders/Query/Scroll`
+
+**🧪 [Preview] Initiate a scroll session for retrieving large purchase order datasets.**
+
+Operation ID: `PurchaseOrderQueryQueryScroll` · **Preview**
+
+> **🧪 Preview** — early access! This endpoint is fully functional, but its shape may still change while we finalize it.
+
+Bulk extraction endpoint — full syncs to other systems (ERP, BI), data exports. Also
+required past the 10,000 offset cap on POST /Query.
+
+Returns a `scrollId` and the first batch. Pass `scrollId` to
+GET /api/PurchaseOrders/Query/Scroll/{scrollId} until it comes back null. Sessions expire
+after 10 minutes of inactivity; per-tenant concurrency is capped.
+
+Same filter set as POST /Query (see request schema) and identical response shape — field
+selection applies to both the initial batch and continuations.
+
+### Default values are omitted
+
+To keep responses small, a field is left out when it holds its default value: `false`, `0`,
+`null`, the empty date `0001-01-01T00:00:00`, the empty id
+`00000000-0000-0000-0000-000000000000`, or an enum's first value. **A missing field means
+that value, not "unknown".** `""` and `[]` are real values and are always returned.
+
+A field marked `nullable` in the schema has `null` as its default, so it is left out only
+when it is null — a nullable boolean holding `false`, or a nullable number holding `0`, is
+still returned.
+
+### Canonical example
+Delta sync — every purchase order modified since the last run, without order lines:
+```json
+{
+  "modifiedFrom": "2026-01-08T10:15:00Z",
+  "scrollSize": 500,
+  "fields": { "exclude": ["purchaseOrderForm.lineItems"] }
+}
+```
+
+**Request body:** [`OmniumPurchaseOrderScrollQueryRequest`](../schemas/OmniumPurchaseOrderScrollQueryRequest.md) — Query request with filters and field selection
+
+**Responses:**
+
+- 200: [`OmniumPurchaseOrderOmniumScrollableQueryResult`](../schemas/OmniumPurchaseOrderOmniumScrollableQueryResult.md) — Scroll initiated successfully
+- 400: string — Invalid request parameters
+
+---
+
+## `GET /api/PurchaseOrders/Query/Scroll/{scrollId}`
+
+**🧪 [Preview] Continue an active scroll session and fetch the next batch of purchase orders.**
+
+Operation ID: `PurchaseOrderQueryScrollContinuation` · **Preview**
+
+> **🧪 Preview** — early access! This endpoint is fully functional, but its shape may still change while we finalize it.
+
+Call repeatedly with the latest returned `scrollId` until it comes back null. Sessions
+expire after 10 minutes of inactivity. See `POST /api/PurchaseOrders/Query/Scroll` for the
+initiation endpoint and full request shape.
+
+### Default values are omitted
+
+To keep responses small, a field is left out when it holds its default value: `false`, `0`,
+`null`, the empty date `0001-01-01T00:00:00`, the empty id
+`00000000-0000-0000-0000-000000000000`, or an enum's first value. **A missing field means
+that value, not "unknown".** `""` and `[]` are real values and are always returned.
+
+A field marked `nullable` in the schema has `null` as its default, so it is left out only
+when it is null — a nullable boolean holding `false`, or a nullable number holding `0`, is
+still returned.
+
+| Param | In | Type | Required | Description |
+|-------|----|------|----------|-------------|
+| `scrollId` | path | string | Yes | The scroll ID from the previous response (initial Scroll call or a prior continuation) |
+
+**Responses:**
+
+- 200: [`OmniumPurchaseOrderOmniumScrollableQueryResult`](../schemas/OmniumPurchaseOrderOmniumScrollableQueryResult.md) — Scroll continuation successful
+
+---
+
+## `GET /api/PurchaseOrders/{purchaseOrderId}`
 
 **Get purchase order**
 
@@ -65,66 +164,136 @@ Operation ID: `PurchaseOrdersGetPurchaseOrder`
 |-------|----|------|----------|-------------|
 | `purchaseOrderId` | path | string | Yes |  |
 
-**Response 200:** `OmniumPurchaseOrder`
+**Responses:**
+
+- 200: [`OmniumPurchaseOrder`](../schemas/OmniumPurchaseOrder.md) — Success
+- 400: string — Bad Request
+- 404: string — Not Found
 
 ---
 
-### `PATCH /api/PurchaseOrders/{purchaseOrderId}`
+## `POST /api/PurchaseOrders/{purchaseOrderId}`
+
+**Update ATP values**
+
+Operation ID: `PurchaseOrdersUpdateAtpValues`
+
+| Param | In | Type | Required | Description |
+|-------|----|------|----------|-------------|
+| `purchaseOrderId` | path | string | Yes | Purchase order ID |
+
+**Responses:**
+
+- 200: ATP values updated
+- 404: Purchase order not found
+- 409: Conflict
+
+---
+
+## `PATCH /api/PurchaseOrders/{purchaseOrderId}`
 
 **Patch purchase order**
 
 Operation ID: `PurchaseOrdersPatch`
+
+Patch purchase order
 
 | Param | In | Type | Required | Description |
 |-------|----|------|----------|-------------|
 | `purchaseOrderId` | path | string | Yes | Purchase order ID to patch |
 | `updateAtpValues` | query | boolean | No | If true ATP providers will calculate new ATP values based on the purchase order |
 
-**Request body:** `OmniumPurchaseOrderPatch`
+**Request body:** [`OmniumPurchaseOrderPatch`](../schemas/OmniumPurchaseOrderPatch.md) — Purchase order patch
 
-**Response 200:** `OmniumPurchaseOrder`
+**Responses:**
+
+- 200: [`OmniumPurchaseOrder`](../schemas/OmniumPurchaseOrder.md) — Success
+- 400: string — Bad Request
+- 404: string — Not Found
+- 409: Conflict
 
 ---
 
-### `POST /api/PurchaseOrders/Search`
+## `DELETE /api/PurchaseOrders/{purchaseOrderId}`
+
+**Delete purchase order**
+
+Operation ID: `PurchaseOrdersDelete`
+
+| Param | In | Type | Required | Description |
+|-------|----|------|----------|-------------|
+| `purchaseOrderId` | path | string | Yes |  |
+
+**Responses:**
+
+- 200: Purchase order deleted
+- 400: Invalid request
+- 404: Purchase order not found
+- 409: Conflict
+
+---
+
+## `POST /api/PurchaseOrders/Search`
 
 **Search purchase orders**
 
 Operation ID: `PurchaseOrdersSearch`
 
-**Request body:** `OmniumPurchaseOrderSearchRequest`
+Search purchase orders
 
-**Response 200:** `OmniumPurchaseOrderOmniumSearchResult`
+**Request body:** [`OmniumPurchaseOrderSearchRequest`](../schemas/OmniumPurchaseOrderSearchRequest.md) — Search request object for purchase orders
+
+**Responses:**
+
+- 200: [`OmniumPurchaseOrderOmniumSearchResult`](../schemas/OmniumPurchaseOrderOmniumSearchResult.md) — Success
+- 400: string — Bad Request
 
 ---
 
-### `POST /api/PurchaseOrders/Scroll`
+## `POST /api/PurchaseOrders/Scroll`
 
 **Scroll purchaseOrders by search**
 
 Operation ID: `PurchaseOrdersScrollSearch`
 
-**Request body:** `OmniumPurchaseOrderSearchRequest`
+Scrolling is not intended for real time user requests, but rather for processing large amounts of data. Only use scroll endpoints if you intend to fetch all items returned by the search request.
+            Paging (take, page) is disabled for scroll searches.
+            Sample request for a delta query using modified date and filtering on an order type:
 
-**Response 200:** `OmniumPurchaseOrderOmniumResult`
+            POST /api/PurchaseOrders/Scroll
+            {
+               "ModifiedFrom": "2022-12-24T17:32:28Z"
+            }
+
+**Request body:** [`OmniumPurchaseOrderSearchRequest`](../schemas/OmniumPurchaseOrderSearchRequest.md)
+
+**Responses:**
+
+- 200: [`OmniumPurchaseOrderOmniumResult`](../schemas/OmniumPurchaseOrderOmniumResult.md) — Search successful, returning orders
+- 400: Search request invalid
 
 ---
 
-### `GET /api/PurchaseOrders/Scroll/{id}`
+## `GET /api/PurchaseOrders/Scroll/{id}`
 
 **Scroll purchaseOrders is used to get a large amount of customers.**
 
 Operation ID: `PurchaseOrdersScroll`
 
+The scroll Id can be obtained from a standard search request that supports scrolling.
+           Scrolling is not intended for real time user requests, but rather for processing large amounts of data.
+
 | Param | In | Type | Required | Description |
 |-------|----|------|----------|-------------|
-| `id` | path | string | Yes | The scroll id is passed on the request the next batch of data from the original  |
+| `id` | path | string | Yes | The scroll id is passed on the request the next batch of data from the original request. |
 
-**Response 200:** `OmniumPurchaseOrderOmniumResult`
+**Responses:**
+
+- 200: [`OmniumPurchaseOrderOmniumResult`](../schemas/OmniumPurchaseOrderOmniumResult.md) — Success
 
 ---
 
-### `POST /api/PurchaseOrders`
+## `POST /api/PurchaseOrders`
 
 **Add a purchase order**
 
@@ -134,95 +303,99 @@ Operation ID: `PurchaseOrdersPost`
 |-------|----|------|----------|-------------|
 | `runWorkflow` | query | boolean | No |  |
 
-**Request body:** `OmniumPurchaseOrder`
+**Request body:** [`OmniumPurchaseOrder`](../schemas/OmniumPurchaseOrder.md) — Purchase order to add
 
-**Response 200:** `OmniumPurchaseOrder`
+**Responses:**
+
+- 200: [`OmniumPurchaseOrder`](../schemas/OmniumPurchaseOrder.md) — Success
+- 400: string — Bad Request
 
 ---
 
-### `PUT /api/PurchaseOrders`
+## `PUT /api/PurchaseOrders`
 
 **Update purchase order**
 
 Operation ID: `PurchaseOrdersUpdate`
 
+Update purchase order
+
 | Param | In | Type | Required | Description |
 |-------|----|------|----------|-------------|
 | `updateAtpValues` | query | boolean | No | If true ATP providers will calculate new ATP values based on the purchase order |
 
-**Request body:** `OmniumPurchaseOrder`
+**Request body:** [`OmniumPurchaseOrder`](../schemas/OmniumPurchaseOrder.md) — Purchase order
 
-**Response 200:** `OmniumPurchaseOrder`
+**Responses:**
+
+- 200: [`OmniumPurchaseOrder`](../schemas/OmniumPurchaseOrder.md) — Success
+- 400: string — Bad Request
+- 409: Conflict
 
 ---
 
-### `PUT /api/PurchaseOrders/UpdateMany`
+## `PUT /api/PurchaseOrders/UpdateMany`
 
 **Update many purchase orders**
 
 Operation ID: `PurchaseOrdersUpdateMany`
 
-**Request body:** `List<OmniumPurchaseOrder>`
+Update many purchase orders
+
+**Request body:** List<[`OmniumPurchaseOrder`](../schemas/OmniumPurchaseOrder.md)> — Purchase orders
+
+**Responses:**
+
+- 200: Success
+- 400: string — Bad Request
 
 ---
 
-### `DELETE /api/PurchaseOrders/{id}`
-
-**Delete purchase order**
-
-Operation ID: `PurchaseOrdersDelete`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `id` | path | string | Yes |  |
-
----
-
-### `POST /api/PurchaseOrders/{id}`
-
-**Update ATP values**
-
-Operation ID: `PurchaseOrdersUpdateAtpValues`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `id` | path | string | Yes | Purchase order ID |
-
----
-
-### `POST /api/PurchaseOrders/{purchaseOrderId}/AddPublicPurchaseOrderComment`
+## `POST /api/PurchaseOrders/{purchaseOrderId}/AddPublicPurchaseOrderComment`
 
 **Add public purchase order comment**
 
 Operation ID: `PurchaseOrdersAddPublicPurchaseOrderComment`
 
+Add public purchase order comment
+
 | Param | In | Type | Required | Description |
 |-------|----|------|----------|-------------|
 | `purchaseOrderId` | path | string | Yes |  |
 
-**Request body:** `OmniumComment`
+**Request body:** [`OmniumComment`](../schemas/OmniumComment.md)
 
-**Response 200:** `List<OmniumComment>`
+**Responses:**
+
+- 200: List<[`OmniumComment`](../schemas/OmniumComment.md)> — Success
+- 404: Not Found
+- 409: Conflict
 
 ---
 
-### `POST /api/PurchaseOrders/{purchaseOrderId}/AddInternalPurchaseOrderComment`
+## `POST /api/PurchaseOrders/{purchaseOrderId}/AddInternalPurchaseOrderComment`
 
 **Add internal purchase order comment**
 
 Operation ID: `PurchaseOrdersAddInternalPurchaseOrderComment`
 
+Add internal purchaser order comment
+
 | Param | In | Type | Required | Description |
 |-------|----|------|----------|-------------|
 | `purchaseOrderId` | path | string | Yes |  |
 
-**Request body:** `OmniumComment`
+**Request body:** [`OmniumComment`](../schemas/OmniumComment.md)
 
-**Response 200:** `List<OmniumComment>`
+**Responses:**
+
+- 200: List<[`OmniumComment`](../schemas/OmniumComment.md)> — Success
+- 404: Not Found
+- 409: Conflict
 
 ---
 
-### `GET /api/PurchaseOrders/Extended/{purchaseOrderId}`
+## `GET /api/PurchaseOrders/Extended/{purchaseOrderId}`
 
 **Get extended purchase order**
 
@@ -232,11 +405,89 @@ Operation ID: `PurchaseOrdersGetExtendedPurchaseOrder`
 |-------|----|------|----------|-------------|
 | `purchaseOrderId` | path | string | Yes |  |
 
-**Response 200:** `OmniumPurchaseOrderExtendedModel`
+**Responses:**
+
+- 200: [`OmniumPurchaseOrderExtendedModel`](../schemas/OmniumPurchaseOrderExtendedModel.md) — Success
+- 400: string — Bad Request
+- 404: string — Not Found
 
 ---
 
-### `POST /api/PurchaseOrders/{purchaseOrderId}/OrderLines/Split`
+## `POST /api/PurchaseOrders/{purchaseOrderId}/Merge`
+
+**Merge a purchase order into another purchase order**
+
+Operation ID: `PurchaseOrdersMerge`
+
+| Param | In | Type | Required | Description |
+|-------|----|------|----------|-------------|
+| `purchaseOrderId` | path | string | Yes | Source purchase order ID (will be merged and deleted) |
+
+**Request body:** [`OmniumMergePurchaseOrderRequest`](../schemas/OmniumMergePurchaseOrderRequest.md) — Merge request containing the destination purchase order ID
+
+**Responses:**
+
+- 200: [`OmniumPurchaseOrder`](../schemas/OmniumPurchaseOrder.md) — Success
+- 400: string — Bad Request
+- 404: string — Not Found
+- 409: Conflict
+
+---
+
+## `GET /api/PurchaseOrders/{purchaseOrderLineItemId}/Reservations`
+
+**Search sales order reservations by purchase order line item ID**
+
+Operation ID: `PurchaseOrdersSearchReservations`
+
+| Param | In | Type | Required | Description |
+|-------|----|------|----------|-------------|
+| `purchaseOrderLineItemId` | path | string | Yes | Purchase order line item ID |
+| `page` | query | integer (int32) | No | Page number (default 1) |
+| `pageSize` | query | integer (int32) | No | Page size (default 10, max 100) |
+
+**Responses:**
+
+- 200: [`OmniumOrderOmniumSearchResult`](../schemas/OmniumOrderOmniumSearchResult.md) — Success
+
+---
+
+## `GET /api/PurchaseOrders/WithReservedInventory`
+
+**Returns internal transfer purchase orders that reserve inventory for a SKU from a source warehouse**
+
+Operation ID: `PurchaseOrdersGetPurchaseOrdersWithReservedInventory`
+
+Internal transfers reserve stock on the source (supplier) warehouse until they are completed. Returns
+purchase orders where the supplier warehouse matches the given warehouse (resolved to its physical
+warehouse when virtual) and an order line matches the given SKU, excluding purchase orders in status
+Completed, Deleted or OrderCanceled.
+
+By default only transfers that actively reserve warehouse stock are returned: purchase orders created
+within the last two years (the reserved-quantity calculation window) whose order line for the SKU is not
+fully cancelled and not fully delivered. Partially delivered transfers are included, since they still
+reserve the undelivered remainder. Set includeAll=true to also return the excluded purchase orders,
+mirroring the "Show all" toggle in the reserved-inventory dialog.
+
+Each purchase order is enriched with the properties hasCancelledLines, isDelivered and
+isPartiallyDelivered, computed for the given SKU. Sorted by created date, descending.
+
+| Param | In | Type | Required | Description |
+|-------|----|------|----------|-------------|
+| `skuId` | query | string | No | SKU / variant code |
+| `warehouseCode` | query | string | No | Source (supplier) warehouse code (physical or virtual) |
+| `pageSize` | query | integer (int32) | No | Max 100. Minimum 1.(default is 20) |
+| `page` | query | integer (int32) | No | Current page of the search request. Minimum 1(default is 1) |
+| `includeAll` | query | boolean | No | Also return purchase orders that no longer reserve warehouse stock (default false) |
+
+**Responses:**
+
+- 200: [`OmniumPurchaseOrderOmniumSearchResult`](../schemas/OmniumPurchaseOrderOmniumSearchResult.md) — Success
+- 400: string — Bad Request
+
+---
+
+## `POST /api/PurchaseOrders/{purchaseOrderId}/OrderLines/Split`
 
 **Split one or more purchase order lines**
 
@@ -246,13 +497,18 @@ Operation ID: `PurchaseOrdersSplitOrderLines`
 |-------|----|------|----------|-------------|
 | `purchaseOrderId` | path | string | Yes | Purchase order ID (Required) |
 
-**Request body:** `List<OmniumSplitPurchaseOrderLine>`
+**Request body:** List<[`OmniumSplitPurchaseOrderLine`](../schemas/OmniumSplitPurchaseOrderLine.md)> — List of split requests specifying quantities and allocations for each line to split
 
-**Response 200:** `OmniumPurchaseOrder`
+**Responses:**
+
+- 200: [`OmniumPurchaseOrder`](../schemas/OmniumPurchaseOrder.md) — Purchase order lines split successfully
+- 400: string — Invalid split request
+- 404: string — Purchase order or line was not found
+- 409: Conflict
 
 ---
 
-### `POST /api/PurchaseOrders/{purchaseOrderId}/OrderLines/{lineItemId}/Cancel`
+## `POST /api/PurchaseOrders/{purchaseOrderId}/OrderLines/{lineItemId}/Cancel`
 
 **Cancel purchase order line**
 
@@ -263,289 +519,30 @@ Operation ID: `PurchaseOrdersCancelOrderLine`
 | `purchaseOrderId` | path | string | Yes | Purchase order ID (Required) |
 | `lineItemId` | path | string | Yes | Purchase order line ID (Required) |
 
-**Response 200:** `OmniumPurchaseOrder`
+**Responses:**
+
+- 200: [`OmniumPurchaseOrder`](../schemas/OmniumPurchaseOrder.md) — Purchase order line cancelled successfully
+- 400: Purchase order line could not be cancelled
+- 404: string — Purchase order line was not found
+- 409: Conflict
 
 ---
 
-## Purchase Orders | Deliveries
+## `POST /api/PurchaseOrders/{purchaseOrderId}/OrderLines/Cancel`
 
-### `GET /api/Deliveries/{deliveryId}`
+**Cancel multiple purchase order lines**
 
-**Get delivery**
-
-Operation ID: `DeliveriesGetDelivery`
+Operation ID: `PurchaseOrdersCancelOrderLines`
 
 | Param | In | Type | Required | Description |
 |-------|----|------|----------|-------------|
-| `deliveryId` | path | string | Yes |  |
+| `purchaseOrderId` | path | string | Yes | Purchase order ID (Required) |
 
-**Response 200:** `OmniumDelivery`
+**Request body:** [`OmniumCancelPurchaseOrderLinesRequest`](../schemas/OmniumCancelPurchaseOrderLinesRequest.md) — Line item IDs to cancel
 
----
+**Responses:**
 
-### `PATCH /api/Deliveries/{deliveryId}`
-
-**Patch delivery**
-
-Operation ID: `DeliveriesPatch`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `deliveryId` | path | string | Yes | Delivery ID to patch |
-
-**Request body:** `OmniumDeliveryPatch`
-
-**Response 200:** `OmniumDeliveryPatch`
-
----
-
-### `GET /api/Deliveries/{deliveryId}/PurchaseOrderLines`
-
-**Get delivery purchase order lines**
-
-Operation ID: `DeliveriesGetDeliveryPurchaseOrderLines`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `deliveryId` | path | string | Yes |  |
-
-**Response 200:** `List<OmniumPurchaseOrderLine>`
-
----
-
-### `POST /api/Deliveries/Search`
-
-**Search deliveries**
-
-Operation ID: `DeliveriesSearch`
-
-**Request body:** `OmniumDeliverySearchRequest`
-
-**Response 200:** `OmniumDeliveryOmniumSearchResult`
-
----
-
-### `POST /api/Deliveries/CreateDelivery/{purchaseOrderId}`
-
-**Create delivery with purchase order lines. Use either SKU or Code to identify line items. Package SKU ID can be set but is not required.**
-
-Operation ID: `DeliveriesCreateDelivery`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `purchaseOrderId` | path | string | Yes |  |
-| `existingDeliveryId` | query | string | No | If set, the purchase order lines will be added to the existing delivery |
-| `cancelRemainingLineItems` | query | boolean | No | If true, remaining line items on purchase order will be cancelled |
-| `expectedDeliveryDate` | query | string (date-time) | No |  |
-| `barcode` | query | string | No | Use this to add barcode to the shipment. Used for goodsreception |
-| `newDeliveryId` | query | string | No | You can pick the Id of the new delivery. Do this at your own responsibility. |
-| `preventDuplicateLineItems` | query | boolean | No | If true, the request will fail with BadRequest if duplicate line item IDs are fo |
-
-**Request body:** `List<OmniumPurchaseOrderLineReference>`
-
-**Response 200:** `OmniumDelivery`
-
----
-
-### `PUT /api/Deliveries`
-
-**Update delivery**
-
-Operation ID: `DeliveriesUpdate`
-
-**Request body:** `OmniumDelivery`
-
-**Response 200:** `OmniumDelivery`
-
----
-
-### `PUT /api/Deliveries/UpdateMany`
-
-**Update many deliveries**
-
-Operation ID: `DeliveriesUpdateMany`
-
-**Request body:** `List<OmniumDelivery>`
-
-**Response 200:** `OmniumDelivery`
-
----
-
-### `POST /api/Deliveries/{deliveryId}/AddPublicDeliveryComment`
-
-**Add public delivery comment**
-
-Operation ID: `DeliveriesAddPublicDeliveryComment`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `deliveryId` | path | string | Yes |  |
-
-**Request body:** `OmniumComment`
-
-**Response 200:** `List<OmniumComment>`
-
----
-
-### `POST /api/Deliveries/{deliveryId}/AddInternalDeliveryComment`
-
-**Add internal delivery comment**
-
-Operation ID: `DeliveriesAddInternalDeliveryComment`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `deliveryId` | path | string | Yes |  |
-
-**Request body:** `OmniumComment`
-
-**Response 200:** `List<OmniumComment>`
-
----
-
-### `POST /api/Deliveries/ProcessGoodsReception`
-
-**Process goods reception**
-
-Operation ID: `DeliveriesProcessGoodsReception`
-
-**Request body:** `List<OmniumDeliveryGoodsReceptionLine>`
-
----
-
-### `POST /api/Deliveries/{deliveryId}/ProcessGoodsReception`
-
-**Process goods reception**
-
-Operation ID: `DeliveriesProcessGoodsReceptionForDelivery`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `deliveryId` | path | string | Yes | Id of delivery containing the line items |
-
-**Request body:** `List<OmniumDeliveryGoodsReceptionLine>`
-
----
-
-### `DELETE /api/Deliveries/{id}`
-
-**Delete delivery**
-
-Operation ID: `DeliveriesDelete`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `id` | path | string | Yes |  |
-
----
-
-## Purchase Orders | Workflows
-
-### `POST /api/PurchaseOrders/UpdateAndRunWorkflow`
-
-**Update purchase order and run workflow**
-
-Operation ID: `PurchaseOrdersUpdateAndRunWorkflow`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `updateAtpValues` | query | boolean | No | If true ATP providers will calculate new ATP values based on the purchase order |
-
-**Request body:** `OmniumPurchaseOrder`
-
-**Response 200:** `OmniumPurchaseOrderWorkflowExecutionResult`
-
----
-
-### `POST /api/PurchaseOrders/{purchaseOrderId}/UpdateStatus`
-
-**Update status and run workflow for a purchase order**
-
-Operation ID: `PurchaseOrdersRunWorkflow`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `purchaseOrderId` | path | string | Yes | The ID of the purchase order |
-
-**Request body:** `OmniumPurchaseOrderWorkflowRequest`
-
-**Response 200:** `OmniumPurchaseOrderWorkflowExecutionResult`
-
----
-
-## Suppliers
-
-### `GET /api/Suppliers/{supplierId}`
-
-**Get supplier**
-
-Operation ID: `SuppliersGetSupplier`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `supplierId` | path | string | Yes |  |
-
-**Response 200:** `OmniumSupplier`
-
----
-
-### `GET /api/Suppliers/{supplierId}/{versionId}`
-
-**Get supplier version**
-
-Operation ID: `SuppliersGetSupplierVersion`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `supplierId` | path | string | Yes |  |
-| `versionId` | path | string | Yes |  |
-
-**Response 200:** `OmniumSupplier`
-
----
-
-### `POST /api/Suppliers/Search`
-
-**Search suppliers**
-
-Operation ID: `SuppliersSearch`
-
-**Request body:** `OmniumSupplierSearchRequest`
-
-**Response 200:** `OmniumSupplierOmniumSearchResult`
-
----
-
-### `PUT /api/Suppliers`
-
-**Update supplier**
-
-Operation ID: `SuppliersUpdate`
-
-**Request body:** `OmniumSupplier`
-
-**Response 200:** `OmniumSupplier`
-
----
-
-### `PUT /api/Suppliers/UpdateMany`
-
-**Update many suppliers**
-
-Operation ID: `SuppliersUpdateMany`
-
-**Request body:** `List<OmniumSupplier>`
-
----
-
-### `DELETE /api/Suppliers/{id}`
-
-**Delete supplier**
-
-Operation ID: `SuppliersDelete`
-
-| Param | In | Type | Required | Description |
-|-------|----|------|----------|-------------|
-| `id` | path | string | Yes |  |
-
----
+- 200: [`OmniumPurchaseOrder`](../schemas/OmniumPurchaseOrder.md) — Purchase order lines cancelled successfully
+- 400: string — No line item IDs were provided
+- 404: string — Purchase order was not found
+- 409: Conflict

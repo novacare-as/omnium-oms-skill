@@ -1,0 +1,105 @@
+# OmniumCart
+
+The cart class is the main class used for handling both carts and offers given to a customer. Could be online carts, or offers from physical stores
+
+**Fields:**
+
+- `id`: string, nullable — Cart unique ID
+- `expiredDate`: string (date-time), nullable — Expiration date of cart. If passed, the cart should not be visible to customer.
+- `isReadOnly`: boolean — Should the cart be read only?
+- `isReadOnlyByCustomer`: boolean — Should the order/cart be read only for the customer?
+- `ignorePromotions`: boolean, nullable — Should promotion prices be ignored when product is added to cart?
+- `customerGroups`: List<string>, nullable, max length 250 — Customer groups (for discount calculation)
+- `orderStatus`: string, nullable — Should be used when order needs a special status when created from cart
+- `orderNumber`: string, nullable — In most cases, this property will be identical to the Id property. However, if you have orders from multiple sources (multiple e-commerce sites, pos systems or other sales channels), and the order numbers from the sources could overlap, you could set the Id to a unique value and the order number to the user friendly number.
+- `customerId`: string, nullable — The ID of the customer that has placed the order. Typically this is set to the customers phone number or email address, but it could be set to anything. A customer with the matching ID does not have to exist in the system before the order is placed. If there are no overlapping IDs, but you still have multiple sources of IDs, consider using ExternalIds instead.
+- `customerNumber`: string, nullable — In most cases, the customer number could be set to the same value as the CustomerId. However, in some edge cases the customers could get imported from multiple systems with the same ID range. In that case, you should set the user friendly number to the CustomerNumber and an unique ID for the CustomerId.
+- `customerClubMemberId`: string, nullable — If Customer is member of customer club, set Customer ID as member ID.
+- `billingCurrency`: string, nullable — Currency of the order. e.g. "USD","NOK"
+- `customerName`: string, nullable — Full name of customer
+- `customerPhone`: string, nullable — Customer phone number with prefix. e.g. +4740000000
+- `customerEmail`: string, nullable — Customer e-mail
+- `customerType`: string, nullable — B2B or B2C (Business customer or private customer)
+- `marketId`: string, nullable — Market ID e.g. "US", "NOR", "SWE". This must match the value of the market(s) defined in Omnium.
+- `billingAddress`: [`OmniumOrderAddress`](OmniumOrderAddress.md)
+- `orderForm`: [`OmniumOrderForm`](OmniumOrderForm.md)
+- `orderNotes`: List<[`OmniumComment`](OmniumComment.md)>, nullable, max length 250 — Order comments, for internal use / not for customer
+- `publicOrderNotes`: List<[`OmniumComment`](OmniumComment.md)>, nullable, max length 250 — Order comments, visible for customer
+- `shippingDiscountTotal`: number (decimal), **deprecated** — (OBSOLETE: Use property on OrderForm instead) Shipping discount amount
+- `shippingSubTotal`: number (decimal), **deprecated** — Total shipping cost
+- `status`: string, nullable — The current order status. This must match a status defined in the order settings in Omnium. Typical values are "New", "InProgress", "Cancelled" or "Completed".
+- `remainingPayment`: number (decimal) — CALCULATED: The remaining payment amount if the difference between the authorized amount and total amount
+- `salesPersonId`: string, nullable — Id of seller of the order - typically set to the e-mail of the user in Omnium, but could be set to any ID.
+- `salesPersonName`: string, nullable — Name of the seller of the order
+- `salesChannel`: string, nullable — Name of sales channel
+- `completed`: string (date-time), nullable — CALCULATED: Order completed date
+- `modified`: string (date-time) — CALCULATED: Order last modified date
+- `modifiedBy`: string, nullable — CALCULATED: Modified by
+- `created`: string (date-time) — The creation date of the order
+- `received`: string (date-time), nullable — The received date of the order
+- `followUpDate`: string (date-time), nullable — Order follow-up date
+- `customerPickupDeadline`: string (date-time), nullable — CALCULATED: Customer deadline for picking up order
+- `storePickDate`: string (date-time), nullable — CALCULATED: Employee deadline for picking order
+- `requestedDeliveryDate`: string (date-time), nullable — Delivery date requested by customer
+- `updateStatusDate`: string (date-time), nullable — Date when order should be moved to next status. (Updated by UpdateOrderStatusScheduledTask)
+- `readyForPickup`: string (date-time), nullable — Calculated: When the order was set to ready for pickup. The property can be set by workflow step with name: Set ready for pickup date
+- `nextOrderStatus`: string, nullable — Status order should be moved to. (Updated by UpdateOrderStatusScheduledTask)
+- `properties`: List<[`OmniumPropertyItem`](OmniumPropertyItem.md)>, nullable, max length 250 — Custom properties
+- `paymentType`: string, nullable, **deprecated** — OBSOLETE: Use orderForm.payments instead.
+- `orderType`: string, nullable — Order type e.g. "Online", "Pos". The order type must match a order type defined in the Omnium order settings
+- `requestedAllocationProfileKey`: string, nullable — The allocation profile Omnium's allocation engine should rank plans under for this order, for example FewestShipments or Closest. Empty means the profile configured for the market.
+- `storeId`: string, nullable — The store Id identifies the store that sells the orders. Should match an ID of an existing store. A store would typically be the front end e-commerce solution, a physical store or other sales channels.
+- `returnOrderForms`: List<[`OmniumReturnOrderForm`](OmniumReturnOrderForm.md)>, nullable, max length 250 — The returns for the current order. An order could have one or multiple return order forms.
+- `orderOrigin`: string, nullable — The origin of the order should identify where the order was created. Typical values are "OMS", "ERP", "WEB" or "POS".
+- `lineItemsCost`: number (decimal) — Calculated: Total cost of the order. The cost price
+- `netTotal`: number (decimal) — Calculated: OrderForm total - returnForms total
+- `netTotalExclTax`: number (decimal) — Calculated: OrderForm total excl tax - returnForms total excl tax
+- `customerReference`: string, nullable — Reference provided by customer.
+- `customerContact`: string, nullable, **deprecated** — Customer contact person
+- `customerRequisition`: string, nullable — Customer requisition provided by customer
+- `contactPerson`: [`OmniumContactPerson`](OmniumContactPerson.md)
+- `externalIds`: List<[`OmniumExternalId`](OmniumExternalId.md)>, nullable, max length 250 — List of external IDs. External IDs are visible in Omnium's UI and useful for display, searching and filtering on IDs originating from other systems. A typical use case could be to add the IDs from ERP/POS/E-COM systems that does not match the order ID in order to simplify integration and traceability
+- `isNotificationsDisabled`: boolean — If true, Omnium's notifications will not be triggered for the order
+- `errors`: List<[`OmniumEntityError`](OmniumEntityError.md)>, nullable, max length 250 — List of errors on the current order.
+- `relatedOrders`: List<string>, nullable, max length 250 — List of related order IDs
+- `session`: string, nullable — Session code used for referencing a web session
+- `secretKey`: string, nullable — A unique secret key for the order. Can be used for secure order lookups.
+- `assets`: List<[`OmniumAsset`](OmniumAsset.md)>, nullable, max length 250 — Order assets (documents, media, files)
+- `replacementOrderIds`: List<string>, nullable, max length 250 — List of replacement order IDs for this order
+- `subscriptionId`: string, nullable — Subscription ID - used if order is part of a subscription. The Id should match an existing subscription in Omnium
+- `projectIds`: List<string>, nullable, max length 250 — Project IDs - used if order is part of projects
+- `tags`: List<string>, nullable, max length 250 — Order tags (Used by notification filters, and for grouping / filtering orders)
+- `paymentTermsNet`: integer (int32), nullable — Net payment terms (in days). Used for invoice due dates.
+- `invoiceComment`: string, nullable — Invoice comment
+- `projectId`: string, nullable, **deprecated** — OBSOLETE: Use ProjectIds instead. Project ID - used if order is part of a project
+- `subTotal`: number (decimal), **deprecated** — (OBSOLETE: Use property on OrderForm instead) Order total without shipment cost
+- `subTotalExclTax`: number (decimal), **deprecated** — (OBSOLETE: Use property on OrderForm instead) Order total without shipment cost and without tax
+- `taxTotal`: number (decimal), **deprecated** — (OBSOLETE: Use property on OrderForm instead) Total tax amount
+- `total`: number (decimal), **deprecated** — (OBSOLETE: Use property on OrderForm instead) Order total, including shipment cost, tax, and discounts
+- `totalExclTax`: number (decimal), **deprecated** — (OBSOLETE: Use property on OrderForm instead) Order total, including shipment cost and discounts, but without tax
+- `discountTotalIncVat`: number (decimal), **deprecated** — (OBSOLETE: Use property on OrderForm instead) Total order discount
+- `groups`: List<[`OmniumOrderGroup`](OmniumOrderGroup.md)>, nullable — Order line groups
+- `isNewCustomer`: boolean, nullable — Indicates whether the customer is new. Set automatically by the workflow if the customer's creation date is in the past, but can also be updated via the API.
+- `versionId`: string, nullable — Read only: Current version ID
+- `name`: string, nullable — Order name
+- `canceled`: string (date-time), nullable — Canceled date
+- `orgNr`: string, nullable — Organization number
+- `correlationId`: string, nullable — Correlation ID for tracing
+- `isAnonymized`: boolean — Whether the order has been anonymized
+- `isReservable`: boolean, nullable — Whether the order is reservable
+- `pendingNotificationIds`: List<[`OmniumPendingNotification`](OmniumPendingNotification.md)>, nullable, max length 250 — Pending notifications that should be picked up by the notification scheduler. When the notification has been sent, the notification ID will be removed from the list.
+- `invoiceIds`: List<string>, nullable, max length 250 — List of invoice IDs associated with this order
+- `documentStatus`: string, nullable — Shows which documents have been generated for the order
+- `customerOrderNumber`: string, nullable — Customer's own order number
+- `isReallocated`: boolean — Whether the order has been reallocated
+
+**Used directly by endpoints in:**
+
+- [Carts | Add](../endpoints/carts/add.md)
+- [Carts | Checkout](../endpoints/carts/checkout.md)
+- [Carts | Get](../endpoints/carts/get.md)
+- [Carts | Line Items](../endpoints/carts/line-items.md)
+- [Carts | Other](../endpoints/carts/other.md)
+- [Carts | Update](../endpoints/carts/update.md)
+- [Orders | Workflow](../endpoints/orders/workflow.md)
+- [Products | Rentals](../endpoints/products/rentals.md)
